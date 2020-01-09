@@ -1,6 +1,8 @@
+name app
 types date
 find all needs api's
-describe project
--what doing this app
--for who this app
--for which platform this app
+- google translate api
+- ui api
+- save file api
+- sql api
+- ethymology api
