@@ -1,8 +1,12 @@
 name app
 types date
 find all needs api's
-- google translate api
-- ui api
+- for translate yandex dictornary
+-- make client
++ for etymology, prononciation oxford dictonary
++ make client
 - save file api
+-- tests for api
 - sql api
-- ethymology api
+-- tests for api
+
