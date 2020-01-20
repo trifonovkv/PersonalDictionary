@@ -25,6 +25,8 @@ android {
         }
         debug {
             buildConfigField "String", "YANDEX_API_KEY", "\"${project.YANDEX_API_KEY}\""
+            buildConfigField "String", "OXFORD_APP_ID", "\"${project.OXFORD_APP_ID}\""
+            buildConfigField "String", "OXFORD_APP_KEY", "\"${project.OXFORD_APP_KEY}\""
         }
     }
     packagingOptions {
@@ -47,7 +49,12 @@ dependencies {
     implementation "io.ktor:ktor-client-core:1.2.6"
     implementation "io.ktor:ktor-client-okhttp:1.1.1"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.14.0"
-    testImplementation 'junit:junit:4.13'
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}
+
+configurations.all {
+    resolutionStrategy.force "junit:junit:$junit_version"
 }
