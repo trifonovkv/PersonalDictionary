@@ -1,4 +1,4 @@
-package com.example.mydictionary
+package com.kostrifon.mydictionary
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.call
@@ -28,7 +28,9 @@ class OxfordDictionaryApi(private val appId: String, private val appKey: String)
                 val httpResponse = client.call(getUrl(requestedWord)).response
 
             if (httpResponse.status.value != 200) {
-                OxfordDictionaryResponse.Failure(httpResponse.status.description)
+                OxfordDictionaryResponse.Failure(
+                    httpResponse.status.description
+                )
             } else {
                 val text = httpResponse.use { it.readText() }
                 val json = Json(JsonConfiguration.Stable)
@@ -40,7 +42,9 @@ class OxfordDictionaryApi(private val appId: String, private val appKey: String)
                 )
             }
         } catch (e: Exception) {
-            OxfordDictionaryResponse.Failure(e.message ?: "Unknown error")
+            OxfordDictionaryResponse.Failure(
+                e.message ?: "Unknown error"
+            )
         }
     }
 

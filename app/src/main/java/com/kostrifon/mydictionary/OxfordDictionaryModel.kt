@@ -1,4 +1,4 @@
-package com.example.mydictionary
+package com.kostrifon.mydictionary
 
 import kotlinx.serialization.Serializable
 

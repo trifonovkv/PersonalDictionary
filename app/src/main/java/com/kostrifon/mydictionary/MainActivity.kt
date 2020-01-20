@@ -1,4 +1,4 @@
-package com.example.mydictionary
+package com.kostrifon.mydictionary
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

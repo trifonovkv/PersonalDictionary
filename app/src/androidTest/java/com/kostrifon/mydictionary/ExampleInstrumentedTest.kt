@@ -1,4 +1,4 @@
-package com.example.mydictionary
+package com.kostrifon.mydictionary
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

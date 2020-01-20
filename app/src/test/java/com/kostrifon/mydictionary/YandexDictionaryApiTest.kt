@@ -1,4 +1,7 @@
-import com.example.mydictionary.BuildConfig
+package com.kostrifon.mydictionary
+
+import YandexDictionaryApi
+import YandexDictionaryResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
