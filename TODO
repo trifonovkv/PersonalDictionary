@@ -1,12 +1,7 @@
 name app
-types date
-find all needs api's
-- for translate yandex dictornary
--- make client
-+ for etymology, prononciation oxford dictonary
-+ make client
 - save file api
 -- tests for api
 - sql api
 -- tests for api
+data type
 
