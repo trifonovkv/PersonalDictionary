@@ -3,5 +3,5 @@ name app
 -- tests for api
 - sql api
 -- tests for api
-data type
+add: check enter only one word
 
