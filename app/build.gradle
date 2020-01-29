@@ -38,6 +38,9 @@ android {
         pickFirst("META-INF/kotlinx-coroutines-core.kotlin_module")
         pickFirst("META-INF/ktor-client-core.kotlin_module")
     }
+    kotlinOptions {
+        freeCompilerArgs = ["-Xallow-result-return-type"]
+    }
 }
 
 dependencies {

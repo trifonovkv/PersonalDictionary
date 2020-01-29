@@ -1,3 +1,5 @@
+package com.kostrifon.mydictionary
+
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -7,12 +9,19 @@ data class YandexDictionaryModel(val head: Head, val def: List<Def>)
 data class Head(val notUsed: String? = null)
 
 @Serializable
-data class Def(val text: String, val pos: String, val ts: String? = null, val tr: List<Tr>)
+data class Def(
+    val text: String,
+    val pos: String,
+    val ts: String? = null,
+    val fl: String? = null,
+    val tr: List<Tr>
+)
 
 @Serializable
 data class Tr(
     val text: String,
     val pos: String? = null,
+    val num: String? = null,
     val syn: List<Syn>? = null,
     val gen: String? = null,
     val mean: List<Mean>? = null,
@@ -21,7 +30,12 @@ data class Tr(
 )
 
 @Serializable
-data class Syn(val text: String, val pos: String? = null, val gen: String? = null)
+data class Syn(
+    val text: String,
+    val pos: String? = null,
+    val asp: String? = null,
+    val gen: String? = null
+)
 
 @Serializable
 data class Mean(val text: String)

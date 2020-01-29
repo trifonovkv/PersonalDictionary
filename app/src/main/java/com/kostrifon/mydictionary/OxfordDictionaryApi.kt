@@ -10,41 +10,33 @@ import java.lang.Exception
 import java.util.*
 
 
-class OxfordDictionaryApi(private val appId: String, private val appKey: String) {
+class OxfordDictionaryApi(private val appId: String, private val appKey: String) :
+    DictionaryApi<OxfordDictionaryModel> {
     private val address = "https://od-api.oxforddictionaries.com:443/api/v2/entries"
     private val language = "en-us"
     private val strictMatch = "false"
 
-    suspend fun getWord(requestedWord: RequestedWord): OxfordDictionaryResponse {
+    override suspend fun getWord(requestedWord: RequestedWord): Result<OxfordDictionaryModel> {
         return try {
-                val client = HttpClient {
-                    install(DefaultRequest) {
-                        headers.append("Accept", "application/json")
-                        headers.append("app_id", appId)
-                        headers.append("app_key", appKey)
-                    }
+            val client = HttpClient {
+                install(DefaultRequest) {
+                    headers.append("Accept", "application/json")
+                    headers.append("app_id", appId)
+                    headers.append("app_key", appKey)
                 }
+            }
 
-                val httpResponse = client.call(getUrl(requestedWord)).response
+            val httpResponse = client.call(getUrl(requestedWord)).response
 
             if (httpResponse.status.value != 200) {
-                OxfordDictionaryResponse.Failure(
-                    httpResponse.status.description
-                )
+                Result.failure(Exception(httpResponse.status.description))
             } else {
                 val text = httpResponse.use { it.readText() }
                 val json = Json(JsonConfiguration.Stable)
-                OxfordDictionaryResponse.Success(
-                    json.parse(
-                        OxfordDictionaryModel.serializer(),
-                        text
-                    )
-                )
+                Result.success(json.parse(OxfordDictionaryModel.serializer(), text))
             }
         } catch (e: Exception) {
-            OxfordDictionaryResponse.Failure(
-                e.message ?: "Unknown error"
-            )
+            Result.failure(e)
         }
     }
 
@@ -52,11 +44,4 @@ class OxfordDictionaryApi(private val appId: String, private val appKey: String)
         val wordId = requestedWord.word.toLowerCase(Locale.getDefault())
         return "$address/$language/$wordId?fields=${requestedWord.fields}&strictMatch=$strictMatch"
     }
-}
-
-data class RequestedWord(val word: String, val fields: String)
-
-sealed class OxfordDictionaryResponse {
-    data class Success(val oxfordDictionaryModel: OxfordDictionaryModel) : OxfordDictionaryResponse()
-    data class Failure(val message: String) : OxfordDictionaryResponse()
 }

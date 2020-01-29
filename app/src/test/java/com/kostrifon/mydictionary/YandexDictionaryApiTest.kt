@@ -1,7 +1,5 @@
 package com.kostrifon.mydictionary
 
-import YandexDictionaryApi
-import YandexDictionaryResponse
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -12,14 +10,10 @@ class YandexDictionaryApiTest {
 
     @Test
     fun getWord() {
-        val requestedWord = "dog"
-        when(val yandexDictionaryResponse = runBlocking { yandexDictionaryApi.getWord(requestedWord) }) {
-            is YandexDictionaryResponse.Success -> {
-                assert(yandexDictionaryResponse.yandexDictionaryModel.def.isNotEmpty())
-            }
-            is YandexDictionaryResponse.Failure -> {
-                assert(false) { yandexDictionaryResponse.message }
-            }
-        }
+        val requestedWord = RequestedWord("dog", "")
+        runBlocking { yandexDictionaryApi.getWord(requestedWord) }.fold(
+            onFailure = { assert(false) { it.message?: "Error" } },
+            onSuccess = { assert(it.def.isNotEmpty()) }
+        )
     }
 }

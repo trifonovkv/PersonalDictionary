@@ -1,3 +1,5 @@
+package com.kostrifon.mydictionary
+
 import io.ktor.client.HttpClient
 import io.ktor.client.call.call
 import io.ktor.client.features.DefaultRequest
@@ -7,23 +9,23 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import java.util.*
 
-class YandexDictionaryApi(private val apiKey: String) {
+class YandexDictionaryApi(private val apiKey: String):DictionaryApi<YandexDictionaryModel> {
 
     private val address = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
     private val lang = "en-ru"
 
-    suspend fun getWord(requestedWord: String): YandexDictionaryResponse {
+    override suspend fun getWord(requestedWord: RequestedWord): Result<YandexDictionaryModel> {
         return try {
-            val httpResponse = getResponse(requestedWord)
+            val httpResponse = getResponse(requestedWord.word)
             if (httpResponse.status.value != 200) {
-                YandexDictionaryResponse.Failure(httpResponse.status.description)
+                Result.failure(Exception(httpResponse.status.description))
             } else {
-                val text = httpResponse.readText()
+                val text = httpResponse.use { it.readText() }
                 val json = Json(JsonConfiguration.Stable)
-                YandexDictionaryResponse.Success(json.parse(YandexDictionaryModel.serializer(), text))
+                Result.success(json.parse(YandexDictionaryModel.serializer(), text))
             }
         } catch (e: Exception) {
-            YandexDictionaryResponse.Failure(e.message ?: "Unknown error")
+            Result.failure(e)
         }
     }
 
@@ -33,9 +35,7 @@ class YandexDictionaryApi(private val apiKey: String) {
                 headers.append("Accept", "application/json")
             }
         }
-        val response = client.call(getUrl(requestedWord, apiKey)).response
-        client.close()
-        return response
+        return client.call(getUrl(requestedWord, apiKey)).response
     }
 
     private fun getUrl(requestedWord: String, apiKey: String): String {
@@ -43,9 +43,3 @@ class YandexDictionaryApi(private val apiKey: String) {
         return "$address?key=$apiKey&lang=$lang&text=$wordId"
     }
 }
-
-sealed class YandexDictionaryResponse {
-    data class Success(val yandexDictionaryModel: YandexDictionaryModel) : YandexDictionaryResponse()
-    data class Failure(val message: String) : YandexDictionaryResponse()
-}
-

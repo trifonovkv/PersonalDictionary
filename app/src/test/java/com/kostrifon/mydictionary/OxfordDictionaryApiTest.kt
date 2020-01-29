@@ -18,9 +18,9 @@ class OxfordDictionaryApiTest {
             "oxford",
             "pronunciations,etymologies"
         )
-        when (val oxfordDictionaryResponse = runBlocking { oxfordDictionaryApi.getWord(requestedWord) }) {
-            is OxfordDictionaryResponse.Success -> assert(oxfordDictionaryResponse.oxfordDictionaryModel.results.isNotEmpty())
-            is OxfordDictionaryResponse.Failure -> assert(false) { oxfordDictionaryResponse.message }
-        }
+        runBlocking { oxfordDictionaryApi.getWord(requestedWord) }.fold(
+            onSuccess = { assert(it.results.isNotEmpty()) },
+            onFailure = { assert(false) { it.localizedMessage?: "Error" } }
+        )
     }
 }
