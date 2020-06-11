@@ -15,11 +15,14 @@ class OxfordDictionaryApiTest {
     @Test
     fun oxfordDictionaryApi() {
         val requestedWord = RequestedWord(
-            "oxford",
+            "enter",
             "pronunciations,etymologies"
         )
         runBlocking { oxfordDictionaryApi.getWord(requestedWord) }.fold(
-            onSuccess = { assert(it.results.isNotEmpty()) },
+            onSuccess = {
+                assert(it.results.isNotEmpty())
+                println(it.results)
+            },
             onFailure = { assert(false) { it.localizedMessage?: "Error" } }
         )
     }

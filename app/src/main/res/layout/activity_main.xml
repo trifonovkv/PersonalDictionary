@@ -12,26 +12,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Enter word" />
-
-    <TextView
-        android:id="@+id/word"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="word" />
-
-    <TextView
-        android:id="@+id/pronounces"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="pronounces" />
+        android:hint="Enter word..."
+        android:inputType="textPersonName" />
 
     <TextView
         android:id="@+id/translates"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="translates" />
+
+    <TextView
+        android:id="@+id/pronounces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pronounces" />
 
     <TextView
         android:id="@+id/etymologies"
@@ -44,5 +38,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

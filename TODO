@@ -1,7 +1,28 @@
 name app
-- save file api
--- tests for api
-- sql api
--- tests for api
+- save file API
+-- tests for API
+- SQL API
+-- tests for API
 add: check enter only one word
 add: design UI
+- make adapter
+-- combine translates and pronunciations
+-- make OxfordDictionaryModel > List<Word>
+
+oxford data dia
+-------------------------------------------------------------------------------
+word > request > json > OxfordDictionaryModel > Words > UI
+String > HttpRequest > String > OxfordDictionaryModel > List<Word> > *View
+
+Word {
+  word              String
+  lexicalCategory   String
+  pronunciations    List<String>
+  etymologies       List<string>
+}
+
+oxford operations dia
+-------------------------------------------------------------------------------
+makeRequest > parseJson > getWords > createAdapter
+
+OxfordDictionaryModel > List<Word>
