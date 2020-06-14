@@ -46,12 +46,12 @@ class MainActivity : AppCompatActivity() {
 
     // TODO rename
     private suspend fun f(requestedWord: RequestedWord) {
-        OxfordDictionaryApi(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY).getWord(
+        /*OxfordDictionaryApi(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY).getWord(
             requestedWord
         ).fold(
             onFailure = { showError(it.message ?: "Error") },
             onSuccess = { updateOxfordFields(it) }
-        )
+        )*/
 
         YandexDictionaryApi(BuildConfig.YANDEX_API_KEY).getWord(requestedWord).fold(
             onFailure = { showError(it.message ?: "Error") },

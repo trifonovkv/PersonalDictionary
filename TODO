@@ -7,22 +7,15 @@ add: check enter only one word
 add: design UI
 - make adapter
 -- combine translates and pronunciations
--- make OxfordDictionaryModel > List<Word>
+--- refactor YandexDictionary
 
 oxford data dia
 -------------------------------------------------------------------------------
-word > request > json > OxfordDictionaryModel > Words > UI
-String > HttpRequest > String > OxfordDictionaryModel > List<Word> > *View
-
-Word {
-  word              String
-  lexicalCategory   String
-  pronunciations    List<String>
-  etymologies       List<string>
-}
+word > request > json > OxfordDictionaryModel > DictionaryWords > UI
+String > HttpRequest > String > OxfordDictionaryModel > DictionaryWord > *View
 
 oxford operations dia
 -------------------------------------------------------------------------------
 makeRequest > parseJson > getWords > createAdapter
 
-OxfordDictionaryModel > List<Word>
+OxfordDictionaryModel > DictionaryWord
