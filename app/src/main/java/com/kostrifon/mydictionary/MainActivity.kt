@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         button.setOnClickListener {
-            val requestedWord = RequestedWord(editText.text.toString(), "pronunciations,etymologies")
+//            val requestedWord = RequestedWord(editText.text.toString(), "pronunciations,etymologies")
             GlobalScope.launch {
-                f(requestedWord)
+//                f(requestedWord)
             }
         }
 
@@ -45,19 +45,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     // TODO rename
-    private suspend fun f(requestedWord: RequestedWord) {
-        /*OxfordDictionaryApi(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY).getWord(
-            requestedWord
-        ).fold(
-            onFailure = { showError(it.message ?: "Error") },
-            onSuccess = { updateOxfordFields(it) }
-        )*/
-
-        YandexDictionaryApi(BuildConfig.YANDEX_API_KEY).getWord(requestedWord).fold(
-            onFailure = { showError(it.message ?: "Error") },
-            onSuccess = { updateYandexFields(it) }
-        )
-    }
+//    private suspend fun f(requestedWord: RequestedWord) {
+//        /*OxfordDictionaryApi(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY).getWord(
+//            requestedWord
+//        ).fold(
+//            onFailure = { showError(it.message ?: "Error") },
+//            onSuccess = { updateOxfordFields(it) }
+//        )*/
+//
+//        YandexDictionaryApi(BuildConfig.YANDEX_API_KEY).getWord(requestedWord).fold(
+//            onFailure = { showError(it.message ?: "Error") },
+//            onSuccess = { updateYandexFields(it) }
+//        )
+//    }
 
     private fun updateOxfordFields(oxfordDictionaryModel: OxfordDictionaryModel) {
         val oxfordDictionaryModelFacade = OxfordDictionaryModelFacade(oxfordDictionaryModel)

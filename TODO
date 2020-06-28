@@ -7,15 +7,3 @@ add: check enter only one word
 add: design UI
 - make adapter
 -- combine translates and pronunciations
---- refactor YandexDictionary
-
-oxford data dia
--------------------------------------------------------------------------------
-word > request > json > OxfordDictionaryModel > DictionaryWords > UI
-String > HttpRequest > String > OxfordDictionaryModel > DictionaryWord > *View
-
-oxford operations dia
--------------------------------------------------------------------------------
-makeRequest > parseJson > getWords > createAdapter
-
-OxfordDictionaryModel > DictionaryWord

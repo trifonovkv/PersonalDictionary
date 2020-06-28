@@ -199,19 +199,19 @@ data class OxfordDictionaryModel(
     val word: String
 )
 
-data class Entry(
+data class OxfordEntry(
     val lexicalCategory: String?,
     val pronunciations: List<Pronunciations>?,
     val etymologies: List<String>?
 )
 
 
-data class OxfordDictionaryWord(val word: String?, val entries: List<Entry>)
+data class OxfordDictionaryWord(val word: String?, val entries: List<OxfordEntry>)
 
 
 fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDictionaryWord {
 
-    fun getEntry(lexicalEntries: LexicalEntries): Entry {
+    fun getEntry(lexicalEntries: LexicalEntries): OxfordEntry {
 
         fun getLexicalCategory(): String? {
             return lexicalEntries.lexicalCategory?.text
@@ -237,10 +237,10 @@ fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDicti
             return etymologies
         }
 
-        return Entry(getLexicalCategory(), getPronunciations(), getEtymologies())
+        return OxfordEntry(getLexicalCategory(), getPronunciations(), getEtymologies())
     }
 
-    val entries = mutableListOf<Entry>()
+    val entries = mutableListOf<OxfordEntry>()
     oxfordDictionaryModel.results.forEach {
         it.lexicalEntries.forEach { it1 ->
             entries.add(getEntry(it1))
@@ -252,7 +252,7 @@ fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDicti
 
 fun printDictionaryWord(oxfordDictionaryWord: OxfordDictionaryWord) {
 
-    fun printEntry(entry: Entry) {
+    fun printEntry(oxfordEntry: OxfordEntry) {
 
         fun printPronunciations(pronunciations: List<Pronunciations>) {
             pronunciations.forEach {
@@ -265,11 +265,11 @@ fun printDictionaryWord(oxfordDictionaryWord: OxfordDictionaryWord) {
             etymologies.forEach { println("\t $it") }
         }
 
-        println("lexicalCategory: ${entry.lexicalCategory}")
+        println("lexicalCategory: ${oxfordEntry.lexicalCategory}")
         println("pronunciations:")
-        entry.pronunciations?.let { printPronunciations(it) }
+        oxfordEntry.pronunciations?.let { printPronunciations(it) }
         println("etymologies:")
-        entry.etymologies?.let { printEtymologies(it) }
+        oxfordEntry.etymologies?.let { printEtymologies(it) }
     }
 
     println(oxfordDictionaryWord.word)
