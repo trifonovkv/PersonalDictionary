@@ -7,3 +7,11 @@ add: check enter only one word
 add: design UI
 - make adapter
 -- combine translates and pronunciations
+--- what do when one or another return error
+---- call one error
+---- combine two callbacks
+----- use chains or better make it in parallel
+------ what to do if one out of two return error
+
+fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): YandexDictionaryWord
+fun getYandexWord(success: (word: YandexDictionaryWord) -> Unit, error: (json: String) -> Unit)

@@ -206,10 +206,15 @@ data class OxfordEntry(
 )
 
 
-data class OxfordDictionaryWord(val word: String?, val entries: List<OxfordEntry>)
+data class OxfordDictionaryWord(
+    val word: String?,
+    val entries: List<OxfordEntry>
+)
 
 
-fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDictionaryWord {
+fun getOxfordDictionaryWord(
+    oxfordDictionaryModel: OxfordDictionaryModel
+): OxfordDictionaryWord {
 
     fun getEntry(lexicalEntries: LexicalEntries): OxfordEntry {
 
@@ -237,7 +242,11 @@ fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDicti
             return etymologies
         }
 
-        return OxfordEntry(getLexicalCategory(), getPronunciations(), getEtymologies())
+        return OxfordEntry(
+            getLexicalCategory(),
+            getPronunciations(),
+            getEtymologies()
+        )
     }
 
     val entries = mutableListOf<OxfordEntry>()
@@ -247,37 +256,6 @@ fun getDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDicti
         }
     }
     return OxfordDictionaryWord(oxfordDictionaryModel.word, entries)
-}
-
-
-fun printDictionaryWord(oxfordDictionaryWord: OxfordDictionaryWord) {
-
-    fun printEntry(oxfordEntry: OxfordEntry) {
-
-        fun printPronunciations(pronunciations: List<Pronunciations>) {
-            pronunciations.forEach {
-                print("\t ${it.phoneticSpelling}")
-                println("\t ${it.audioFile}")
-            }
-        }
-
-        fun printEtymologies(etymologies: List<String>) {
-            etymologies.forEach { println("\t $it") }
-        }
-
-        println("lexicalCategory: ${oxfordEntry.lexicalCategory}")
-        println("pronunciations:")
-        oxfordEntry.pronunciations?.let { printPronunciations(it) }
-        println("etymologies:")
-        oxfordEntry.etymologies?.let { printEtymologies(it) }
-    }
-
-    println(oxfordDictionaryWord.word)
-    oxfordDictionaryWord.entries.forEach {
-        printEntry(it)
-        println("---------------------------------------------------------------------------------")
-        println()
-    }
 }
 
 
@@ -299,83 +277,24 @@ fun makeRequest(
     runBlocking {
         ("https://od-api.oxforddictionaries.com:443/api/v2/entries/en-us/" +
                 requestedWord.toLowerCase(Locale.getDefault()) +
-                "?fields=pronunciations,etymologies&strictMatch=false").let { url ->
-            client.call(url).response.let { httpResponse ->
-                httpResponse.readText().let { text ->
-                    when (httpResponse.status.value) {
-                        200, 201 -> success(text)
-                        else -> error(text)
+                "?fields=pronunciations,etymologies&strictMatch=false"
+                ).let { url ->
+                client.call(url).response.let { httpResponse ->
+                    httpResponse.readText().let { text ->
+                        when (httpResponse.status.value) {
+                            200, 201 -> success(text)
+                            else -> error(text)
+                        }
                     }
                 }
             }
-        }
     }
 }
 
 
 fun parseOxfordDictionaryModel(json: String): OxfordDictionaryModel {
-    return Json(JsonConfiguration.Stable).parse(OxfordDictionaryModel.serializer(), json)
-}
-
-
-fun compareOxfordDictionary(model: OxfordDictionaryModel, word: OxfordDictionaryWord): Boolean {
-
-    fun getLexicalCategoryCount(oxfordDictionaryModel: OxfordDictionaryModel): Int {
-        var lexicalCategoryCount = 0
-        oxfordDictionaryModel.results.forEach {
-            it.lexicalEntries.forEach { it1 ->
-                if (it1.lexicalCategory != null) lexicalCategoryCount++
-            }
-        }
-        return lexicalCategoryCount
-    }
-
-    fun getLexicalCategoryCount(oxfordDictionaryWord: OxfordDictionaryWord): Int {
-        var lexicalCategoryCount = 0
-        oxfordDictionaryWord.entries.forEach {
-            if (it.lexicalCategory != null) lexicalCategoryCount++
-        }
-        return lexicalCategoryCount
-    }
-
-    fun getPronunciationsCount(oxfordDictionaryModel: OxfordDictionaryModel): Int {
-        var pronunciationsCount = 0
-        oxfordDictionaryModel.results.forEach {
-            it.lexicalEntries.forEach { it1 ->
-                it1.entries?.forEach { it2 ->
-                    if (it2.pronunciations != null) pronunciationsCount++
-                }
-            }
-        }
-        return pronunciationsCount
-    }
-
-    fun getPronunciationsCount(oxfordDictionaryWord: OxfordDictionaryWord): Int {
-        var pronunciationsCount = 0
-        oxfordDictionaryWord.entries.forEach {
-            if (it.pronunciations != null) pronunciationsCount++
-        }
-        return pronunciationsCount
-    }
-
-    fun getEtymologiesCount(oxfordDictionaryModel: OxfordDictionaryModel): Int {
-        var etymologiesCount = 0
-        oxfordDictionaryModel.results.forEach {
-            it.lexicalEntries.forEach { it1 ->
-                it1.entries?.forEach { _ -> etymologiesCount++ }
-            }
-        }
-        return etymologiesCount
-    }
-
-    fun getEtymologiesCount(oxfordDictionaryWord: OxfordDictionaryWord): Int {
-        var etymologiesCount = 0
-        repeat(oxfordDictionaryWord.entries.size) { etymologiesCount++ }
-        return etymologiesCount
-    }
-
-    return (getLexicalCategoryCount(model) == getLexicalCategoryCount(word
-    )) == (getPronunciationsCount(model) == getPronunciationsCount(
-        word
-    )) == (getEtymologiesCount(model) == getEtymologiesCount(word))
+    return Json(JsonConfiguration.Stable).parse(
+        OxfordDictionaryModel.serializer(),
+        json
+    )
 }
