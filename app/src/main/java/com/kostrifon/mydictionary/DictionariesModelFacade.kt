@@ -7,7 +7,7 @@ class DictionariesModelFacade(
     fun getWord() = yandexDictionaryModel.def[0].text
 
     // results[].lexicalEntries[].pronunciations[].phoneticSpelling
-    fun getPronunciations(): List<Pronunciation> {
+    /*fun getPronunciations(): List<Pronunciation> {
         val pronunciations = mutableListOf<Pronunciation>()
         oxfordDictionaryModel.results.forEach { result ->
             result.lexicalEntries.forEach { lexicalEntire ->
@@ -19,7 +19,7 @@ class DictionariesModelFacade(
             }
         }
         return pronunciations
-    }
+    }*/
 
     // def[].tr[].text
     fun getTranslates(): List<String> {
@@ -49,19 +49,19 @@ class DictionariesModelFacade(
 class OxfordDictionaryModelFacade(private val oxfordDictionaryModel: OxfordDictionaryModel) {
 
     // results[].lexicalEntries[].pronunciations[].phoneticSpelling
-    fun getPronunciations(): List<Pronunciation> {
+    /*fun getPronunciations(): List<Pronunciation> {
         val pronunciations = mutableListOf<Pronunciation>()
         oxfordDictionaryModel.results.forEach { result ->
             result.lexicalEntries.forEach { lexicalEntire ->
                 lexicalEntire.pronunciations?.forEach { pronunciation ->
                     val phoneticSpelling = pronunciation.phoneticSpelling ?: "none"
                     val audioFile = pronunciation.audioFile ?: "none"
-                    pronunciations += Pronunciation(phoneticSpelling, audioFile)
+//                    pronunciations += Pronunciation(phoneticSpelling, audioFile)
                 }
             }
         }
         return pronunciations
-    }
+    }*/
 
     // results[].lexicalEntries[].entries[].etymologies[]
     fun getEtymologies(): List<String> {
@@ -92,4 +92,4 @@ class YandexDictionaryModelFacade(private val yandexDictionaryModel: YandexDicti
     }
 }
 
-data class Pronunciation(val phoneticSpelling: String, val audioFile: String)
+//data class Pronunciation(val phoneticSpelling: String, val audioFile: String)

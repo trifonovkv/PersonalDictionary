@@ -59,11 +59,11 @@ class MainActivity : AppCompatActivity() {
 //        )
 //    }
 
-    private fun updateOxfordFields(oxfordDictionaryModel: OxfordDictionaryModel) {
+  /*  private fun updateOxfordFields(oxfordDictionaryModel: OxfordDictionaryModel) {
         val oxfordDictionaryModelFacade = OxfordDictionaryModelFacade(oxfordDictionaryModel)
         val phoneticSpellings = mutableListOf<String>()
         oxfordDictionaryModelFacade.getPronunciations().forEach {
-//            phoneticSpellings += it.phoneticSpelling
+            phoneticSpellings += it.phoneticSpelling
             phoneticSpellings += it.phoneticSpelling
             phoneticSpellings += it.audioFile
             myDataset.clear()
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             recyclerView.invalidate()
             etymologies.text = oxfordDictionaryModelFacade.getEtymologies().toString()
         }
-    }
+    }*/
 
     private fun updateYandexFields(yandexDictionaryModel: YandexDictionaryModel) {
         val yandexDictionaryModelFacade = YandexDictionaryModelFacade(yandexDictionaryModel)
