@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">My Dictionary</string>
+    <string name="noun_symbol">■</string>
+    <string name="verb_symbol">▲</string>
+    <string name="adjective_symbol">●</string>
+    <string name="back_icon">back_icon</string>
+    <string name="save_icon">save_icon</string>
+    <string name="pronunciation_icon">pronunciation_icon</string>
+    <string name="refresh_icon">TODO</string>
+    <string name="enter_the_word">Enter the word</string>
 </resources>

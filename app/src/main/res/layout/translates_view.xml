@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentLeft="true"
+    android:dividerPadding="8dp"
+    android:orientation="vertical"
+    android:layout_alignParentStart="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TranslateOptionsSymbol"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="@string/noun_symbol" />
+
+        <TextView
+            android:id="@+id/nounTextView"
+            style="@style/TranslateOptionsText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <TextView
+            style="@style/TranslateOptionsSymbol"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="@string/verb_symbol" />
+
+        <TextView
+            android:id="@+id/verbTextView"
+            style="@style/TranslateOptionsText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <TextView
+            style="@style/TranslateOptionsSymbol"
+            android:layout_width="32dp"
+            android:layout_height="match_parent"
+            android:text="@string/adjective_symbol" />
+
+        <TextView
+            android:id="@+id/adjectiveTextView"
+            style="@style/TranslateOptionsText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+</LinearLayout>
