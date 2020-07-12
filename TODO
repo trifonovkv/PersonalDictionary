@@ -4,8 +4,3 @@ name app
 - SQL API
 -- tests for API
 add: check enter only one word
-add: UI
-- make adapter
-- make UI
--- move up refresh icon when typing
--- animate refresh icon

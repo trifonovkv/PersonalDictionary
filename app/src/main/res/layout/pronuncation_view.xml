@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pronunciationLinearLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
@@ -11,10 +12,10 @@
         android:id="@+id/pronunciationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textColor="@android:color/background_dark"
-        android:textSize="30sp"
-        android:typeface="monospace" />
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        android:textStyle="italic"
+        android:typeface="normal" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -23,8 +24,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_weight="1"
+        android:baselineAlignBottom="false"
         android:contentDescription="@string/pronunciation_icon"
-        android:minWidth="32dp"
+        android:minHeight="32dp"
         android:tint="@color/colorAccent"
+        android:visibility="gone"
         app:srcCompat="@drawable/audio_volume_high_symbolic" />
 </LinearLayout>

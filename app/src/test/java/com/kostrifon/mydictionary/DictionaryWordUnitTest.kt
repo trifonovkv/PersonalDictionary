@@ -64,7 +64,7 @@ fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
 class DictionaryWordUnitTest {
 
-    private val word = "red"
+    private val word = "water"
 
     private fun getOxfordWord(
         success: (word: OxfordDictionaryWord) -> Unit,
@@ -117,11 +117,8 @@ class DictionaryWordUnitTest {
         }
 
         val oxfordError = { json: String ->
-            assert(false) {
-                println(json)
-            }
+            assert(false) { println(json) }
         }
-
         getOxfordWord(oxfordSuccess, oxfordError)
     }
 }
