@@ -64,9 +64,10 @@ fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
 class DictionaryWordUnitTest {
 
-    private val word = "water"
+    private var testWord = "abandon"
 
     private fun getOxfordWord(
+        word: String,
         success: (word: OxfordDictionaryWord) -> Unit,
         error: (json: String) -> Unit
     ) {
@@ -84,12 +85,13 @@ class DictionaryWordUnitTest {
     }
 
     private fun getYandexWord(
+        word: String,
         success: (word: YandexDictionaryWord) -> Unit,
         error: (json: String) -> Unit
     ) {
         val json = makeRequest(createClient(), word)
         val yandexDictionaryModel = parseYandexDictionaryModel(json)
-        if (isEmpty(yandexDictionaryModel)) {
+        if (yandexDictionaryModel.def.isEmpty()) {
             error(json)
         } else {
             success(getYandexDictionaryWord(yandexDictionaryModel))
@@ -99,7 +101,6 @@ class DictionaryWordUnitTest {
     @ExperimentalStdlibApi
     @Test
     fun isNotEmpty() {
-
         val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
             val yandexSuccess = { yandexWord: YandexDictionaryWord ->
                 assert(true)
@@ -113,12 +114,12 @@ class DictionaryWordUnitTest {
                 }
             }
             assert(true)
-            getYandexWord(yandexSuccess, yandexError)
+            getYandexWord(testWord, yandexSuccess, yandexError)
         }
 
         val oxfordError = { json: String ->
             assert(false) { println(json) }
         }
-        getOxfordWord(oxfordSuccess, oxfordError)
+        getOxfordWord(testWord, oxfordSuccess, oxfordError)
     }
 }
