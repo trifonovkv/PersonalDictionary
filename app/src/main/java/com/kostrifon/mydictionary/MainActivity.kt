@@ -1,101 +1,89 @@
 package com.kostrifon.mydictionary
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.animation.LinearInterpolator
-import kotlinx.android.synthetic.main.activity_enter_word.*
-import kotlinx.android.synthetic.main.activity_translate.*
-import kotlinx.android.synthetic.main.pronuncation_view.*
-import kotlinx.android.synthetic.main.pronuncation_view.view.*
-import kotlinx.android.synthetic.main.translates_view.*
+import androidx.appcompat.app.AppCompatActivity
+
+
+@ExperimentalStdlibApi
+fun getDictionaryWord(
+    word: String,
+    success: (word: DictionaryWord) -> Unit,
+    error: (message: String) -> Unit
+) {
+
+    fun getOxfordWord(
+        word: String,
+        success: (word: OxfordDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+
+        makeRequest(
+            createClient(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY),
+            word,
+            { json: String ->
+                success(
+                    getOxfordDictionaryWord(parseOxfordDictionaryModel(json))
+                )
+            },
+            error
+        )
+    }
+
+    fun getYandexWord(
+        word: String,
+        success: (word: YandexDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        val json = makeRequest(createClient(), word)
+        val yandexDictionaryModel = parseYandexDictionaryModel(json)
+        if (yandexDictionaryModel.def.isEmpty()) {
+            error(json)
+        } else {
+            success(getYandexDictionaryWord(yandexDictionaryModel))
+        }
+    }
+
+    val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
+        val yandexSuccess = { yandexWord: YandexDictionaryWord ->
+            val dictionaryWord = getDictionaryWord(oxfordWord, yandexWord)
+//            printDictionaryWord(dictionaryWord)
+//            println()
+            success(dictionaryWord)
+        }
+        val yandexError = { json: String ->
+            // TODO
+            error("error")
+        }
+        getYandexWord(word, yandexSuccess, yandexError)
+    }
+
+    val oxfordError = { json: String ->
+        // TODO
+        error("error")
+    }
+    getOxfordWord(word, oxfordSuccess, oxfordError)
+}
+
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_translate)
+        setContentView(R.layout.acitvity_main)
 
-        setTranslatedWord("water")
-        val testList = listOf(
-            Pronunciation(
-                "ˈwɔdər",
-                "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"
-            ),
-            Pronunciation(
-                "ˈwɑdər",
-                "https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3"
-            )
-        )
-        setPronunciations(testList)
-        setTranslates(
-            "вода, водоем, акватория, влага, водность, волны",
-            "поливать, мочить",
-            "водяной"
-        )
-
-        setEtymologies(
-            listOf(
-                "Old English wæter (noun), wæterian (verb), of" +
-                        " Germanic origin; related to Dutch water, German Wasser, " +
-                        "from an Indo-European root shared by Russian voda " +
-                        "(compare with vodka), also by Latin unda ‘wave’ and " +
-                        "Greek hudōr ‘water’", "blalalalalalalalal"
-            )
-        )
-
-        val objectAnimator =
-            ObjectAnimator.ofFloat(imageView, "rotation", 360f).apply {
-                interpolator = LinearInterpolator()
-                duration = 3000
-                repeatCount = ValueAnimator.INFINITE
-            }
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        val fragment = EnterWordFragment()
+        fragmentTransaction.add(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
 
 
-//        imageView.setOnClickListener {
-//            if (objectAnimator.isRunning) {
-//                objectAnimator.cancel()
-//            } else {
-//                objectAnimator.start()
-//            }
-//        }
 
 
-    }
 
-    private fun setTranslatedWord(word: String) {
-        translatedWordTextView.text = word
-    }
 
-    private fun setPronunciations(pronunciations: List<Pronunciation>) {
 
-        fun createPronunciationView(text: String, audioUrl: String): View {
-            val view = layoutInflater.inflate(R.layout.pronuncation_view, null)
-            view.pronunciationTextView.text = text
 
-            return view
-        }
-
-        pronunciations.forEach {
-            pronunciationsLinearLayout.addView(
-                createPronunciationView(it.phoneticSpelling, it.audioFile)
-            )
-        }
-    }
-
-    private fun setTranslates(noun: String, verb: String, adjective: String) {
-        nounTextView.text = noun
-        verbTextView.text = verb
-        adjectiveTextView.text = adjective
-    }
-
-    private fun setEtymologies(etymologies: List<String>) {
-        etymologyTextView.text = etymologies.joinToString(
-            separator = "\n\t",
-            prefix = "\t"
-        )
     }
 }
 

@@ -8,4 +8,7 @@
     <string name="pronunciation_icon">pronunciation_icon</string>
     <string name="refresh_icon">TODO</string>
     <string name="enter_the_word">Enter the word</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

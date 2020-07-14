@@ -5,9 +5,3 @@ name app
 -- tests for API
 add: check enter only one word
 set soul into UI
-- make activities
-- call activity from another
--- pass parameter
-- back to previous activity
--- this.finish()
-decide which activity get dictionary entry
