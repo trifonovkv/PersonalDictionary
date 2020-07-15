@@ -68,7 +68,7 @@ class YandexDictionaryUnitTest {
 
     @Test
     fun test() {
-        fun testWord(word: String) {
+        suspend fun testWord(word: String) {
             val json = makeRequest(createClient(), word)
             val yandexDictionaryModel = parseYandexDictionaryModel(json)
             assert(!isEmpty(yandexDictionaryModel)) {
@@ -88,8 +88,8 @@ class YandexDictionaryUnitTest {
         }
 
         words.forEach {
-            testWord(it)
             runBlocking {
+                testWord(it)
                 delay(3000)
             }
         }

@@ -1,5 +1,6 @@
 package com.kostrifon.mydictionary
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 
@@ -116,19 +117,30 @@ class OxfordDictionaryUnitTest {
             assert(true)
 
             val oxfordDictionaryModel = parseOxfordDictionaryModel(json)
-            val oxfordDictionaryWord = getOxfordDictionaryWord(oxfordDictionaryModel)
+            val oxfordDictionaryWord =
+                getOxfordDictionaryWord(oxfordDictionaryModel)
 
-            assert(compareOxfordDictionary(oxfordDictionaryModel, oxfordDictionaryWord))
+            assert(
+                compareOxfordDictionary(
+                    oxfordDictionaryModel,
+                    oxfordDictionaryWord
+                )
+            )
             { printAssertError(json, oxfordDictionaryWord) }
         }
 
         val error = { json: String -> assert(false) { println(json) } }
 
-        makeRequest(
-            createClient(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY),
-            "neglect",
-            success,
-            error
-        )
+        runBlocking {
+            makeRequest(
+                createClient(
+                    BuildConfig.OXFORD_APP_ID,
+                    BuildConfig.OXFORD_APP_KEY
+                ),
+                "neglect",
+                success,
+                error
+            )
+        }
     }
 }

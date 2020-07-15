@@ -268,13 +268,12 @@ fun createClient(app_id: String, app_key: String) = HttpClient {
 }
 
 
-fun makeRequest(
+suspend fun makeRequest(
     client: HttpClient,
     requestedWord: String,
     success: (json: String) -> Unit,
     error: (json: String) -> Unit
 ) {
-    runBlocking {
         ("https://od-api.oxforddictionaries.com:443/api/v2/entries/en-us/" +
                 requestedWord.toLowerCase(Locale.getDefault()) +
                 "?fields=pronunciations,etymologies&strictMatch=false"
@@ -288,7 +287,6 @@ fun makeRequest(
                     }
                 }
             }
-    }
 }
 
 

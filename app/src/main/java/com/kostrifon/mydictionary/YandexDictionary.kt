@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.call
 import io.ktor.client.features.DefaultRequest
 import io.ktor.client.response.readText
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
@@ -52,7 +51,10 @@ data class Mean(val text: String)
 data class Ex(val text: String, val tr: List<Tr>)
 
 data class YandexEntry(val pos: String, val translations: List<String>)
-data class YandexDictionaryWord(val word: String, val entries: List<YandexEntry>)
+data class YandexDictionaryWord(
+    val word: String,
+    val entries: List<YandexEntry>
+)
 
 
 fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): YandexDictionaryWord {
@@ -78,7 +80,10 @@ fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): Yande
         return entries
     }
 
-    return YandexDictionaryWord(getWord(yandexDictionaryModel), getEntries(yandexDictionaryModel))
+    return YandexDictionaryWord(
+        getWord(yandexDictionaryModel),
+        getEntries(yandexDictionaryModel)
+    )
 }
 
 
@@ -91,16 +96,17 @@ fun createClient(): HttpClient {
 }
 
 // not need error and success because it always return json
-fun makeRequest(client: HttpClient, requestedWord: String): String {
-    return runBlocking {
-        val url = ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?" +
-                "key=${BuildConfig.YANDEX_API_KEY}&lang=en-ru&" +
-                "text=${requestedWord.toLowerCase(Locale.getDefault())}")
-        client.call(url).response.readText()
-    }
+suspend fun makeRequest(client: HttpClient, requestedWord: String): String {
+    val url = ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?" +
+            "key=${BuildConfig.YANDEX_API_KEY}&lang=en-ru&" +
+            "text=${requestedWord.toLowerCase(Locale.getDefault())}")
+    return client.call(url).response.readText()
 }
 
 
 fun parseYandexDictionaryModel(json: String): YandexDictionaryModel {
-    return Json(JsonConfiguration.Stable).parse(YandexDictionaryModel.serializer(), json)
+    return Json(JsonConfiguration.Stable).parse(
+        YandexDictionaryModel.serializer(),
+        json
+    )
 }

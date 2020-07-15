@@ -5,3 +5,4 @@ name app
 -- tests for API
 add: check enter only one word
 set soul into UI
+- pass DictionaryWord to DictionaryEntryFragment

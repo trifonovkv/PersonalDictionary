@@ -1,5 +1,6 @@
 package com.kostrifon.mydictionary
 
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
 
@@ -66,7 +67,7 @@ class DictionaryWordUnitTest {
 
     private var testWord = "abandon"
 
-    private fun getOxfordWord(
+    private suspend fun getOxfordWord(
         word: String,
         success: (word: OxfordDictionaryWord) -> Unit,
         error: (json: String) -> Unit
@@ -84,7 +85,7 @@ class DictionaryWordUnitTest {
         )
     }
 
-    private fun getYandexWord(
+    private suspend fun getYandexWord(
         word: String,
         success: (word: YandexDictionaryWord) -> Unit,
         error: (json: String) -> Unit
@@ -114,12 +115,16 @@ class DictionaryWordUnitTest {
                 }
             }
             assert(true)
-            getYandexWord(testWord, yandexSuccess, yandexError)
+            runBlocking {
+                getYandexWord(testWord, yandexSuccess, yandexError)
+            }
         }
 
         val oxfordError = { json: String ->
             assert(false) { println(json) }
         }
-        getOxfordWord(testWord, oxfordSuccess, oxfordError)
+        runBlocking {
+            getOxfordWord(testWord, oxfordSuccess, oxfordError)
+        }
     }
 }
