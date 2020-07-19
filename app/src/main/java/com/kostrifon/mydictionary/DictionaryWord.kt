@@ -1,5 +1,6 @@
 package com.kostrifon.mydictionary
 
+import kotlinx.coroutines.runBlocking
 import java.util.*
 
 
@@ -77,4 +78,61 @@ fun getDictionaryWord(
         getDictionaryEntry("verb"),
         getDictionaryEntry("adjective")
     )
+}
+
+@ExperimentalStdlibApi
+suspend fun getTranslatedWord(
+    word: String,
+    success: (word: DictionaryWord) -> Unit,
+    error: (message: String) -> Unit
+) {
+
+    suspend fun getOxfordWord(
+        word: String,
+        success: (word: OxfordDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        makeRequest(
+            createClient(
+                BuildConfig.OXFORD_APP_ID,
+                BuildConfig.OXFORD_APP_KEY
+            ),
+            word,
+            { json: String ->
+                success(
+                    getOxfordDictionaryWord(parseOxfordDictionaryModel(json))
+                )
+            },
+            error
+        )
+    }
+
+    fun getYandexWord(
+        word: String,
+        success: (word: YandexDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        runBlocking {
+            val json = makeRequest(createClient(), word)
+            val yandexDictionaryModel = parseYandexDictionaryModel(json)
+            if (yandexDictionaryModel.def.isEmpty()) {
+                error(json)
+            } else {
+                success(getYandexDictionaryWord(yandexDictionaryModel))
+            }
+        }
+    }
+
+    val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
+        val yandexSuccess = { yandexWord: YandexDictionaryWord ->
+            val dictionaryWord = getDictionaryWord(oxfordWord, yandexWord)
+            success(dictionaryWord)
+        }
+        val yandexError = { json: String -> error(json) }
+        getYandexWord(word, yandexSuccess, yandexError)
+    }
+
+    val oxfordError = { json: String -> error(json) }
+
+    getOxfordWord(word, oxfordSuccess, oxfordError)
 }

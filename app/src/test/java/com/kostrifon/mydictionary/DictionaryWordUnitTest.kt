@@ -65,66 +65,18 @@ fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
 class DictionaryWordUnitTest {
 
-    private var testWord = "abandon"
-
-    private suspend fun getOxfordWord(
-        word: String,
-        success: (word: OxfordDictionaryWord) -> Unit,
-        error: (json: String) -> Unit
-    ) {
-
-        makeRequest(
-            createClient(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY),
-            word,
-            { json: String ->
-                success(
-                    getOxfordDictionaryWord(parseOxfordDictionaryModel(json))
-                )
-            },
-            error
-        )
-    }
-
-    private suspend fun getYandexWord(
-        word: String,
-        success: (word: YandexDictionaryWord) -> Unit,
-        error: (json: String) -> Unit
-    ) {
-        val json = makeRequest(createClient(), word)
-        val yandexDictionaryModel = parseYandexDictionaryModel(json)
-        if (yandexDictionaryModel.def.isEmpty()) {
-            error(json)
-        } else {
-            success(getYandexDictionaryWord(yandexDictionaryModel))
-        }
-    }
+    private var testWord = "successful"
 
     @ExperimentalStdlibApi
     @Test
-    fun isNotEmpty() {
-        val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
-            val yandexSuccess = { yandexWord: YandexDictionaryWord ->
-                assert(true)
-                val dictionaryWord = getDictionaryWord(oxfordWord, yandexWord)
-                printDictionaryWord(dictionaryWord)
-                println()
-            }
-            val yandexError = { json: String ->
-                assert(false) {
-                    println(json)
-                }
-            }
-            assert(true)
-            runBlocking {
-                getYandexWord(testWord, yandexSuccess, yandexError)
-            }
-        }
-
-        val oxfordError = { json: String ->
-            assert(false) { println(json) }
-        }
+    fun getDictionaryWord() {
         runBlocking {
-            getOxfordWord(testWord, oxfordSuccess, oxfordError)
+            getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
+                assert(true)
+                printDictionaryWord(dictionaryWord)
+            }, { message: String ->
+                assert(false) { println(message) }
+            })
         }
     }
 }
