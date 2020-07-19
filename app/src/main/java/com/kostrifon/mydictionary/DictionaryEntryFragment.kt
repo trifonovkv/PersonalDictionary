@@ -131,14 +131,13 @@ class DictionaryEntryFragment : Fragment() {
                         Unit
                     }, { message: String ->
                         showErrorDialog("Error", message)
+                        objectAnimator.cancel()
                     })
                 } catch (e: Exception) {
-                    GlobalScope.launch(Dispatchers.Main) {
-                        showErrorDialog(
-                            "Connection error",
-                            e.localizedMessage ?: "Unknown"
-                        )
-                    }
+                    showErrorDialog(
+                        "Connection error",
+                        e.localizedMessage ?: "Unknown"
+                    )
                     objectAnimator.cancel()
                 }
             }
@@ -226,14 +225,16 @@ class DictionaryEntryFragment : Fragment() {
 
     private fun showErrorDialog(title: String, message: String) {
         activity?.let {
-            AlertDialog.Builder(it)
-                .setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(android.R.string.cancel) { _, _ ->
-                    activity?.supportFragmentManager?.popBackStack()
-                }
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show()
+            GlobalScope.launch(Dispatchers.Main) {
+                AlertDialog.Builder(it)
+                    .setTitle(title)
+                    .setMessage(message)
+                    .setPositiveButton(android.R.string.cancel) { _, _ ->
+                        activity?.supportFragmentManager?.popBackStack()
+                    }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
+            }
         }
     }
 }
