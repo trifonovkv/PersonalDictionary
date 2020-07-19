@@ -27,13 +27,13 @@
             android:id="@+id/imageView"
             android:layout_width="96dp"
             android:layout_height="96dp"
-            android:tint="@color/colorAccent"
+            android:contentDescription="@string/refresh_icon"
+            android:tint="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/translatedWordEditText"
-            app:srcCompat="@drawable/emblem_synchronizing_symbolic"
-            android:contentDescription="@string/refresh_icon" />
+            app:srcCompat="@drawable/emblem_synchronizing_symbolic" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

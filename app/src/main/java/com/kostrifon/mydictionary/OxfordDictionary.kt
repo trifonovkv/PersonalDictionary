@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.call
 import io.ktor.client.features.DefaultRequest
 import io.ktor.client.response.readText
-import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration

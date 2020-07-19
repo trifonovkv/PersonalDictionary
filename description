@@ -1,12 +1,11 @@
 app translate and save words
-app for who learning foregin language
+app for who learning foreign language
 app for android
 use case
 - user print a word which need translate
 - user get translate
 - user get transcription
-- user get prononciation
-- user get ethymology
+- user get pronunciation
+- user get etymology
 - app save this word and data
 - user can get all saved words later
-

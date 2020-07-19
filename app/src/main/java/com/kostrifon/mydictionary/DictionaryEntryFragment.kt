@@ -1,18 +1,86 @@
 package com.kostrifon.mydictionary
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_dictionary_entry.*
 import kotlinx.android.synthetic.main.fragment_dictionary_entry.view.*
 import kotlinx.android.synthetic.main.pronuncation_view.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+
+private const val ARG_WORD = "word"
+
+
+@ExperimentalStdlibApi
+suspend fun getTranslatedWord(
+    word: String,
+    success: (word: DictionaryWord) -> Unit,
+    error: (message: String) -> Unit
+) {
+
+    suspend fun getOxfordWord(
+        word: String,
+        success: (word: OxfordDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        makeRequest(
+            createClient(
+                BuildConfig.OXFORD_APP_ID,
+                BuildConfig.OXFORD_APP_KEY
+            ),
+            word,
+            { json: String ->
+                success(
+                    getOxfordDictionaryWord(parseOxfordDictionaryModel(json))
+                )
+            },
+            error
+        )
+    }
+
+    fun getYandexWord(
+        word: String,
+        success: (word: YandexDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        runBlocking {
+            val json = makeRequest(createClient(), word)
+            val yandexDictionaryModel = parseYandexDictionaryModel(json)
+            if (yandexDictionaryModel.def.isEmpty()) {
+                error(json)
+            } else {
+                success(getYandexDictionaryWord(yandexDictionaryModel))
+            }
+        }
+    }
+
+    val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
+        val yandexSuccess = { yandexWord: YandexDictionaryWord ->
+            val dictionaryWord = getDictionaryWord(oxfordWord, yandexWord)
+            success(dictionaryWord)
+        }
+        val yandexError = { json: String -> error(json) }
+        getYandexWord(word, yandexSuccess, yandexError)
+    }
+
+    val oxfordError = { json: String -> error(json) }
+
+    getOxfordWord(word, oxfordSuccess, oxfordError)
+}
+
 
 /**
  * A simple [Fragment] subclass.
@@ -20,18 +88,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class DictionaryEntryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var word: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            word = it.getString(ARG_WORD)
         }
     }
 
+    @ExperimentalStdlibApi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,99 +107,133 @@ class DictionaryEntryFragment : Fragment() {
             container,
             false
         )
-        setTranslatedWord(view, "water")
-        val testList = listOf(
-            Pronunciation(
-                "ˈwɔdər",
-                "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"
-            ),
-            Pronunciation(
-                "ˈwɑdər",
-                "https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3"
-            )
-        )
-        setPronunciations(view, testList)
-        setTranslates(
-            view,
-            "вода, водоем, акватория, влага, водность, волны",
-            "поливать, мочить",
-            "водяной"
-        )
 
-        setEtymologies(
-            view,
-            listOf(
-                "Old English wæter (noun), wæterian (verb), of" +
-                        " Germanic origin; related to Dutch water, German Wasser, " +
-                        "from an Indo-European root shared by Russian voda " +
-                        "(compare with vodka), also by Latin unda ‘wave’ and " +
-                        "Greek hudōr ‘water’", "blalalalalalalalal"
-            )
-        )
+        val objectAnimator =
+            ObjectAnimator.ofFloat(view.imageView5, "rotation", 360f).apply {
+                interpolator = LinearInterpolator()
+                duration = 1500
+                repeatCount = ValueAnimator.INFINITE
+            }
+        objectAnimator.start()
 
+        GlobalScope.launch(Dispatchers.IO) {
+            word?.let {
+                try {
+                    getTranslatedWord(it, { dictionaryWord: DictionaryWord ->
+                        GlobalScope.launch(Dispatchers.Main) {
+                            setTranslatedWord(view, dictionaryWord)
+                            setPronunciations(view, dictionaryWord)
+                            setTranslates(view, dictionaryWord)
+                            setEtymologies(view, dictionaryWord)
+                            objectAnimator.cancel()
+                            view.imageView5.visibility = View.GONE
+                        }
+                        Unit
+                    }, { message: String ->
+                        showErrorDialog("Error", message)
+                    })
+                } catch (e: Exception) {
+                    GlobalScope.launch(Dispatchers.Main) {
+                        showErrorDialog(
+                            "Connection error",
+                            e.localizedMessage ?: "Unknown"
+                        )
+                    }
+                    objectAnimator.cancel()
+                }
+            }
+        }
         // Inflate the layout for this fragment
         return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DictionaryEntryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(word: String) =
             DictionaryEntryFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(ARG_WORD, word)
                 }
             }
     }
 
-    private fun setTranslatedWord(view: View, word: String) {
-        view.translatedWordTextView.text = word
+    private fun setTranslatedWord(view: View, dictionaryWord: DictionaryWord) {
+        view.translatedWordTextView.text = dictionaryWord.word
     }
 
-    private fun setPronunciations(
-        view: View,
-        pronunciations: List<Pronunciation>
-    ) {
+    private fun setPronunciations(view: View, dictionaryWord: DictionaryWord) {
 
         fun createPronunciationView(text: String, audioUrl: String): View {
             val pronunciationView =
-                layoutInflater.inflate(R.layout.pronuncation_view, null)
+                layoutInflater.inflate(
+                    R.layout.pronuncation_view,
+                    pronunciationsLinearLayout,
+                    false
+                )
             pronunciationView.pronunciationTextView.text = text
 
             return pronunciationView
         }
 
-        pronunciations.forEach {
+        val pronunciations = mutableListOf<Pronunciation>()
+        pronunciations.addAll(dictionaryWord.noun.pronunciations)
+        pronunciations.addAll(dictionaryWord.verb.pronunciations)
+        pronunciations.addAll(dictionaryWord.adjective.pronunciations)
+
+        pronunciations.filter { it.audioFile.isNotBlank() }.forEach {
             view.pronunciationsLinearLayout.addView(
                 createPronunciationView(it.phoneticSpelling, it.audioFile)
             )
         }
     }
 
-    private fun setTranslates(
-        view: View,
-        noun: String,
-        verb: String,
-        adjective: String
-    ) {
-        view.findViewById<TextView>(R.id.nounTextView).text = noun
-        view.findViewById<TextView>(R.id.verbTextView).text = verb
-        view.findViewById<TextView>(R.id.adjectiveTextView).text = adjective
+    private fun setTranslates(view: View, dictionaryWord: DictionaryWord) {
+        listOf<Triple<List<String>, LinearLayout, TextView>>(
+            Triple(
+                dictionaryWord.noun.translates,
+                view.nounLinearLayout,
+                view.nounTextView
+            ),
+            Triple(
+                dictionaryWord.verb.translates,
+                view.verbLinearLayout,
+                view.verbTextView
+            ),
+            Triple(
+                dictionaryWord.adjective.translates,
+                view.adjectiveLinearLayout,
+                view.adjectiveTextView
+            )
+        ).forEach {
+            if (it.first.isNotEmpty()) {
+                it.second.visibility = VISIBLE
+                it.third.text = it.first.joinToString(separator = ", ")
+            }
+        }
     }
 
-    private fun setEtymologies(view: View, etymologies: List<String>) {
+    private fun setEtymologies(view: View, dictionaryWord: DictionaryWord) {
+        val etymologies = mutableListOf<String>()
+        etymologies.addAll(dictionaryWord.noun.etymologies)
+        etymologies.addAll(dictionaryWord.verb.etymologies)
+        etymologies.addAll(dictionaryWord.adjective.etymologies)
+
         view.etymologyTextView.text = etymologies.joinToString(
-            separator = "\n\t",
-            prefix = "\t"
+            prefix = "\t",
+            separator = "\n\t"
         )
+    }
+
+    private fun showErrorDialog(title: String, message: String) {
+        activity?.let {
+            AlertDialog.Builder(it)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.cancel) { _, _ ->
+                    activity?.supportFragmentManager?.popBackStack()
+                }
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
+        }
     }
 }

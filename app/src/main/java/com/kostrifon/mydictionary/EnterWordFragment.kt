@@ -1,13 +1,11 @@
 package com.kostrifon.mydictionary
 
-import android.animation.ObjectAnimator
-import android.animation.ValueAnimator
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
+import kotlinx.android.synthetic.main.fragment_enter_word.*
 import kotlinx.android.synthetic.main.fragment_enter_word.view.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,26 +35,22 @@ class EnterWordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
-        val objectAnimator =
-            ObjectAnimator.ofFloat(view.imageView, "rotation", 360f).apply {
-                interpolator = LinearInterpolator()
-                duration = 3000
-                repeatCount = ValueAnimator.INFINITE
-            }
+        val view =
+            inflater.inflate(R.layout.fragment_enter_word, container, false)
 
         view.imageView.setOnClickListener {
-            if (objectAnimator.isRunning) {
-                objectAnimator.cancel()
-            } else {
-                objectAnimator.start()
-            }
-
             activity?.let {
-                val transaction = it.supportFragmentManager.beginTransaction()
-                transaction.replace(R.id.fragment_container, DictionaryEntryFragment())
-                transaction.addToBackStack(null)
-                transaction.commit()
+                val translatedWord = translatedWordEditText.text.toString()
+                if (translatedWord.isNotBlank()) {
+                    val transaction =
+                        it.supportFragmentManager.beginTransaction()
+                    transaction.replace(
+                        R.id.fragment_container,
+                        DictionaryEntryFragment.newInstance(translatedWord)
+                    )
+                    transaction.addToBackStack(null)
+                    transaction.commit()
+                }
             }
         }
 
