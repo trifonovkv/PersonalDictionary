@@ -211,15 +211,11 @@ data class OxfordDictionaryWord(
 )
 
 
-fun getOxfordDictionaryWord(
-    oxfordDictionaryModel: OxfordDictionaryModel
-): OxfordDictionaryWord {
+fun getOxfordDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): OxfordDictionaryWord {
 
     fun getEntry(lexicalEntries: LexicalEntries): OxfordEntry {
 
-        fun getLexicalCategory(): String? {
-            return lexicalEntries.lexicalCategory?.text
-        }
+        fun getLexicalCategory() = lexicalEntries.lexicalCategory?.text
 
         fun getPronunciations(): List<Pronunciations>? {
             val pronunciations = mutableListOf<Pronunciations>()
@@ -241,11 +237,7 @@ fun getOxfordDictionaryWord(
             return etymologies
         }
 
-        return OxfordEntry(
-            getLexicalCategory(),
-            getPronunciations(),
-            getEtymologies()
-        )
+        return OxfordEntry(getLexicalCategory(), getPronunciations(), getEtymologies())
     }
 
     val entries = mutableListOf<OxfordEntry>()
@@ -273,25 +265,20 @@ suspend fun makeRequest(
     success: (json: String) -> Unit,
     error: (json: String) -> Unit
 ) {
-        ("https://od-api.oxforddictionaries.com:443/api/v2/entries/en-us/" +
-                requestedWord.toLowerCase(Locale.getDefault()) +
-                "?fields=pronunciations,etymologies&strictMatch=false"
-                ).let { url ->
-                client.call(url).response.let { httpResponse ->
-                    httpResponse.readText().let { text ->
-                        when (httpResponse.status.value) {
-                            200, 201 -> success(text)
-                            else -> error(text)
-                        }
-                    }
+    ("https://od-api.oxforddictionaries.com:443/api/v2/entries/en-us/" +
+            requestedWord.toLowerCase(Locale.getDefault()) +
+            "?fields=pronunciations,etymologies&strictMatch=false").let { url ->
+        client.call(url).response.let { httpResponse ->
+            httpResponse.readText().let { text ->
+                when (httpResponse.status.value) {
+                    200, 201 -> success(text)
+                    else -> error(text)
                 }
             }
+        }
+    }
 }
 
 
-fun parseOxfordDictionaryModel(json: String): OxfordDictionaryModel {
-    return Json(JsonConfiguration.Stable).parse(
-        OxfordDictionaryModel.serializer(),
-        json
-    )
-}
+fun parseOxfordDictionaryModel(json: String) =
+    Json(JsonConfiguration.Stable).parse(OxfordDictionaryModel.serializer(), json)

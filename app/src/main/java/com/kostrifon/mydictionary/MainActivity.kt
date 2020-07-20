@@ -15,14 +15,6 @@ class MainActivity : AppCompatActivity() {
         val fragment = EnterWordFragment()
         fragmentTransaction.add(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
-
-
-
-
-
-
-
-
     }
 }
 

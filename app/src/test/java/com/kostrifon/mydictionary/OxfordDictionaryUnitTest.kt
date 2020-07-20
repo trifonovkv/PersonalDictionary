@@ -35,10 +35,7 @@ fun printDictionaryWord(oxfordDictionaryWord: OxfordDictionaryWord) {
 }
 
 
-fun compareOxfordDictionary(
-    model: OxfordDictionaryModel,
-    word: OxfordDictionaryWord
-): Boolean {
+fun compareOxfordDictionary(model: OxfordDictionaryModel, word: OxfordDictionaryWord): Boolean {
 
     fun getLexicalCategoryCount(oxfordDictionaryModel: OxfordDictionaryModel): Int {
         var lexicalCategoryCount = 0
@@ -94,11 +91,9 @@ fun compareOxfordDictionary(
         return etymologiesCount
     }
 
-    return (getLexicalCategoryCount(model) == getLexicalCategoryCount(
-        word
-    )) == (getPronunciationsCount(model) == getPronunciationsCount(
-        word
-    )) == (getEtymologiesCount(model) == getEtymologiesCount(word))
+    return (getLexicalCategoryCount(model) == getLexicalCategoryCount(word)) == (
+            getPronunciationsCount(model) == getPronunciationsCount(word)) == (
+            getEtymologiesCount(model) == getEtymologiesCount(word))
 }
 
 
@@ -117,8 +112,7 @@ class OxfordDictionaryUnitTest {
             assert(true)
 
             val oxfordDictionaryModel = parseOxfordDictionaryModel(json)
-            val oxfordDictionaryWord =
-                getOxfordDictionaryWord(oxfordDictionaryModel)
+            val oxfordDictionaryWord = getOxfordDictionaryWord(oxfordDictionaryModel)
 
             assert(
                 compareOxfordDictionary(
@@ -134,12 +128,8 @@ class OxfordDictionaryUnitTest {
         runBlocking {
             makeRequest(
                 createClient(
-                    BuildConfig.OXFORD_APP_ID,
-                    BuildConfig.OXFORD_APP_KEY
-                ),
-                "neglect",
-                success,
-                error
+                    BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY
+                ), "neglect", success, error
             )
         }
     }

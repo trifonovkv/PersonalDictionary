@@ -27,14 +27,9 @@ fun printDictionaryWord(yandexDictionaryWord: YandexDictionaryWord) {
 }
 
 
-fun compareYandexDictionary(
-    model: YandexDictionaryModel,
-    word: YandexDictionaryWord
-): Boolean {
+fun compareYandexDictionary(model: YandexDictionaryModel, word: YandexDictionaryWord): Boolean {
 
-    fun getTranslationsCount(
-        yandexDictionaryModel: YandexDictionaryModel
-    ): Int {
+    fun getTranslationsCount(yandexDictionaryModel: YandexDictionaryModel): Int {
         var count = 0
         yandexDictionaryModel.def.forEach { count += it.tr.size }
         return count
@@ -46,9 +41,7 @@ fun compareYandexDictionary(
         return count
     }
 
-    return (getTranslationsCount(model) == getTranslationsCount(
-        word
-    )) == (model.def.size == word.entries.size)
+    return (getTranslationsCount(model) == getTranslationsCount(word)) == (model.def.size == word.entries.size)
 }
 
 
@@ -60,11 +53,7 @@ fun printAssertError(json: String, yandexDictionaryWord: YandexDictionaryWord) {
 
 
 class YandexDictionaryUnitTest {
-    private val words = listOf(
-        "neglect",
-        "gain",
-        "issue"
-    )
+    private val words = listOf("neglect", "gain", "issue")
 
     @Test
     fun test() {
@@ -74,15 +63,8 @@ class YandexDictionaryUnitTest {
             assert(!isEmpty(yandexDictionaryModel)) {
                 println("yandexDictionaryModel is empty")
             }
-            val yandexDictionaryWord = getYandexDictionaryWord(
-                yandexDictionaryModel
-            )
-            assert(
-                compareYandexDictionary(
-                    yandexDictionaryModel,
-                    yandexDictionaryWord
-                )
-            ) {
+            val yandexDictionaryWord = getYandexDictionaryWord(yandexDictionaryModel)
+            assert(compareYandexDictionary(yandexDictionaryModel, yandexDictionaryWord)) {
                 printAssertError(json, yandexDictionaryWord)
             }
         }

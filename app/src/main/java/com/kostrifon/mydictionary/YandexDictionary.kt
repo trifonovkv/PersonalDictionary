@@ -16,13 +16,7 @@ data class YandexDictionaryModel(val head: Head, val def: List<Def>)
 data class Head(val notUsed: String? = null)
 
 @Serializable
-data class Def(
-    val text: String,
-    val pos: String,
-    val ts: String? = null,
-    val fl: String? = null,
-    val tr: List<Tr>
-)
+data class Def(val text: String, val pos: String, val ts: String? = null, val fl: String? = null, val tr: List<Tr>)
 
 @Serializable
 data class Tr(
@@ -37,12 +31,7 @@ data class Tr(
 )
 
 @Serializable
-data class Syn(
-    val text: String,
-    val pos: String? = null,
-    val asp: String? = null,
-    val gen: String? = null
-)
+data class Syn(val text: String, val pos: String? = null, val asp: String? = null, val gen: String? = null)
 
 @Serializable
 data class Mean(val text: String)
@@ -51,62 +40,37 @@ data class Mean(val text: String)
 data class Ex(val text: String, val tr: List<Tr>)
 
 data class YandexEntry(val pos: String, val translations: List<String>)
-data class YandexDictionaryWord(
-    val word: String,
-    val entries: List<YandexEntry>
-)
+data class YandexDictionaryWord(val word: String, val entries: List<YandexEntry>)
 
 
 fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): YandexDictionaryWord {
-    fun getWord(yandexDictionaryModel: YandexDictionaryModel): String {
-        return yandexDictionaryModel.def[0].text
-    }
+    fun getWord(yandexDictionaryModel: YandexDictionaryModel) = yandexDictionaryModel.def[0].text
 
     fun getEntries(yandexDictionaryModel: YandexDictionaryModel): List<YandexEntry> {
         fun getTranslations(tr: List<Tr>): List<String> {
             val translations = mutableListOf<String>()
-            tr.forEach {
-                translations.add(it.text)
-            }
+            tr.forEach { translations.add(it.text) }
             return translations
         }
 
         val entries = mutableListOf<YandexEntry>()
-        yandexDictionaryModel.def.forEach { def ->
-            val translations = getTranslations(def.tr)
-            val entry = YandexEntry(def.pos, translations)
-            entries.add(entry)
-        }
+        yandexDictionaryModel.def.forEach { def -> entries.add(YandexEntry(def.pos, getTranslations(def.tr))) }
         return entries
     }
 
-    return YandexDictionaryWord(
-        getWord(yandexDictionaryModel),
-        getEntries(yandexDictionaryModel)
-    )
+    return YandexDictionaryWord(getWord(yandexDictionaryModel), getEntries(yandexDictionaryModel))
 }
 
 
-fun createClient(): HttpClient {
-    return HttpClient {
-        install(DefaultRequest) {
-            headers.append("Accept", "application/json")
-        }
-    }
-}
+fun createClient() = HttpClient { install(DefaultRequest) { headers.append("Accept", "application/json") } }
 
 // not need error and success because it always return json
 suspend fun makeRequest(client: HttpClient, requestedWord: String): String {
-    val url = ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?" +
-            "key=${BuildConfig.YANDEX_API_KEY}&lang=en-ru&" +
-            "text=${requestedWord.toLowerCase(Locale.getDefault())}")
+    val url = ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${BuildConfig.YANDEX_API_KEY}" +
+            "&lang=en-ru&text=${requestedWord.toLowerCase(Locale.getDefault())}")
     return client.call(url).response.readText()
 }
 
 
-fun parseYandexDictionaryModel(json: String): YandexDictionaryModel {
-    return Json(JsonConfiguration.Stable).parse(
-        YandexDictionaryModel.serializer(),
-        json
-    )
-}
+fun parseYandexDictionaryModel(json: String) =
+    Json(JsonConfiguration.Stable).parse(YandexDictionaryModel.serializer(), json)

@@ -36,12 +36,9 @@ fun getDictionaryWord(
         }
 
         fun getPronunciations(lexicalCategory: String): List<Pronunciation> {
-            fun getPronunciation(
-                pronunciations: Pronunciations
-            ): Pronunciation {
+            fun getPronunciation(pronunciations: Pronunciations): Pronunciation {
                 return Pronunciation(
-                    pronunciations.phoneticSpelling ?: "",
-                    pronunciations.audioFile ?: ""
+                    pronunciations.phoneticSpelling ?: "", pronunciations.audioFile ?: ""
                 )
             }
 
@@ -81,37 +78,20 @@ fun getDictionaryWord(
 }
 
 @ExperimentalStdlibApi
-suspend fun getTranslatedWord(
-    word: String,
-    success: (word: DictionaryWord) -> Unit,
-    error: (message: String) -> Unit
-) {
+suspend fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, error: (message: String) -> Unit) {
 
     suspend fun getOxfordWord(
-        word: String,
-        success: (word: OxfordDictionaryWord) -> Unit,
-        error: (json: String) -> Unit
+        word: String, success: (word: OxfordDictionaryWord) -> Unit, error: (json: String) -> Unit
     ) {
         makeRequest(
-            createClient(
-                BuildConfig.OXFORD_APP_ID,
-                BuildConfig.OXFORD_APP_KEY
-            ),
+            createClient(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY),
             word,
-            { json: String ->
-                success(
-                    getOxfordDictionaryWord(parseOxfordDictionaryModel(json))
-                )
-            },
+            { json: String -> success(getOxfordDictionaryWord(parseOxfordDictionaryModel(json))) },
             error
         )
     }
 
-    fun getYandexWord(
-        word: String,
-        success: (word: YandexDictionaryWord) -> Unit,
-        error: (json: String) -> Unit
-    ) {
+    fun getYandexWord(word: String, success: (word: YandexDictionaryWord) -> Unit, error: (json: String) -> Unit) {
         runBlocking {
             val json = makeRequest(createClient(), word)
             val yandexDictionaryModel = parseYandexDictionaryModel(json)
@@ -124,21 +104,13 @@ suspend fun getTranslatedWord(
     }
 
     val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
-        val yandexSuccess = { yandexWord: YandexDictionaryWord ->
-            val dictionaryWord = getDictionaryWord(oxfordWord, yandexWord)
-            success(dictionaryWord)
-        }
-        val yandexError = { json: String -> error(json) }
-        getYandexWord(word, yandexSuccess, yandexError)
+        val yandexSuccess = { yandexWord: YandexDictionaryWord -> success(getDictionaryWord(oxfordWord, yandexWord)) }
+        getYandexWord(word, yandexSuccess, { json: String -> error(json) })
     }
 
-    val oxfordError = { json: String -> error(json) }
-
-    getOxfordWord(word, oxfordSuccess, oxfordError)
+    getOxfordWord(word, oxfordSuccess, { json: String -> error(json) })
 }
 
 fun getUniquePronunciations(dictionaryWord: DictionaryWord) = listOf(
-    dictionaryWord.noun.pronunciations,
-    dictionaryWord.verb.pronunciations,
-    dictionaryWord.adjective.pronunciations
+    dictionaryWord.noun.pronunciations, dictionaryWord.verb.pronunciations, dictionaryWord.adjective.pronunciations
 ).flatten().filter { it.audioFile.isNotBlank() }.toSet().toList()

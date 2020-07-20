@@ -12,7 +12,6 @@ set soul into UI
 ref: delete constrain layout
 - need norm error message when word not found
 ref: normalize spaces between layouts in DictionaryEntryFragment
-ref: code style string size 120 chars
 
 
 fun download(link: String, path: String) {

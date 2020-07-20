@@ -31,23 +31,15 @@ class EnterWordFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view =
-            inflater.inflate(R.layout.fragment_enter_word, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
 
         view.imageView.setOnClickListener {
             activity?.let {
                 val translatedWord = translatedWordEditText.text.toString()
                 if (translatedWord.isNotBlank()) {
-                    val transaction =
-                        it.supportFragmentManager.beginTransaction()
-                    transaction.replace(
-                        R.id.fragment_container,
-                        DictionaryEntryFragment.newInstance(translatedWord)
-                    )
+                    val transaction = it.supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(translatedWord))
                     transaction.addToBackStack(null)
                     transaction.commit()
                 }
@@ -69,12 +61,11 @@ class EnterWordFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EnterWordFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        fun newInstance(param1: String, param2: String) = EnterWordFragment().apply {
+            arguments = Bundle().apply {
+                putString(ARG_PARAM1, param1)
+                putString(ARG_PARAM2, param2)
             }
+        }
     }
 }

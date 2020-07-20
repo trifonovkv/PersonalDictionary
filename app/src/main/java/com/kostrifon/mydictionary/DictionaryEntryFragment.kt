@@ -33,28 +33,18 @@ class DictionaryEntryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            word = it.getString(ARG_WORD)
-        }
+        arguments?.let { word = it.getString(ARG_WORD) }
     }
 
     @ExperimentalStdlibApi
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(
-            R.layout.fragment_dictionary_entry,
-            container,
-            false
-        )
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.fragment_dictionary_entry, container, false)
 
-        val objectAnimator =
-            ObjectAnimator.ofFloat(view.imageView5, "rotation", 360f).apply {
-                interpolator = LinearInterpolator()
-                duration = 1500
-                repeatCount = ValueAnimator.INFINITE
-            }
+        val objectAnimator = ObjectAnimator.ofFloat(view.imageView5, "rotation", 360f).apply {
+            interpolator = LinearInterpolator()
+            duration = 1500
+            repeatCount = ValueAnimator.INFINITE
+        }
         objectAnimator.start()
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -89,12 +79,9 @@ class DictionaryEntryFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(word: String) =
-            DictionaryEntryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_WORD, word)
-                }
-            }
+        fun newInstance(word: String) = DictionaryEntryFragment().apply {
+            arguments = Bundle().apply { putString(ARG_WORD, word) }
+        }
     }
 
     private fun setTranslatedWord(view: View, dictionaryWord: DictionaryWord) {
@@ -103,11 +90,7 @@ class DictionaryEntryFragment : Fragment() {
 
     private fun setPronunciations(view: View, dictionaryWord: DictionaryWord) {
         getUniquePronunciations(dictionaryWord).forEach { pronunciation ->
-            layoutInflater.inflate(
-                R.layout.pronuncation_view,
-                pronunciationsLinearLayout,
-                false
-            ).let {
+            layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
                 it.pronunciationTextView.text = pronunciation.phoneticSpelling
                 view.pronunciationsLinearLayout.addView(it)
             }
@@ -116,21 +99,9 @@ class DictionaryEntryFragment : Fragment() {
 
     private fun setTranslates(view: View, dictionaryWord: DictionaryWord) {
         listOf<Triple<List<String>, LinearLayout, TextView>>(
-            Triple(
-                dictionaryWord.noun.translates,
-                view.nounLinearLayout,
-                view.nounTextView
-            ),
-            Triple(
-                dictionaryWord.verb.translates,
-                view.verbLinearLayout,
-                view.verbTextView
-            ),
-            Triple(
-                dictionaryWord.adjective.translates,
-                view.adjectiveLinearLayout,
-                view.adjectiveTextView
-            )
+            Triple(dictionaryWord.noun.translates, view.nounLinearLayout, view.nounTextView),
+            Triple(dictionaryWord.verb.translates, view.verbLinearLayout, view.verbTextView),
+            Triple(dictionaryWord.adjective.translates, view.adjectiveLinearLayout, view.adjectiveTextView)
         ).forEach {
             if (it.first.isNotEmpty()) {
                 it.second.visibility = VISIBLE
@@ -145,10 +116,7 @@ class DictionaryEntryFragment : Fragment() {
         etymologies.addAll(dictionaryWord.verb.etymologies)
         etymologies.addAll(dictionaryWord.adjective.etymologies)
 
-        view.etymologyTextView.text = etymologies.joinToString(
-            prefix = "\t",
-            separator = "\n\t"
-        )
+        view.etymologyTextView.text = etymologies.joinToString(prefix = "\t", separator = "\n\t")
     }
 
     private fun showErrorDialog(title: String, message: String) {
