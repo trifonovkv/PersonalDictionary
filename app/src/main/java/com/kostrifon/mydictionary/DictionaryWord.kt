@@ -136,3 +136,9 @@ suspend fun getTranslatedWord(
 
     getOxfordWord(word, oxfordSuccess, oxfordError)
 }
+
+fun getUniquePronunciations(dictionaryWord: DictionaryWord) = listOf(
+    dictionaryWord.noun.pronunciations,
+    dictionaryWord.verb.pronunciations,
+    dictionaryWord.adjective.pronunciations
+).flatten().filter { it.audioFile.isNotBlank() }.toSet().toList()

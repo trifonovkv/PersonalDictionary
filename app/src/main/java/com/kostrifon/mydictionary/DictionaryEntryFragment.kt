@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.pronuncation_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 
 private const val ARG_WORD = "word"
@@ -103,28 +102,15 @@ class DictionaryEntryFragment : Fragment() {
     }
 
     private fun setPronunciations(view: View, dictionaryWord: DictionaryWord) {
-
-        fun createPronunciationView(text: String, audioUrl: String): View {
-            val pronunciationView =
-                layoutInflater.inflate(
-                    R.layout.pronuncation_view,
-                    pronunciationsLinearLayout,
-                    false
-                )
-            pronunciationView.pronunciationTextView.text = text
-
-            return pronunciationView
-        }
-
-        val pronunciations = mutableListOf<Pronunciation>()
-        pronunciations.addAll(dictionaryWord.noun.pronunciations)
-        pronunciations.addAll(dictionaryWord.verb.pronunciations)
-        pronunciations.addAll(dictionaryWord.adjective.pronunciations)
-
-        pronunciations.filter { it.audioFile.isNotBlank() }.forEach {
-            view.pronunciationsLinearLayout.addView(
-                createPronunciationView(it.phoneticSpelling, it.audioFile)
-            )
+        getUniquePronunciations(dictionaryWord).forEach { pronunciation ->
+            layoutInflater.inflate(
+                R.layout.pronuncation_view,
+                pronunciationsLinearLayout,
+                false
+            ).let {
+                it.pronunciationTextView.text = pronunciation.phoneticSpelling
+                view.pronunciationsLinearLayout.addView(it)
+            }
         }
     }
 

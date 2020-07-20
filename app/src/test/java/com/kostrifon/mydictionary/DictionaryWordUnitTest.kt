@@ -65,7 +65,7 @@ fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
 class DictionaryWordUnitTest {
 
-    private var testWord = "successful"
+    private var testWord = "fire"
 
     @ExperimentalStdlibApi
     @Test
@@ -74,6 +74,12 @@ class DictionaryWordUnitTest {
             getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
                 assert(true)
                 printDictionaryWord(dictionaryWord)
+                getUniquePronunciations(dictionaryWord).let {
+                    assert(it.size == it.toSet().size) {
+                        println("List of pronunciations contain duplicates")
+                    }
+                    println(it.joinToString(separator = "\n"))
+                }
             }, { message: String ->
                 assert(false) { println(message) }
             })

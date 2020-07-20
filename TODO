@@ -8,11 +8,11 @@ set soul into UI
 - speak pronunciation
 -- download audio
 -- play audio
-- delete double pronunciations
--- just delete pronunciations without audio files
 - change icon for get translation
 ref: delete constrain layout
 - need norm error message when word not found
+ref: normalize spaces between layouts in DictionaryEntryFragment
+ref: code style string size 120 chars
 
 
 fun download(link: String, path: String) {
