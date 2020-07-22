@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.pronuncation_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 
 private const val ARG_WORD = "word"
@@ -64,6 +65,12 @@ class DictionaryEntryFragment : Fragment() {
                         showErrorDialog("Error", message)
                         objectAnimator.cancel()
                     })
+                } catch (e: IOException) {
+                    showErrorDialog(
+                        "Error",
+                        e.localizedMessage ?: "Unknown"
+                    )
+                    objectAnimator.cancel()
                 } catch (e: Exception) {
                     showErrorDialog(
                         "Connection error",

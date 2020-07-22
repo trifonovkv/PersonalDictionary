@@ -1,5 +1,6 @@
 package com.kostrifon.mydictionary
 
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
@@ -47,11 +48,13 @@ fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
 class DictionaryWordUnitTest {
 
-    private var testWord = "fire"
+    private val testDirectory = "/tmp"
+    private var testWord = "water"
 
+    @KtorExperimentalAPI
     @ExperimentalStdlibApi
     @Test
-    fun getDictionaryWord() {
+    fun testAll() {
         runBlocking {
             getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
                 assert(true)
@@ -61,6 +64,12 @@ class DictionaryWordUnitTest {
                         println("List of pronunciations contain duplicates")
                     }
                     println(it.joinToString(separator = "\n"))
+                    it.map { pronunciation ->
+                        val path = testDirectory + "/" + pronunciation.audioFile.substringAfterLast("/")
+                        download(pronunciation.audioFile, path)
+                    }.forEach { file ->
+                        assert(file.delete()) { println("${file.path} is't exist") }
+                    }
                 }
             }, { message: String ->
                 assert(false) { println(message) }
