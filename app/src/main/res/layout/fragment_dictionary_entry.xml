@@ -155,7 +155,7 @@
                     app:srcCompat="@drawable/document_save_symbolic" />
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/backImageView"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="16dp"

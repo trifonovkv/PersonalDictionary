@@ -82,6 +82,9 @@ class DictionaryEntryFragment : Fragment() {
                 }
             }
         }
+
+        view.backImageView.setOnClickListener { activity?.supportFragmentManager?.popBackStack() }
+
         // Inflate the layout for this fragment
         return view
     }
