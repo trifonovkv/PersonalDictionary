@@ -43,8 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:padding="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/translatedWordTextView">
+                android:padding="8dp">
 
                 <LinearLayout
                     android:id="@+id/pronunciationsLinearLayout"

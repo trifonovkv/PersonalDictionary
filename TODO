@@ -6,7 +6,6 @@ add: check enter only one word
 set soul into UI
 - speak pronunciation
 -- popup audio icon
-ref: delete constrain layout
 - need norm error message when word not found
 ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
