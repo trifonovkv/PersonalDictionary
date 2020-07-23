@@ -1,14 +1,12 @@
 package com.kostrifon.mydictionary
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import io.ktor.util.KtorExperimentalAPI
-
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import org.junit.Assert.*
-import java.io.File
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -17,21 +15,28 @@ import java.io.File
  */
 @RunWith(AndroidJUnit4::class)
 class ExampleInstrumentedTest {
+    private val context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val testLink = "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"
+
+
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.kostrifon.mydictionary", appContext.packageName)
+        assertEquals("com.kostrifon.mydictionary", context.packageName)
     }
 
     @KtorExperimentalAPI
     @Test
     fun testDownloadCompat() {
-        val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        val link = "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"
-        val path = "/sdcard/1.mp3"
-        downloadCompat(appContext, link, path)
-        assert(File(path).exists()) { println("File $path doesn't exists")}
-        File(path).delete()
+        val path = "${context.cacheDir}/1.mp3"
+        val file = downloadCompat(context, testLink, path)
+        assert(file.exists()) { println("File $path doesn't exists") }
+        file.delete()
+    }
+
+    @KtorExperimentalAPI
+    @Test
+    fun testPlaySound() {
+        playSound(context, testLink)
     }
 }

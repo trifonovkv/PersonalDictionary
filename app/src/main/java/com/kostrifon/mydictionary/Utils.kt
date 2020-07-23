@@ -1,6 +1,9 @@
 package com.kostrifon.mydictionary
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.media.MediaPlayer
+import android.net.Uri
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.security.ProviderInstaller
@@ -86,4 +89,19 @@ fun downloadCompat(context: Context?, link: String, path: String): File {
     }
 
     return download(link, path)
+}
+
+@SuppressLint("SetWorldReadable")
+@KtorExperimentalAPI
+fun playSound(context: Context, link: String) {
+    val file =
+        downloadCompat(context, link, "${context.cacheDir.path}/${link.substringAfterLast("/")}")
+    // need check for drop cache
+    file.setReadable(true, false)
+    MediaPlayer().apply {
+        setDataSource(context, Uri.parse(file.path))
+        prepare()
+        setOnPreparedListener { it.start() }
+        setOnCompletionListener { file.delete() }
+    }
 }

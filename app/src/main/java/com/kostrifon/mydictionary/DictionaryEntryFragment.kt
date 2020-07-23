@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.fragment_dictionary_entry.*
 import kotlinx.android.synthetic.main.fragment_dictionary_entry.view.*
 import kotlinx.android.synthetic.main.pronuncation_view.view.*
@@ -29,6 +30,7 @@ private const val ARG_WORD = "word"
  * Use the [DictionaryEntryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@KtorExperimentalAPI
 class DictionaryEntryFragment : Fragment() {
     private var word: String? = null
 
@@ -99,6 +101,11 @@ class DictionaryEntryFragment : Fragment() {
         getUniquePronunciations(dictionaryWord).forEach { pronunciation ->
             layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
                 it.pronunciationTextView.text = pronunciation.phoneticSpelling
+                it.pronunciationTextView.setOnClickListener {
+                    context?.let { ctx ->
+                        playSound(ctx, pronunciation.audioFile)
+                    }
+                }
                 view.pronunciationsLinearLayout.addView(it)
             }
         }

@@ -4,9 +4,12 @@ name app
 add: check enter only one word
 set soul into UI
 - speak pronunciation
--- play audio
+-- popup audio icon
 - change icon for get translation
 ref: delete constrain layout
 - need norm error message when word not found
 ref: normalize spaces between layouts in DictionaryEntryFragment
-ref: migrate from OkHttp to Android engine
+ref: reduce used dependencies
+fix: check sdcard is mounted
+- it's really necessary?
+-- what to do when external storage is't available?
