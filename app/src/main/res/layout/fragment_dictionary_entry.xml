@@ -35,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:fontFamily="@font/roboto_slab" />
 
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
@@ -78,7 +79,8 @@
                         style="@style/TranslateOptionsText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        app:fontFamily="@font/roboto_slab" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -101,7 +103,8 @@
                         style="@style/TranslateOptionsText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        app:fontFamily="@font/roboto_slab" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -124,7 +127,8 @@
                         style="@style/TranslateOptionsText"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:gravity="center_vertical" />
+                        android:gravity="center_vertical"
+                        app:fontFamily="@font/roboto_slab" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -134,7 +138,8 @@
                 android:layout_height="match_parent"
                 android:padding="8dp"
                 android:textColor="@android:color/background_dark"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                app:fontFamily="@font/roboto_slab" />
 
             <LinearLayout
                 android:layout_width="match_parent"

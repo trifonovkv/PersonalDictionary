@@ -18,7 +18,8 @@
         android:hint="@string/enter_the_word"
         android:importantForAutofill="no"
         android:inputType="textAutoCorrect"
-        android:padding="8dp" />
+        android:padding="8dp"
+        app:fontFamily="@font/roboto_slab"/>
 
     <FrameLayout
         android:layout_width="match_parent"
