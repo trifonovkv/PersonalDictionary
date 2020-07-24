@@ -198,6 +198,11 @@ data class OxfordDictionaryModel(
     val word: String
 )
 
+@Serializable
+data class OxfordError(
+    val error: String
+)
+
 data class OxfordEntry(
     val lexicalCategory: String?,
     val pronunciations: List<Pronunciations>?,
@@ -272,7 +277,8 @@ suspend fun makeRequest(
             httpResponse.readText().let { text ->
                 when (httpResponse.status.value) {
                     200, 201 -> success(text)
-                    else -> error(text)
+                    404 -> error( "Word not found")
+                    else -> error(Json(JsonConfiguration.Stable).parse(OxfordError.serializer(), text).error)
                 }
             }
         }

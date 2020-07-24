@@ -4,8 +4,9 @@ save words
 name app
 speak pronunciation
 - popup audio icon
-need norm error message when word not found
+-- dialog
+--- close dialog after play
 disable keyboard when press find word
-
 ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
+ref: cursive text
