@@ -1,17 +1,17 @@
 package com.kostrifon.mydictionary
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.fragment_enter_word.*
+import android.widget.EditText
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.fragment_enter_word.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,53 +19,63 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class EnterWordFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        arguments?.let {}
     }
 
+    @KtorExperimentalAPI
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
 
-        view.imageView.setOnClickListener {
+        view.findIconImageView.setOnClickListener {
             activity?.let {
-                val translatedWord = translatedWordEditText.text.toString()
+                val translatedWord = view.translatedWordEditText.text.toString()
                 if (translatedWord.isNotBlank()) {
-                    val transaction = it.supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(translatedWord))
-                    transaction.addToBackStack(null)
-                    transaction.commit()
+                    it.supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(translatedWord))
+                        addToBackStack(null)
+                        commit()
+                    }
                 }
             }
         }
+
+        abstract class TextValidator(private val editText: EditText) : TextWatcher {
+            abstract fun validate(editText: EditText, text: String)
+            override fun afterTextChanged(s: Editable) {
+                val text = editText.text.toString()
+                validate(editText, text)
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) { /* Don't care */
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) { /* Don't care */
+            }
+        }
+
+        view.translatedWordEditText.addTextChangedListener(object : TextValidator(view.translatedWordEditText) {
+            override fun validate(editText: EditText, text: String) {
+                val ctx = context ?: return
+                if (text.trim().split("\\s+".toRegex()).size > 1) {
+                    editText.error = getString(R.string.only_one_word_is_allowed)
+                    view.findIconImageView.isEnabled = false
+                    view.findIconImageView.setColorFilter(ContextCompat.getColor(ctx, android.R.color.darker_gray))
+                } else {
+                    view.findIconImageView.isEnabled = true
+                    view.findIconImageView.setColorFilter(ContextCompat.getColor(ctx, R.color.colorAccent))
+                }
+            }
+        })
 
         // Inflate the layout for this fragment
         return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EnterWordFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) = EnterWordFragment().apply {
-            arguments = Bundle().apply {
-                putString(ARG_PARAM1, param1)
-                putString(ARG_PARAM2, param2)
-            }
-        }
+        fun newInstance() = EnterWordFragment().apply { arguments = Bundle().apply {} }
     }
 }

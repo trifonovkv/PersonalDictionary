@@ -25,13 +25,12 @@
         android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/findIconImageView"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center"
-            android:contentDescription="@string/refresh_icon"
-            android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/edit_find_symbolic" />
+            app:srcCompat="@drawable/edit_find_symbolic"
+            android:contentDescription="@string/find_icon" />
     </FrameLayout>
 
 </LinearLayout>

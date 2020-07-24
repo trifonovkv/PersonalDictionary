@@ -2,10 +2,10 @@ save words
 - SQL API
 -- tests for API
 name app
-add: check enter only one word
-set soul into UI
-- speak pronunciation
--- popup audio icon
-- need norm error message when word not found
+speak pronunciation
+- popup audio icon
+need norm error message when word not found
+disable keyboard when press find word
+
 ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
