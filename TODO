@@ -6,7 +6,6 @@ speak pronunciation
 - popup audio icon
 -- dialog
 --- close dialog after play
-disable keyboard when press find word
 ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
 ref: cursive text
