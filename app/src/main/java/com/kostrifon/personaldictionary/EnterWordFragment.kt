@@ -1,4 +1,4 @@
-package com.kostrifon.mydictionary
+package com.kostrifon.personaldictionary
 
 import android.os.Bundle
 import android.text.Editable

@@ -1,4 +1,4 @@
-package com.kostrifon.mydictionary
+package com.kostrifon.personaldictionary
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.call

@@ -1,4 +1,4 @@
-package com.kostrifon.mydictionary
+package com.kostrifon.personaldictionary
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

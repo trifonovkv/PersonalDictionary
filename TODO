@@ -1,5 +1,6 @@
 save words
 - SQL API
 -- tests for API
-name app
+public
+add app icon
 ref: reduce used dependencies

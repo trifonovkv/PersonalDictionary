@@ -1,4 +1,4 @@
-package com.kostrifon.mydictionary
+package com.kostrifon.personaldictionary
 
 import android.annotation.SuppressLint
 import android.content.Context

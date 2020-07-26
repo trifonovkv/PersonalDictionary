@@ -1,4 +1,4 @@
-package com.kostrifon.mydictionary
+package com.kostrifon.personaldictionary
 
 import io.ktor.util.KtorExperimentalAPI
 import org.junit.Test
