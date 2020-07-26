@@ -1,8 +1,9 @@
 package com.kostrifon.mydictionary
 
 import io.ktor.util.KtorExperimentalAPI
-import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 
 fun printDictionaryWord(dictionaryWord: DictionaryWord) {
@@ -55,25 +56,23 @@ class DictionaryWordUnitTest {
     @ExperimentalStdlibApi
     @Test
     fun testAll() {
-        runBlocking {
-            getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
-                assert(true)
-                printDictionaryWord(dictionaryWord)
-                getUniquePronunciations(dictionaryWord).let {
-                    assert(it.size == it.toSet().size) {
-                        println("List of pronunciations contain duplicates")
-                    }
-                    println(it.joinToString(separator = "\n"))
-                    it.map { pronunciation ->
-                        val path = testDirectory + "/" + pronunciation.audioFile.substringAfterLast("/")
-                        download(pronunciation.audioFile, path)
-                    }.forEach { file ->
-                        assert(file.delete()) { println("${file.path} is't exist") }
-                    }
+        getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
+            assert(true)
+            printDictionaryWord(dictionaryWord)
+            getUniquePronunciations(dictionaryWord).let {
+                assert(it.size == it.toSet().size) {
+                    println("List of pronunciations contain duplicates")
                 }
-            }, { message: String ->
-                assert(false) { println(message) }
-            })
-        }
+                println(it.joinToString(separator = "\n"))
+                it.map { pronunciation ->
+                    val path = testDirectory + "/" + pronunciation.audioFile.substringAfterLast("/")
+                    download(pronunciation.audioFile, path)
+                }.forEach { file -> assert(file.delete()) { println("${file.path} is't exist") } }
+            }
+        }, { message: String -> assert(false) { println(message) } }
+        )
+
+        // await for coroutines ends
+        CountDownLatch(1).await(7, TimeUnit.SECONDS)
     }
 }

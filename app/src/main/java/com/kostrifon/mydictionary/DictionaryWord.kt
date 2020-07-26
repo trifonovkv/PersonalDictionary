@@ -1,6 +1,7 @@
 package com.kostrifon.mydictionary
 
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -78,7 +79,7 @@ fun getDictionaryWord(
 }
 
 @ExperimentalStdlibApi
-suspend fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, error: (message: String) -> Unit) {
+fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, error: (message: String) -> Unit) {
 
     suspend fun getOxfordWord(
         word: String, success: (word: OxfordDictionaryWord) -> Unit, error: (json: String) -> Unit
@@ -91,24 +92,54 @@ suspend fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> U
         )
     }
 
-    fun getYandexWord(word: String, success: (word: YandexDictionaryWord) -> Unit, error: (json: String) -> Unit) {
-        runBlocking {
-            val json = makeRequest(createClient(), word)
-            val yandexDictionaryModel = parseYandexDictionaryModel(json)
-            if (yandexDictionaryModel.def.isEmpty()) {
-                error(json)
-            } else {
-                success(getYandexDictionaryWord(yandexDictionaryModel))
-            }
+    suspend fun getYandexWord(
+        word: String,
+        success: (word: YandexDictionaryWord) -> Unit,
+        error: (json: String) -> Unit
+    ) {
+        val json = makeRequest(createClient(), word)
+        val yandexDictionaryModel = parseYandexDictionaryModel(json)
+        if (yandexDictionaryModel.def.isEmpty()) {
+            error(json)
+        } else {
+            success(getYandexDictionaryWord(yandexDictionaryModel))
         }
     }
 
-    val oxfordSuccess = { oxfordWord: OxfordDictionaryWord ->
-        val yandexSuccess = { yandexWord: YandexDictionaryWord -> success(getDictionaryWord(oxfordWord, yandexWord)) }
-        getYandexWord(word, yandexSuccess, { json: String -> error(json) })
+    var oxfordDictionaryWord: OxfordDictionaryWord? = null
+    var yandexDictionaryWord: YandexDictionaryWord? = null
+    var oxfordErrorJson: String? = null
+    var yandexErrorJson: String? = null
+
+    val endCallback = {
+        if (oxfordDictionaryWord != null && yandexDictionaryWord != null)
+            success(getDictionaryWord(oxfordDictionaryWord!!, yandexDictionaryWord!!))
+        if (oxfordErrorJson != null && yandexErrorJson != null) error(oxfordErrorJson + '\n' + yandexErrorJson)
+        if (oxfordErrorJson != null && yandexDictionaryWord != null) error(oxfordErrorJson ?: "null")
+        if (oxfordDictionaryWord != null && yandexErrorJson != null) error(yandexErrorJson ?: "null")
     }
 
-    getOxfordWord(word, oxfordSuccess, { json: String -> error(json) })
+    GlobalScope.launch {
+        getOxfordWord(word,
+            { oxfordWord ->
+                oxfordDictionaryWord = oxfordWord
+                endCallback()
+            }, { json ->
+                oxfordErrorJson = json
+                endCallback()
+            })
+    }
+
+    GlobalScope.launch {
+        getYandexWord(word,
+            { yandexWord ->
+                yandexDictionaryWord = yandexWord
+                endCallback()
+            }, { json ->
+                yandexErrorJson = json
+                endCallback()
+            })
+    }
 }
 
 fun getUniquePronunciations(dictionaryWord: DictionaryWord) = listOf(
