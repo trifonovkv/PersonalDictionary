@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.pronuncation_view.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.io.File
 import java.io.IOException
 
 
@@ -44,8 +45,9 @@ class DictionaryEntryFragment : Fragment() {
     @ExperimentalStdlibApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_dictionary_entry, container, false)
+        val cacheFiles = mutableListOf<File>()
 
-        // hied keyboard
+        // hide keyboard
         val imm: InputMethodManager = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
 
@@ -57,18 +59,29 @@ class DictionaryEntryFragment : Fragment() {
         objectAnimator.start()
 
         GlobalScope.launch(Dispatchers.IO) {
-            word?.let {
+            word?.let { word ->
                 try {
-                    getTranslatedWord(it, { dictionaryWord: DictionaryWord ->
+                    getTranslatedWord(word, { dictionaryWord: DictionaryWord ->
+                        GlobalScope.launch {
+                            val pronunciations = getUniquePronunciations(dictionaryWord)
+                            val cache = pronunciations.map { pronunciation ->
+                                pronunciation.audioFile to "${context!!.cacheDir}/${pronunciation.audioFile.substringAfterLast(
+                                    "/"
+                                )}"
+                            }.toMap()
+                            cache.map {
+                                cacheFiles += downloadCompat(context, it.key, it.value)
+                            }
+                            GlobalScope.launch(Dispatchers.Main) { setPronunciations(view, pronunciations, cache) }
+
+                        }
                         GlobalScope.launch(Dispatchers.Main) {
                             setTranslatedWord(view, dictionaryWord)
-                            setPronunciations(view, dictionaryWord)
                             setTranslates(view, dictionaryWord)
                             setEtymologies(view, dictionaryWord)
                             objectAnimator.cancel()
                             view.imageView5.visibility = View.GONE
                         }
-                        Unit
                     }, { message: String ->
                         showErrorDialog("Error", message)
                         objectAnimator.cancel()
@@ -89,7 +102,10 @@ class DictionaryEntryFragment : Fragment() {
             }
         }
 
-        view.backImageView.setOnClickListener { activity?.supportFragmentManager?.popBackStack() }
+        view.backImageView.setOnClickListener {
+            GlobalScope.launch { cacheFiles.forEach { it.delete() } }
+            activity?.supportFragmentManager?.popBackStack()
+        }
 
         // Inflate the layout for this fragment
         return view
@@ -106,13 +122,15 @@ class DictionaryEntryFragment : Fragment() {
         view.translatedWordTextView.text = dictionaryWord.word
     }
 
-    private fun setPronunciations(view: View, dictionaryWord: DictionaryWord) {
-        getUniquePronunciations(dictionaryWord).forEach { pronunciation ->
+    private fun setPronunciations(view: View, pronunciations: List<Pronunciation>, cache: Map<String, String>) {
+        pronunciations.forEach { pronunciation ->
             layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
                 it.pronunciationTextView.text = pronunciation.phoneticSpelling
                 it.pronunciationTextView.setOnClickListener {
                     context?.let { ctx ->
-                        playSound(ctx, pronunciation.audioFile)
+                        cache[pronunciation.audioFile]?.let { path ->
+                            playSound(ctx, path)
+                        }
                     }
                 }
                 view.pronunciationsLinearLayout.addView(it)

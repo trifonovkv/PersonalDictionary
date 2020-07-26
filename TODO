@@ -2,9 +2,9 @@ save words
 - SQL API
 -- tests for API
 name app
-speak pronunciation
-- popup audio icon
--- dialog
---- close dialog after play
 ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
+fix: when rotate screen enterText doesn't clean
+fix: when rotate screen DictionaryEntry crash
+ref: parallel load data form Oxford and Yandex
+- add: GlobalLunch to DictionaryWord

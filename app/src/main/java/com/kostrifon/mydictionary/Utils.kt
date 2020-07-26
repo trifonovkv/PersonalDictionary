@@ -92,16 +92,12 @@ fun downloadCompat(context: Context?, link: String, path: String): File {
 }
 
 @SuppressLint("SetWorldReadable")
-@KtorExperimentalAPI
-fun playSound(context: Context, link: String) {
-    val file =
-        downloadCompat(context, link, "${context.cacheDir.path}/${link.substringAfterLast("/")}")
-    // need check for drop cache
+fun playSound(context: Context, path: String) {
+    val file = File(path)
     file.setReadable(true, false)
     MediaPlayer().apply {
         setDataSource(context, Uri.parse(file.path))
         prepare()
         setOnPreparedListener { it.start() }
-        setOnCompletionListener { file.delete() }
     }
 }
