@@ -2,7 +2,6 @@ save words
 - SQL API
 -- tests for API
 name app
-ref: normalize spaces between layouts in DictionaryEntryFragment
 ref: reduce used dependencies
 fix: when rotate screen enterText doesn't clean
 fix: when rotate screen DictionaryEntry crash
