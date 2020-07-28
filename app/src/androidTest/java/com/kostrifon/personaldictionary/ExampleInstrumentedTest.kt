@@ -24,7 +24,7 @@ class ExampleInstrumentedTest {
     @Test
     fun useAppContext() {
         // Context of the app under test.
-        assertEquals("com.kostrifon.mydictionary", context.packageName)
+        assertEquals("com.kostrifon.personaldictionary", context.packageName)
     }
 
     @KtorExperimentalAPI
