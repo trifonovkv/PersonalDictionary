@@ -39,7 +39,6 @@
                 app:fontFamily="@font/roboto_slab" />
 
             <HorizontalScrollView
-                android:id="@+id/horizontalScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -150,7 +149,6 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:id="@+id/imageView2"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="16dp"
