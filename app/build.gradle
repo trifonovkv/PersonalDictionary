@@ -59,10 +59,15 @@ dependencies {
     implementation "io.ktor:ktor-client-android:1.1.1"
     //noinspection GradleDependency
     implementation 'com.google.android.gms:play-services-auth:11.0.0'
+    implementation 'io.mockk:mockk:1.10.0'
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    api "io.ktor:ktor-client-mock:$ktor_version"
+    api "io.ktor:ktor-client-mock-jvm:$ktor_version"
+    api "io.ktor:ktor-client-mock-js:$ktor_version"
+    api "io.ktor:ktor-client-mock-native:$ktor_version"
 }
 
 configurations.all {

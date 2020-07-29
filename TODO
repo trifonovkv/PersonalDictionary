@@ -2,6 +2,5 @@ dark mode
 save words
 - SQL API
 -- tests for API
-public
 ref: reduce used dependencies
 ref: hide save icon
