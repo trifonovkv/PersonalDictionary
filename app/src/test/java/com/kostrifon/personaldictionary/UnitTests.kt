@@ -1,408 +1,42 @@
 package com.kostrifon.personaldictionary
 
-import io.mockk.every
-import io.mockk.mockk
+import io.ktor.util.KtorExperimentalAPI
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
+fun printOxfordWord(oxfordDictionaryWord: OxfordDictionaryWord) {
 
-class UnitTests {
-    private var testWord = "water"
+    fun printEntry(oxfordEntry: OxfordEntry) {
 
-    @Test
-    fun testParseOxfordDictionaryWord() {
-        val mockJson = "{\n" +
-                "  \"id\": \"water\",\n" +
-                "  \"metadata\": {\n" +
-                "    \"operation\": \"retrieve\",\n" +
-                "    \"provider\": \"Oxford University Press\",\n" +
-                "    \"schema\": \"RetrieveEntry\"\n" +
-                "  },\n" +
-                "  \"results\": [\n" +
-                "    {\n" +
-                "      \"id\": \"water\",\n" +
-                "      \"language\": \"en-us\",\n" +
-                "      \"lexicalEntries\": [\n" +
-                "        {\n" +
-                "          \"entries\": [\n" +
-                "            {\n" +
-                "              \"etymologies\": [\n" +
-                "                \"Old English wæter (noun), wæterian (verb), of Germanic origin; related to Dutch water, German Wasser, from an Indo-European root shared by Russian voda (compare with vodka), also by Latin unda ‘wave’ and Greek hudōr ‘water’\"\n" +
-                "              ],\n" +
-                "              \"pronunciations\": [\n" +
-                "                {\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"respell\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwôdər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"audioFile\": \"https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3\",\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"IPA\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwɔdər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"respell\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwädər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"audioFile\": \"https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3\",\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"IPA\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwɑdər\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"language\": \"en-us\",\n" +
-                "          \"lexicalCategory\": {\n" +
-                "            \"id\": \"noun\",\n" +
-                "            \"text\": \"Noun\"\n" +
-                "          },\n" +
-                "          \"text\": \"water\"\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"entries\": [\n" +
-                "            {\n" +
-                "              \"pronunciations\": [\n" +
-                "                {\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"respell\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwôdər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"audioFile\": \"https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3\",\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"IPA\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwɔdər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"respell\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwädər\"\n" +
-                "                },\n" +
-                "                {\n" +
-                "                  \"audioFile\": \"https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3\",\n" +
-                "                  \"dialects\": [\n" +
-                "                    \"American English\"\n" +
-                "                  ],\n" +
-                "                  \"phoneticNotation\": \"IPA\",\n" +
-                "                  \"phoneticSpelling\": \"ˈwɑdər\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"language\": \"en-us\",\n" +
-                "          \"lexicalCategory\": {\n" +
-                "            \"id\": \"verb\",\n" +
-                "            \"text\": \"Verb\"\n" +
-                "          },\n" +
-                "          \"text\": \"water\"\n" +
-                "        }\n" +
-                "      ],\n" +
-                "      \"type\": \"headword\",\n" +
-                "      \"word\": \"water\"\n" +
-                "    }\n" +
-                "  ],\n" +
-                "  \"word\": \"water\"\n" +
-                "}"
-        val oxfordDictionaryModel = parseOxfordDictionaryModel(mockJson)
-        val oxfordDictionaryWord = getOxfordDictionaryWord(oxfordDictionaryModel)
-
-        assert(compareOxfordDictionary(oxfordDictionaryModel, oxfordDictionaryWord))
-    }
-
-    @Test
-    fun testParseYandexDictionaryWord() {
-        val mockJson = "{\n" +
-                "  \"head\": {},\n" +
-                "  \"def\": [\n" +
-                "    {\n" +
-                "      \"text\": \"dog\",\n" +
-                "      \"pos\": \"noun\",\n" +
-                "      \"ts\": \"dɒg\",\n" +
-                "      \"tr\": [\n" +
-                "        {\n" +
-                "          \"text\": \"собака\",\n" +
-                "          \"pos\": \"noun\",\n" +
-                "          \"gen\": \"ж\",\n" +
-                "          \"syn\": [\n" +
-                "            {\n" +
-                "              \"text\": \"пес\",\n" +
-                "              \"pos\": \"noun\",\n" +
-                "              \"gen\": \"м\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"собачка\",\n" +
-                "              \"pos\": \"noun\",\n" +
-                "              \"gen\": \"ж\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"песик\",\n" +
-                "              \"pos\": \"noun\",\n" +
-                "              \"gen\": \"м\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"псина\",\n" +
-                "              \"pos\": \"noun\",\n" +
-                "              \"gen\": \"м,ж\"\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"hound\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"doggy\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"doggie\"\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"ex\": [\n" +
-                "            {\n" +
-                "              \"text\": \"dog show\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"выставка собак\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"large breed dogs\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"собаки крупных пород\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"pack of stray dogs\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"стая бродячих собак\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"dog of medium size\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"собака среднего размера\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"wild dog\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"дикая собака\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"big black dog\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"большой черный пес\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"prairie dog\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"луговая собачка\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"wet dog\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"мокрая псина\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"text\": \"кобель\",\n" +
-                "          \"pos\": \"noun\",\n" +
-                "          \"gen\": \"м\",\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"male\"\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"ex\": [\n" +
-                "            {\n" +
-                "              \"text\": \"stud dog\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"племенной кобель\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"text\": \"дог\",\n" +
-                "          \"pos\": \"noun\",\n" +
-                "          \"gen\": \"м\",\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"great dane\"\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        },\n" +
-                "        {\n" +
-                "          \"text\": \"шавка\",\n" +
-                "          \"pos\": \"noun\",\n" +
-                "          \"gen\": \"ж\",\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"mongrel\"\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"text\": \"dog\",\n" +
-                "      \"pos\": \"verb\",\n" +
-                "      \"ts\": \"dɒg\",\n" +
-                "      \"tr\": [\n" +
-                "        {\n" +
-                "          \"text\": \"выслеживать\",\n" +
-                "          \"pos\": \"verb\",\n" +
-                "          \"asp\": \"несов\",\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"track\"\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"text\": \"dog\",\n" +
-                "      \"pos\": \"adjective\",\n" +
-                "      \"ts\": \"dɒg\",\n" +
-                "      \"tr\": [\n" +
-                "        {\n" +
-                "          \"text\": \"собачий\",\n" +
-                "          \"pos\": \"adjective\",\n" +
-                "          \"syn\": [\n" +
-                "            {\n" +
-                "              \"text\": \"кинологический\",\n" +
-                "              \"pos\": \"adjective\"\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"canine\"\n" +
-                "            },\n" +
-                "            {\n" +
-                "              \"text\": \"cynological\"\n" +
-                "            }\n" +
-                "          ],\n" +
-                "          \"ex\": [\n" +
-                "            {\n" +
-                "              \"text\": \"sled dog race\",\n" +
-                "              \"tr\": [\n" +
-                "                {\n" +
-                "                  \"text\": \"гонка на собачьих упряжках\"\n" +
-                "                }\n" +
-                "              ]\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    },\n" +
-                "    {\n" +
-                "      \"text\": \"dog\",\n" +
-                "      \"pos\": \"adverb\",\n" +
-                "      \"ts\": \"dɒg\",\n" +
-                "      \"tr\": [\n" +
-                "        {\n" +
-                "          \"text\": \"собачьи\",\n" +
-                "          \"pos\": \"adverb\",\n" +
-                "          \"mean\": [\n" +
-                "            {\n" +
-                "              \"text\": \"canine\"\n" +
-                "            }\n" +
-                "          ]\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}"
-        parseYandexDictionaryModel(mockJson).let {
-            assert(compareYandexDictionary(it, getYandexDictionaryWord(it)))
-        }
-    }
-
-    @ExperimentalStdlibApi
-    @Test
-    fun testGetTranslatedWord() {
-        getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
-            assert(true)
-            printDictionaryWord(dictionaryWord)
-        }, { message: String -> assert(false) { println(message) } }
-        )
-    }
-
-    @Test
-    fun testGetUniquePronunciations() {
-        val mockDictionaryWord = mockk<DictionaryWord>()
-        every { mockDictionaryWord.word } returns "water"
-        every { mockDictionaryWord.noun.translates } returns listOf(
-            "вода",
-            "водоем",
-            "акватория",
-            "влага",
-            "водность",
-            "волны"
-        )
-        every { mockDictionaryWord.noun.pronunciations } returns listOf(
-            Pronunciation("ˈwôdər", ""),
-            Pronunciation("ˈwɔdər", "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"),
-            Pronunciation("ˈwädər", ""),
-            Pronunciation("ˈwɑdər", "https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3")
-        )
-        every { mockDictionaryWord.noun.etymologies } returns listOf("Old English wæter (noun), wæterian (verb), of Germanic origin; related to Dutch water, German Wasser, from an Indo-European root shared by Russian voda (compare with vodka), also by Latin unda ‘wave’ and Greek hudōr ‘water’")
-        every { mockDictionaryWord.verb.translates } returns listOf("поливать", "мочить")
-        every { mockDictionaryWord.verb.pronunciations } returns listOf(
-            Pronunciation("ˈwôdər", ""),
-            Pronunciation("ˈwɔdər", "https://audio.oxforddictionaries.com/en/mp3/water_us_1_rr.mp3"),
-            Pronunciation("ˈwädər", ""),
-            Pronunciation("ˈwɑdər", "https://audio.oxforddictionaries.com/en/mp3/water_us_2_rr.mp3")
-        )
-        every { mockDictionaryWord.adjective.translates } returns listOf("водяной")
-        every { mockDictionaryWord.adjective.pronunciations } returns listOf()
-        getUniquePronunciations(mockDictionaryWord).let {
-            assert(it.size == it.toSet().size) {
-                println("List of pronunciations contain duplicates")
+        fun printPronunciations(pronunciations: List<Pronunciations>) {
+            pronunciations.forEach {
+                print("\t ${it.phoneticSpelling}")
+                println("\t ${it.audioFile}")
             }
-            println(it.joinToString(separator = "\n"))
         }
+
+        fun printEtymologies(etymologies: List<String>) {
+            etymologies.forEach { println("\t $it") }
+        }
+
+        println("lexicalCategory: ${oxfordEntry.lexicalCategory}")
+        println("pronunciations:")
+        oxfordEntry.pronunciations?.let { printPronunciations(it) }
+        println("etymologies:")
+        oxfordEntry.etymologies?.let { printEtymologies(it) }
+    }
+
+    println(oxfordDictionaryWord.word)
+    oxfordDictionaryWord.entries.forEach {
+        printEntry(it)
+        println("---------------------------------------------------------------------------------")
+        println()
     }
 }
+
 
 fun compareOxfordDictionary(model: OxfordDictionaryModel, word: OxfordDictionaryWord): Boolean {
 
@@ -465,6 +99,36 @@ fun compareOxfordDictionary(model: OxfordDictionaryModel, word: OxfordDictionary
             getEtymologiesCount(model) == getEtymologiesCount(word))
 }
 
+
+fun printAssertError(json: String, oxfordDictionaryWord: OxfordDictionaryWord) {
+    println(json)
+    println()
+    printOxfordWord(oxfordDictionaryWord)
+}
+
+
+fun isEmpty(yandexDictionaryModel: YandexDictionaryModel): Boolean {
+    return yandexDictionaryModel.def.isEmpty()
+}
+
+
+fun printYandexWord(yandexDictionaryWord: YandexDictionaryWord) {
+
+    fun printEntry(yandexEntry: YandexEntry) {
+        println("pos: ${yandexEntry.pos}")
+        println("translations:")
+        yandexEntry.translations.forEach { println("\t$it") }
+    }
+
+    println("word: ${yandexDictionaryWord.word}")
+    yandexDictionaryWord.entries.forEach {
+        printEntry(it)
+        println("-------------------------------------------------------------")
+        println()
+    }
+}
+
+
 fun compareYandexDictionary(model: YandexDictionaryModel, word: YandexDictionaryWord): Boolean {
 
     fun getTranslationsCount(yandexDictionaryModel: YandexDictionaryModel): Int {
@@ -482,42 +146,90 @@ fun compareYandexDictionary(model: YandexDictionaryModel, word: YandexDictionary
     return (getTranslationsCount(model) == getTranslationsCount(word)) == (model.def.size == word.entries.size)
 }
 
-fun printDictionaryWord(dictionaryWord: DictionaryWord) {
 
-    fun dictionaryEntryToString(dictionaryEntry: DictionaryEntry): String {
-        var string = ""
+fun printAssertError(json: String, yandexDictionaryWord: YandexDictionaryWord) {
+    println(json)
+    println()
+    printYandexWord(yandexDictionaryWord)
+}
 
-        fun etymologiesToString(etymologies: List<String>): String {
-            if (etymologies.isEmpty()) return ""
-            var s = "\t\tEtymologies:\n"
-            etymologies.forEach { s = s.plus("\t\t\t${it}\n") }
-            return s
-        }
 
-        fun pronunciationsToString(pronunciations: List<Pronunciation>): String {
-            if (pronunciations.isEmpty()) return ""
-            var s = "\t\tPronunciations:\n"
-            pronunciations.forEach { s = s.plus("\t\t\t${it.phoneticSpelling} ${it.audioFile}\n") }
-            return s
-        }
+class UnitTests {
+    private val testDirectory = "/tmp"
+    private var testWord = "fire"
+    private val words = listOf("neglect", "gain", "issue")
 
-        fun translatesToString(translates: List<String>) =
-            if (translates.isEmpty()) {
-                ""
-            } else {
-                "\t\tTranslates:\n".plus("\t\t\t${translates.joinToString()}\n")
+    @KtorExperimentalAPI
+    @ExperimentalStdlibApi
+    @Test
+    fun testDictionaryWord() {
+        getTranslatedWord(testWord, { dictionaryWord: DictionaryWord ->
+            assert(true)
+            printDictionaryWord(dictionaryWord)
+            getUniquePronunciations(dictionaryWord).let {
+                assert(it.size == it.toSet().size) {
+                    println("List of pronunciations contain duplicates")
+                }
+                println(it.joinToString(separator = "\n"))
+                it.map { pronunciation ->
+                    val path = testDirectory + "/" + pronunciation.audioFile.substringAfterLast("/")
+                    download(pronunciation.audioFile, path)
+                }.forEach { file -> assert(file.delete()) { println("${file.path} is't exist") } }
             }
+        }, { message: String -> assert(false) { println(message) } }
+        )
 
-        string = string.plus(translatesToString(dictionaryEntry.translates))
-        string = string.plus(pronunciationsToString(dictionaryEntry.pronunciations))
-        string = string.plus(etymologiesToString(dictionaryEntry.etymologies))
-
-        return string
+        // await for coroutines ends
+        CountDownLatch(1).await(7, TimeUnit.SECONDS)
     }
 
-    println("Word: ${dictionaryWord.word}")
-    dictionaryEntryToString(dictionaryWord.noun).let { if (it.isNotBlank()) println("\tNoun:\n $it") }
-    dictionaryEntryToString(dictionaryWord.verb).let { if (it.isNotBlank()) println("\tVerb:\n $it") }
-    dictionaryEntryToString(dictionaryWord.adjective).let { if (it.isNotBlank()) println("\tAdjective:\n $it") }
-    println()
+    @Test
+    fun testOxfordDictionary() {
+        val success = { json: String ->
+            assert(true)
+
+            val oxfordDictionaryModel = parseOxfordDictionaryModel(json)
+            val oxfordDictionaryWord = getOxfordDictionaryWord(oxfordDictionaryModel)
+
+            assert(
+                compareOxfordDictionary(
+                    oxfordDictionaryModel,
+                    oxfordDictionaryWord
+                )
+            )
+            { printAssertError(json, oxfordDictionaryWord) }
+        }
+
+        val error = { json: String -> assert(false) { println(json) } }
+
+        runBlocking {
+            makeRequest(
+                createClient(
+                    BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY
+                ), "neglect", success, error
+            )
+        }
+    }
+
+    @Test
+    fun testYandexDictionary() {
+        suspend fun testWord(word: String) {
+            val json = makeRequest(createClient(), word)
+            val yandexDictionaryModel = parseYandexDictionaryModel(json)
+            assert(!isEmpty(yandexDictionaryModel)) {
+                println("yandexDictionaryModel is empty")
+            }
+            val yandexDictionaryWord = getYandexDictionaryWord(yandexDictionaryModel)
+            assert(compareYandexDictionary(yandexDictionaryModel, yandexDictionaryWord)) {
+                printAssertError(json, yandexDictionaryWord)
+            }
+        }
+
+        words.forEach {
+            runBlocking {
+                testWord(it)
+                delay(3000)
+            }
+        }
+    }
 }
