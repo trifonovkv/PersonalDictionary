@@ -252,3 +252,17 @@ fun putDictionaryWordToSql(db: SQLiteDatabase, dictionaryWord: DictionaryWord): 
     }
     return 0
 }
+
+fun getAllWordsFromSql(db: SQLiteDatabase): List<String> {
+    val words = mutableListOf<String>()
+    db.query(
+        DictionaryContract.TABLE_NAME,
+        arrayOf("*"),null, null, null, null, null
+    ).apply {
+        while (moveToNext()) {
+            words += getString(getColumnIndex(DictionaryContract.COLUMN_NAME_WORD))
+        }
+        close()
+    }
+    return words
+}

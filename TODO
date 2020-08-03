@@ -2,3 +2,4 @@ dark mode
 save words
 - UI
 ref: reduce used dependencies
+fix: find icon active for the empty entry when return from anther fragment
