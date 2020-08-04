@@ -5,6 +5,7 @@
     <string name="adjective_symbol">●</string>
     <string name="back_icon">back_icon</string>
     <string name="save_icon">save_icon</string>
+    <string name="dictionary_icon">dictionary_icon</string>
     <string name="pronunciation_icon">pronunciation_icon</string>
     <string name="enter_the_word">Enter the word</string>
     <string name="spinner">spinner</string>

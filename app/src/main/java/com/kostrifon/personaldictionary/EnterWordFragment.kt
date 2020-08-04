@@ -29,6 +29,16 @@ class EnterWordFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
 
+        view.dictionaryImageView.setOnClickListener {
+            activity?.let {
+                it.supportFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragment_container, ItemFragment.newInstance())
+                    addToBackStack(null)
+                    commit()
+                }
+            }
+        }
+
         view.findIconImageView.setOnClickListener {
             activity?.let {
                 val translatedWord = view.translatedWordEditText.text.toString()

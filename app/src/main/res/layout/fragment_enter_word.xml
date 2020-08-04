@@ -21,17 +21,29 @@
         android:padding="8dp"
         app:fontFamily="@font/roboto_slab"/>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dictionaryImageView"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:contentDescription="@string/dictionary_icon"
+            android:tint="@color/colorAccent"
+            app:srcCompat="@drawable/ic_accessories_dictionary_symbolic" />
 
         <ImageView
             android:id="@+id/findIconImageView"
             android:layout_width="96dp"
             android:layout_height="96dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/edit_find_symbolic"
-            android:contentDescription="@string/find_icon" />
-    </FrameLayout>
+            android:layout_weight="1"
+            android:contentDescription="@string/find_icon"
+            app:srcCompat="@drawable/edit_find_symbolic" />
+
+    </LinearLayout>
 
 </LinearLayout>

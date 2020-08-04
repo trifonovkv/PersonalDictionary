@@ -8,3 +8,4 @@ save words
 ref: reduce used dependencies
 fix: find icon active for the empty entry when return from anther fragment
 ref: rename icons in drawable
+ref: change dictionary icon
