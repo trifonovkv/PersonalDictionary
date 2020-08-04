@@ -257,7 +257,7 @@ fun getAllWordsFromSql(db: SQLiteDatabase): List<String> {
     val words = mutableListOf<String>()
     db.query(
         DictionaryContract.TABLE_NAME,
-        arrayOf("*"),null, null, null, null, null
+        arrayOf("*"), null, null, null, null, null
     ).apply {
         while (moveToNext()) {
             words += getString(getColumnIndex(DictionaryContract.COLUMN_NAME_WORD))
@@ -266,3 +266,5 @@ fun getAllWordsFromSql(db: SQLiteDatabase): List<String> {
     }
     return words
 }
+
+fun getAllDictionaryWordsFromSql(db: SQLiteDatabase) = getAllWordsFromSql(db).map { getDictionaryWordFromSql(db, it) }
