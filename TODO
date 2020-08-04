@@ -2,10 +2,14 @@ dark mode
 save words
 - UI
 -- add save word on click listener
+--- toasts
 -- dictionary icon is disabled for empty list
 -- callbacks for list items
 -- add dividers
+-- add back button
+- save audio files
 ref: reduce used dependencies
 fix: find icon active for the empty entry when return from anther fragment
 ref: rename icons in drawable
 ref: change dictionary icon
+ref: word not found message

@@ -1,174 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="8dp"
     tools:context=".DictionaryEntryFragment">
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="96dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:tint="@android:color/darker_gray"
-        android:visibility="visible"
-        app:srcCompat="@drawable/emblem_synchronizing_symbolic"
-        android:contentDescription="@string/spinner" />
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/translatedWordTextView"
+            style="@style/TranslatedWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            app:fontFamily="@font/roboto_slab" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/pronunciationsLinearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+        </HorizontalScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_height="match_parent"
+            android:dividerPadding="8dp"
             android:orientation="vertical"
             android:padding="8dp">
 
-            <TextView
-                android:id="@+id/translatedWordTextView"
-                style="@style/TranslatedWord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:textStyle="bold"
-                app:fontFamily="@font/roboto_slab" />
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:padding="8dp">
-
-                <LinearLayout
-                    android:id="@+id/pronunciationsLinearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal" />
-            </HorizontalScrollView>
-
             <LinearLayout
+                android:id="@+id/nounLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:dividerPadding="8dp"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <LinearLayout
-                    android:id="@+id/nounLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        style="@style/TranslateOptionsSymbol"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:text="@string/noun_symbol" />
-
-                    <TextView
-                        android:id="@+id/nounTextView"
-                        style="@style/TranslateOptionsText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        app:fontFamily="@font/roboto_slab" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/verbLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingTop="4dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        style="@style/TranslateOptionsSymbol"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:text="@string/verb_symbol" />
-
-                    <TextView
-                        android:id="@+id/verbTextView"
-                        style="@style/TranslateOptionsText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        app:fontFamily="@font/roboto_slab" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/adjectiveLinearLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    android:paddingTop="4dp"
-                    android:visibility="gone">
-
-                    <TextView
-                        style="@style/TranslateOptionsSymbol"
-                        android:layout_width="32dp"
-                        android:layout_height="match_parent"
-                        android:text="@string/adjective_symbol" />
-
-                    <TextView
-                        android:id="@+id/adjectiveTextView"
-                        style="@style/TranslateOptionsText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        app:fontFamily="@font/roboto_slab" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/etymologyTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="8dp"
-                android:textColor="@android:color/background_dark"
-                android:textSize="14sp"
-                app:fontFamily="@font/roboto_slab" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:gravity="end"
+                android:layout_weight="1"
                 android:orientation="horizontal"
-                android:padding="8dp">
+                android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/save_icon"
-                    android:tint="@color/colorAccent"
-                    app:srcCompat="@drawable/document_save_symbolic" />
+                <TextView
+                    style="@style/TranslateOptionsSymbol"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/noun_symbol" />
 
-                <ImageView
-                    android:id="@+id/backImageView"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/back_icon"
-                    android:tint="@color/colorAccent"
-                    app:srcCompat="@drawable/go_previous_symbolic" />
+                <TextView
+                    android:id="@+id/nounTextView"
+                    style="@style/TranslateOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    app:fontFamily="@font/roboto_slab" />
             </LinearLayout>
 
-        </LinearLayout>
-    </ScrollView>
+            <LinearLayout
+                android:id="@+id/verbLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:visibility="gone">
 
-</LinearLayout>
+                <TextView
+                    style="@style/TranslateOptionsSymbol"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/verb_symbol" />
+
+                <TextView
+                    android:id="@+id/verbTextView"
+                    style="@style/TranslateOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    app:fontFamily="@font/roboto_slab" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/adjectiveLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingTop="4dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/TranslateOptionsSymbol"
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent"
+                    android:text="@string/adjective_symbol" />
+
+                <TextView
+                    android:id="@+id/adjectiveTextView"
+                    style="@style/TranslateOptionsText"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    app:fontFamily="@font/roboto_slab" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/etymologyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:textColor="@android:color/background_dark"
+            android:textSize="14sp"
+            app:fontFamily="@font/roboto_slab" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/saveImage"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:contentDescription="@string/save_icon"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/document_save_symbolic" />
+
+            <ImageView
+                android:id="@+id/backImageView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:contentDescription="@string/back_icon"
+                android:tint="@color/colorAccent"
+                app:srcCompat="@drawable/go_previous_symbolic" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

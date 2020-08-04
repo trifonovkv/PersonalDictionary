@@ -18,7 +18,7 @@ data class DictionaryWord(
     val noun: DictionaryEntry,
     val verb: DictionaryEntry,
     val adjective: DictionaryEntry
-)
+): java.io.Serializable
 
 @ExperimentalStdlibApi
 fun getDictionaryWord(
