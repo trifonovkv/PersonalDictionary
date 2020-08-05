@@ -18,12 +18,14 @@ class WordItemRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         val item = values[position]
         holder.itemNumber.text = "${(position + 1)}"
         holder.primaryText.text = item.word
-        holder.secondaryText.text = StringBuilder("${item.noun.translates[0]}, ${item.verb.translates[0]}, " +
-                item.adjective.translates[0]
-        )
+        holder.secondaryText.text =
+            listOf(item.noun.translates, item.verb.translates, item.adjective.translates).mapNotNull {
+                it.firstOrNull()
+            }.joinToString(separator = ", ")
     }
 
     override fun getItemCount(): Int = values.size
