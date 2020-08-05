@@ -13,12 +13,10 @@ save words
 -- callbacks for list items
 -- add dividers
 -- add back button
-
 ref: reduce used dependencies
 fix: find icon active for the empty entry when return from anther fragment
 ref: rename icons in drawable
 ref: change dictionary icon
 ref: word not found message
-fix: yandex error when "frame" word is passed
 add: animation for buttons
 - maybe better way is use image button

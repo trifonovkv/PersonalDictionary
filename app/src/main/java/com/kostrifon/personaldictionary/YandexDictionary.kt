@@ -31,7 +31,13 @@ data class Tr(
 )
 
 @Serializable
-data class Syn(val text: String, val pos: String? = null, val asp: String? = null, val gen: String? = null)
+data class Syn(
+    val text: String,
+    val pos: String? = null,
+    val asp: String? = null,
+    val gen: String? = null,
+    val num: String? = null
+)
 
 @Serializable
 data class Mean(val text: String)
