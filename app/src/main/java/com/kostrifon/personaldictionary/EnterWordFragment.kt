@@ -92,14 +92,11 @@ class EnterWordFragment : Fragment() {
 
         view.translatedWordEditText.addTextChangedListener(object : TextValidator(view.translatedWordEditText) {
             override fun validate(editText: EditText, text: String) {
-                val ctx = context ?: return
-                if (text.trim().split("\\s+".toRegex()).size > 1) {
+                if (text.trim().split("\\s+".toRegex()).size > 1 || editText.text.isBlank()) {
                     editText.error = getString(R.string.only_one_word_is_allowed)
-                    view.findIconImageView.isEnabled = false
-                    view.findIconImageView.setColorFilter(ContextCompat.getColor(ctx, android.R.color.darker_gray))
+                    isFindIconEnabled(false)
                 } else {
-                    view.findIconImageView.isEnabled = true
-                    view.findIconImageView.setColorFilter(ContextCompat.getColor(ctx, R.color.colorAccent))
+                    isFindIconEnabled(true)
                 }
             }
         })
@@ -127,6 +124,19 @@ class EnterWordFragment : Fragment() {
                     .show()
             }
         }
+    }
+
+    fun isFindIconEnabled(enabled: Boolean) {
+        view?.findIconImageView?.isEnabled = enabled
+        view?.findIconImageView?.setColorFilter(
+            ContextCompat.getColor(
+                context!!, if (enabled) {
+                    R.color.colorAccent
+                } else {
+                    android.R.color.darker_gray
+                }
+            )
+        )
     }
 }
 
