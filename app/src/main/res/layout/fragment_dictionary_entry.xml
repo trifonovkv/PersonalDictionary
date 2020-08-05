@@ -140,7 +140,7 @@
                 android:layout_marginRight="16dp"
                 android:contentDescription="@string/save_icon"
                 android:tint="@color/colorAccent"
-                app:srcCompat="@drawable/document_save_symbolic" />
+                app:srcCompat="@drawable/ic_document_save_symbolic" />
 
             <ImageView
                 android:id="@+id/backImageView"
@@ -150,7 +150,7 @@
                 android:layout_marginRight="16dp"
                 android:contentDescription="@string/back_icon"
                 android:tint="@color/colorAccent"
-                app:srcCompat="@drawable/go_previous_symbolic" />
+                app:srcCompat="@drawable/ic_go_previous_symbolic" />
         </LinearLayout>
 
     </LinearLayout>

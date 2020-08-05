@@ -14,10 +14,7 @@ save words
 -- add dividers
 -- add back button
 ref: reduce used dependencies
-fix: find icon active for the empty entry when return from anther fragment
-ref: icons
-- rename icons in drawable
-- change dictionary icon
+fix: find icon active for the empty entry when return from another fragment
 ref: word not found message
 add: animation for buttons
 - maybe better way is use image button

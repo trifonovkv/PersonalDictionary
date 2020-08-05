@@ -16,7 +16,7 @@
         android:contentDescription="@string/spinner"
         android:tint="@android:color/darker_gray"
         android:visibility="gone"
-        app:srcCompat="@drawable/emblem_synchronizing_symbolic" />
+        app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic" />
 
     <EditText
         android:id="@+id/translatedWordEditText"
@@ -43,7 +43,7 @@
             android:layout_weight="1"
             android:contentDescription="@string/dictionary_icon"
             android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_accessories_dictionary_symbolic" />
+            app:srcCompat="@drawable/ic_view_dual_symbolic" />
 
         <ImageView
             android:id="@+id/findIconImageView"
@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:contentDescription="@string/find_icon"
-            app:srcCompat="@drawable/edit_find_symbolic" />
+            app:srcCompat="@drawable/ic_edit_find_symbolic" />
 
     </LinearLayout>
 
