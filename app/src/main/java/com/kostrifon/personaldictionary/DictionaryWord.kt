@@ -114,9 +114,10 @@ fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, err
     val endCallback = {
         if (oxfordDictionaryWord != null && yandexDictionaryWord != null)
             success(getDictionaryWord(oxfordDictionaryWord!!, yandexDictionaryWord!!))
-        if (oxfordErrorJson != null && yandexErrorJson != null) error(oxfordErrorJson + '\n' + yandexErrorJson)
+        // return only oxford error message because yandex doesn't send error message
+        if (oxfordErrorJson != null && yandexErrorJson != null) error(oxfordErrorJson ?: "null")
         if (oxfordErrorJson != null && yandexDictionaryWord != null) error(oxfordErrorJson ?: "null")
-        if (oxfordDictionaryWord != null && yandexErrorJson != null) error(yandexErrorJson ?: "null")
+        if (oxfordDictionaryWord != null && yandexErrorJson != null) error("Yandex error")
     }
 
     GlobalScope.launch {

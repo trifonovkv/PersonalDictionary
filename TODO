@@ -2,18 +2,17 @@ dark mode
 save words
 - UI for list of saved words
 -- add save word on click listener
---- save audio files
----- save to sdcard
----- when play check is exist local if exist play local otherwise download
------ get name local file
 +++ toasts
 +++ disable button
+- save audio files
+-- save to sdcard
+-- when play check is exist local if exist play local otherwise download
+--- get name local file
 - UI for EntryWord
 -- dictionary icon is disabled for empty list
 -- callbacks for list items
 -- add dividers
 -- add back button
 ref: reduce used dependencies
-ref: word not found message
 add: animation for buttons
 - maybe better way is use image button
