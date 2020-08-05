@@ -1,17 +1,24 @@
 dark mode
 save words
-- UI
+- UI for list of saved words
 -- add save word on click listener
---- toasts
+--- save audio files
+---- save to sdcard
+---- when play check is exist local if exist play local otherwise download
+----- get name local file
++++ toasts
++++ disable button
+- UI for EntryWord
 -- dictionary icon is disabled for empty list
 -- callbacks for list items
 -- add dividers
 -- add back button
-- save audio files
+
 ref: reduce used dependencies
 fix: find icon active for the empty entry when return from anther fragment
 ref: rename icons in drawable
 ref: change dictionary icon
 ref: word not found message
 fix: yandex error when "frame" word is passed
-add: hide keyboard when press dictionary button
+add: animation for buttons
+- maybe better way is use image button

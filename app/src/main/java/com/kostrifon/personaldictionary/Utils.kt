@@ -1,9 +1,12 @@
 package com.kostrifon.personaldictionary
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
 import android.net.Uri
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.security.ProviderInstaller
@@ -100,4 +103,10 @@ fun playSound(context: Context, path: String) {
         prepare()
         setOnPreparedListener { it.start() }
     }
+}
+
+fun hideSoftKeyboard(activity: Activity, view: View) {
+    // hide keyboard
+    val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
 }

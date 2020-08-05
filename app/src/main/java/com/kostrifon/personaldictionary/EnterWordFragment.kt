@@ -2,7 +2,6 @@ package com.kostrifon.personaldictionary
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -31,6 +29,7 @@ class EnterWordFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
 
         view.dictionaryImageView.setOnClickListener {
+            hideSoftKeyboard(activity!!, view)
             activity?.let {
                 it.supportFragmentManager.beginTransaction().apply {
                     replace(R.id.fragment_container, ItemFragment.newInstance())
@@ -41,11 +40,7 @@ class EnterWordFragment : Fragment() {
         }
 
         view.findIconImageView.setOnClickListener {
-            // hide keyboard
-            val imm: InputMethodManager =
-                activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
-
+            hideSoftKeyboard(activity!!, view)
             val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
                 interpolator = LinearInterpolator()
                 duration = 1500
