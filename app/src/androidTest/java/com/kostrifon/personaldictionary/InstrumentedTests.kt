@@ -113,8 +113,8 @@ class InstrumentedTests {
     fun testInsertDoublesWords() {
         val dbHelper = DictionaryWordDbHelper(context)
         val db = dbHelper.writableDatabase
-        assertEquals(0, putDictionaryWordToSql(db, waterWord))
-        assertEquals(-1,putDictionaryWordToSql(db, waterWord))
+        assertEquals(0, putDictionaryWordToDb(db, waterWord))
+        assertEquals(-1,putDictionaryWordToDb(db, waterWord))
         dbHelper.close()
     }
 
@@ -122,12 +122,12 @@ class InstrumentedTests {
     fun testPutGetDictionaryWordToSql() {
         val dbHelper = DictionaryWordDbHelper(context)
         val db = dbHelper.writableDatabase
-        putDictionaryWordToSql(db, waterWord)
-        putDictionaryWordToSql(db, fireWord)
-        putDictionaryWordToSql(db, earthWord)
-        assertEquals(waterWord, getDictionaryWordFromSql(db, waterWord.word))
-        assertEquals(fireWord, getDictionaryWordFromSql(db, fireWord.word))
-        assertEquals(earthWord, getDictionaryWordFromSql(db, earthWord.word))
+        putDictionaryWordToDb(db, waterWord)
+        putDictionaryWordToDb(db, fireWord)
+        putDictionaryWordToDb(db, earthWord)
+        assertEquals(waterWord, getDictionaryWordFromDb(db, waterWord.word))
+        assertEquals(fireWord, getDictionaryWordFromDb(db, fireWord.word))
+        assertEquals(earthWord, getDictionaryWordFromDb(db, earthWord.word))
         dbHelper.close()
     }
 
@@ -137,9 +137,9 @@ class InstrumentedTests {
         val db = dbHelper.readableDatabase
         val list = listOf(waterWord, fireWord, earthWord)
         list.forEach {
-            putDictionaryWordToSql(db, it)
+            putDictionaryWordToDb(db, it)
         }
-        assertEquals(list.size, getAllWordsFromSql(db).size)
+        assertEquals(list.size, getAllWordsFromDb(db).size)
         dbHelper.close()
     }
 

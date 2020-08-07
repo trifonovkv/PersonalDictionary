@@ -95,7 +95,7 @@ class DictionaryWordDbHelper(context: Context) : SQLiteOpenHelper(context, DATAB
     }
 }
 
-fun getDictionaryWordFromSql(db: SQLiteDatabase, word: String): DictionaryWord {
+fun getDictionaryWordFromDb(db: SQLiteDatabase, word: String): DictionaryWord {
     fun getTranslates(db: SQLiteDatabase, lexical: String, key: Long): List<String> {
         val translates = mutableListOf<String>()
 
@@ -190,7 +190,7 @@ fun getDictionaryWordFromSql(db: SQLiteDatabase, word: String): DictionaryWord {
     return DictionaryWord(word, noun, verb, adjective)
 }
 
-fun putDictionaryWordToSql(db: SQLiteDatabase, dictionaryWord: DictionaryWord): Int {
+fun putDictionaryWordToDb(db: SQLiteDatabase, dictionaryWord: DictionaryWord): Int {
     fun putWord(db: SQLiteDatabase, word: String): Long {
         ContentValues().apply {
             put(DictionaryContract.COLUMN_NAME_WORD, word)
@@ -253,7 +253,7 @@ fun putDictionaryWordToSql(db: SQLiteDatabase, dictionaryWord: DictionaryWord): 
     return 0
 }
 
-fun getAllWordsFromSql(db: SQLiteDatabase): List<String> {
+fun getAllWordsFromDb(db: SQLiteDatabase): List<String> {
     val words = mutableListOf<String>()
     db.query(
         DictionaryContract.TABLE_NAME,
@@ -267,4 +267,4 @@ fun getAllWordsFromSql(db: SQLiteDatabase): List<String> {
     return words
 }
 
-fun getAllDictionaryWordsFromSql(db: SQLiteDatabase) = getAllWordsFromSql(db).map { getDictionaryWordFromSql(db, it) }
+fun getAllDictionaryWordsFromDb(db: SQLiteDatabase) = getAllWordsFromDb(db).map { getDictionaryWordFromDb(db, it) }
