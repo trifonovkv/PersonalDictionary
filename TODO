@@ -1,11 +1,9 @@
 dark mode
-save words
-- UI for EntryWord
--- dictionary icon is disabled for empty list
-- UI for list of saved words
--- callbacks for list items
--- add dividers
--- add back button
+UI for EntryWord
+- dictionary icon is disabled for empty list
+UI for list of saved words
+- add dividers
+- add back button
 ref: reduce used dependencies
 add: animation for buttons
 ref: messages "error save audio files" and "Saved"

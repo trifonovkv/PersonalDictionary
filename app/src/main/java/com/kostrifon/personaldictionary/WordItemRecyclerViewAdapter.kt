@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 
 class WordItemRecyclerViewAdapter(
     private val values: List<DictionaryWord>
 ) : RecyclerView.Adapter<WordItemRecyclerViewAdapter.ViewHolder>() {
+    lateinit var activity: AppCompatActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_item, parent, false)
+        activity = parent.context as AppCompatActivity
         return ViewHolder(view)
     }
 
@@ -26,6 +29,13 @@ class WordItemRecyclerViewAdapter(
             listOf(item.noun.translates, item.verb.translates, item.adjective.translates).mapNotNull {
                 it.firstOrNull()
             }.joinToString(separator = ", ")
+        holder.primaryText.setOnClickListener {
+            activity.supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(item))
+                addToBackStack(null)
+                commit()
+            }
+        }
     }
 
     override fun getItemCount(): Int = values.size
