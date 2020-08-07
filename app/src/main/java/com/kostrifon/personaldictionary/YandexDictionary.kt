@@ -16,7 +16,13 @@ data class YandexDictionaryModel(val head: Head, val def: List<Def>)
 data class Head(val notUsed: String? = null)
 
 @Serializable
-data class Def(val text: String, val pos: String, val ts: String? = null, val fl: String? = null, val tr: List<Tr>)
+data class Def(
+    val text: String,
+    val pos: String? = null,
+    val ts: String? = null,
+    val fl: String? = null,
+    val tr: List<Tr>
+)
 
 @Serializable
 data class Tr(
@@ -60,7 +66,11 @@ fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): Yande
         }
 
         val entries = mutableListOf<YandexEntry>()
-        yandexDictionaryModel.def.forEach { def -> entries.add(YandexEntry(def.pos, getTranslations(def.tr))) }
+        yandexDictionaryModel.def.forEach { def ->
+            def.pos?.let { pos ->
+                entries.add(YandexEntry(pos, getTranslations(def.tr)))
+            }
+        }
         return entries
     }
 
