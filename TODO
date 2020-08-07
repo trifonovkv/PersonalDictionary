@@ -1,18 +1,52 @@
 dark mode
 save words
-- UI for list of saved words
--- add save word on click listener
-+++ toasts
-+++ disable button
-- save audio files
--- save to sdcard
--- when play check is exist local if exist play local otherwise download
---- get name local file
 - UI for EntryWord
 -- dictionary icon is disabled for empty list
+- UI for list of saved words
 -- callbacks for list items
 -- add dividers
 -- add back button
 ref: reduce used dependencies
 add: animation for buttons
 - maybe better way is use image button
+ref: messages "error save audio files" and "Saved"
+
+item
+kotlinx.serialization.MissingFieldException: Field 'pos' is required, but it was missing
+        at com.kostrifon.personaldictionary.Def.<init>(YandexDictionary.kt:0)
+        at com.kostrifon.personaldictionary.Def$$serializer.deserialize(YandexDictionary.kt)
+        at com.kostrifon.personaldictionary.Def$$serializer.deserialize(YandexDictionary.kt:19)
+        at kotlinx.serialization.json.internal.PolymorphicKt.decodeSerializableValuePolymorphic(Polymorphic.kt:52)
+        at kotlinx.serialization.json.internal.StreamingJsonInput.decodeSerializableValue(StreamingJsonInput.kt:33)
+        at kotlinx.serialization.builtins.AbstractDecoder.decodeSerializableElement(AbstractDecoder.kt:63)
+        at kotlinx.serialization.internal.ListLikeSerializer.readElement(CollectionSerializers.kt:87)
+        at kotlinx.serialization.internal.AbstractCollectionSerializer.readElement$default(CollectionSerializers.kt:54)
+        at kotlinx.serialization.internal.AbstractCollectionSerializer.patch(CollectionSerializers.kt:36)
+        at kotlinx.serialization.internal.AbstractCollectionSerializer.deserialize(CollectionSerializers.kt:45)
+        at kotlinx.serialization.json.internal.PolymorphicKt.decodeSerializableValuePolymorphic(Polymorphic.kt:52)
+        at kotlinx.serialization.json.internal.StreamingJsonInput.decodeSerializableValue(StreamingJsonInput.kt:33)
+        at kotlinx.serialization.builtins.AbstractDecoder.decodeSerializableElement(AbstractDecoder.kt:63)
+        at com.kostrifon.personaldictionary.YandexDictionaryModel$$serializer.deserialize(YandexDictionary.kt)
+        at com.kostrifon.personaldictionary.YandexDictionaryModel$$serializer.deserialize(YandexDictionary.kt:13)
+        at kotlinx.serialization.json.internal.PolymorphicKt.decodeSerializableValuePolymorphic(Polymorphic.kt:52)
+        at kotlinx.serialization.json.internal.StreamingJsonInput.decodeSerializableValue(StreamingJsonInput.kt:33)
+        at kotlinx.serialization.DecodingKt.decode(Decoding.kt:521)
+        at kotlinx.serialization.json.Json.parse(Json.kt:131)
+        at com.kostrifon.personaldictionary.YandexDictionaryKt.parseYandexDictionaryModel(YandexDictionary.kt:82)
+        at com.kostrifon.personaldictionary.DictionaryWordKt$getTranslatedWord$2.invokeSuspend(DictionaryWord.kt:101)
+        at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:33)
+        at io.ktor.util.pipeline.SuspendFunctionGun.resumeRootWith(PipelineContext.kt:211)
+        at io.ktor.util.pipeline.SuspendFunctionGun.loop(PipelineContext.kt:168)
+        at io.ktor.util.pipeline.SuspendFunctionGun.access$loop(PipelineContext.kt:63)
+        at io.ktor.util.pipeline.SuspendFunctionGun$continuation$1.resumeWith(PipelineContext.kt:118)
+        at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+        at io.ktor.util.pipeline.SuspendFunctionGun.resumeRootWith(PipelineContext.kt:211)
+        at io.ktor.util.pipeline.SuspendFunctionGun.loop(PipelineContext.kt:168)
+        at io.ktor.util.pipeline.SuspendFunctionGun.access$loop(PipelineContext.kt:63)
+        at io.ktor.util.pipeline.SuspendFunctionGun$continuation$1.resumeWith(PipelineContext.kt:118)
+        at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:46)
+        at kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:56)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler.runSafely(CoroutineScheduler.kt:571)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.executeTask(CoroutineScheduler.kt:738)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.runWorker(CoroutineScheduler.kt:678)
+        at kotlinx.coroutines.scheduling.CoroutineScheduler$Worker.run(CoroutineScheduler.kt:665)

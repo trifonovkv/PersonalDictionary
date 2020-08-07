@@ -1,13 +1,17 @@
 package com.kostrifon.personaldictionary
 
 
+import android.content.Context
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.fragment_dictionary_entry.*
@@ -22,6 +26,7 @@ import java.io.File
 class DictionaryEntryFragment : Fragment() {
     private val dictionaryWordSerializeKey = "dictionaryWordSerializeKey"
     private lateinit var dictionaryWord: DictionaryWord
+    private var db: SQLiteDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,18 +39,34 @@ class DictionaryEntryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_dictionary_entry, container, false)
         val cacheFiles = mutableListOf<File>()
 
-        GlobalScope.launch {
-            val pronunciations = getUniquePronunciations(dictionaryWord)
-            val cache = pronunciations.map { pronunciation ->
-                pronunciation.audioFile to "${context!!.cacheDir}/${pronunciation.audioFile.substringAfterLast(
-                    "/"
-                )}"
-            }.toMap()
-            cache.forEach {
-                cacheFiles += downloadCompat(context, it.key, it.value)
+        fun isExistPronunciationsInExternalFilesDir(context: Context, pronunciations: List<Pronunciation>): Boolean {
+            pronunciations.forEach {
+                if (!isExistFileInExternalFilesDir(context, it.audioFile)) {
+                    return false
+                }
             }
-            GlobalScope.launch(Dispatchers.Main) { setPronunciations(view, pronunciations, cache) }
+            return true
         }
+
+        fun downloadPronunciationToCacheDir(context: Context, pronunciations: List<Pronunciation>) {
+            pronunciations.forEach {
+                downloadCompat(
+                    context,
+                    it.audioFile,
+                    getFilePathFromCacheDir(context, it.audioFile.getFileName())
+                )
+            }
+        }
+
+        GlobalScope.launch {
+            getUniquePronunciations(dictionaryWord).let {
+                if (!isExistPronunciationsInExternalFilesDir(context!!, it)) {
+                    downloadPronunciationToCacheDir(context!!, it)
+                }
+                GlobalScope.launch(Dispatchers.Main) { setPronunciations(view, it) }
+            }
+        }
+
         setTranslatedWord(view, dictionaryWord)
         setTranslates(view, dictionaryWord)
         setEtymologies(view, dictionaryWord)
@@ -55,8 +76,57 @@ class DictionaryEntryFragment : Fragment() {
             activity?.supportFragmentManager?.popBackStack()
         }
 
+        view.saveImage.setOnClickListener {
+            fun isExistsPronunciationsInCacheDir(context: Context, pronunciations: List<Pronunciation>): Boolean {
+                pronunciations.forEach {
+                    if (!isExistFileInCacheDir(context, it.audioFile.getFileName())) {
+                        return false
+                    }
+                }
+                return true
+            }
+
+            fun downloadPronunciationsToExternalFilesDir(pronunciations: List<Pronunciation>) {
+                pronunciations.forEach {
+                    downloadCompat(
+                        context,
+                        it.audioFile,
+                        getFilePathFromExternalFilesDir(context!!, it.audioFile.getFileName())
+                    )
+                }
+            }
+
+            val pronunciations = getUniquePronunciations(dictionaryWord)
+            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+                if (!isExistPronunciationsInExternalFilesDir(context!!, pronunciations)) {
+                    if (isExistsPronunciationsInCacheDir(context!!, pronunciations)) {
+                        pronunciations.forEach {
+                            File(getFilePathFromCacheDir(context!!, it.audioFile.getFileName())).apply {
+                                copyTo(File(getFilePathFromExternalFilesDir(context!!, it.audioFile.getFileName())))
+                                delete()
+                            }
+                        }
+                    } else {
+                        downloadPronunciationsToExternalFilesDir(pronunciations)
+                    }
+                }
+                DictionaryWordDbHelper(context!!).writableDatabase.let {
+                    putDictionaryWordToSql(it, dictionaryWord)
+                    db = it
+                }
+                Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Sdcard isn't mount", Toast.LENGTH_LONG).show()
+            }
+        }
+
         // Inflate the layout for this fragment
         return view
+    }
+
+    override fun onDestroy() {
+        db?.close()
+        super.onDestroy()
     }
 
     companion object {
@@ -70,16 +140,31 @@ class DictionaryEntryFragment : Fragment() {
         view.translatedWordTextView.text = dictionaryWord.word
     }
 
-    private fun setPronunciations(view: View, pronunciations: List<Pronunciation>, cache: Map<String, String>) {
+    @KtorExperimentalAPI
+    private fun setPronunciations(view: View, pronunciations: List<Pronunciation>) {
         pronunciations.forEach { pronunciation ->
             layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
                 it.pronunciationTextView.text = pronunciation.phoneticSpelling
                 it.pronunciationTextView.setOnClickListener {
-                    context?.let { ctx ->
-                        cache[pronunciation.audioFile]?.let { path ->
-                            playSound(ctx, path)
-                        }
+
+                    fun downloadFileToCacheDir(link: String) =
+                        downloadCompat(
+                            context,
+                            link,
+                            getFilePathFromCacheDir(context!!, link.getFileName())
+                        ).path
+
+
+                    val fileName = pronunciation.audioFile.getFileName()
+                    val path = when {
+                        isExistFileInCacheDir(context!!, fileName) -> getFilePathFromCacheDir(context!!, fileName)
+                        isExistFileInExternalFilesDir(context!!, fileName) -> getFilePathFromExternalFilesDir(
+                            context!!, fileName
+                        )
+                        else -> downloadFileToCacheDir(pronunciation.audioFile)
                     }
+
+                    playSound(context!!, path)
                 }
                 view.pronunciationsLinearLayout.addView(it)
             }
@@ -107,4 +192,20 @@ class DictionaryEntryFragment : Fragment() {
 
         view.etymologyTextView.text = etymologies.joinToString(prefix = "\t", separator = "\n\t")
     }
+
+    private fun isExistFileInExternalFilesDir(context: Context, fileName: String) =
+        if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+            File(context.getExternalFilesDir(null)!!.path + File.separator + fileName).exists()
+        } else {
+            false
+        }
+
+    private fun isExistFileInCacheDir(context: Context, fileName: String) =
+        File(context.cacheDir.path + File.separator + fileName).exists()
+
+    private fun getFilePathFromCacheDir(context: Context, fileName: String) =
+        context.cacheDir.path + File.separator + fileName
+
+    private fun getFilePathFromExternalFilesDir(context: Context, fileName: String) =
+        context.getExternalFilesDir(null)!!.path + File.separator + fileName
 }

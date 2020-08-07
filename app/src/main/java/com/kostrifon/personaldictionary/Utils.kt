@@ -106,7 +106,8 @@ fun playSound(context: Context, path: String) {
 }
 
 fun hideSoftKeyboard(activity: Activity, view: View) {
-    // hide keyboard
     val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
+fun String.getFileName() = this.substringAfterLast("/")
