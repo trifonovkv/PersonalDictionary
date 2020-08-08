@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -40,11 +41,17 @@ class EnterWordFragment : Fragment() {
         }
 
         view.findIconImageView.setOnClickListener {
-            hideSoftKeyboard(activity!!, view)
             val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
                 interpolator = LinearInterpolator()
                 duration = 1500
                 repeatCount = ValueAnimator.INFINITE
+            }
+
+            hideSoftKeyboard(activity!!, view)
+
+            if (!isConnected(context!!)) {
+                Toast.makeText(context, "Offline", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             }
 
             view.spinnerImageView.visibility = View.VISIBLE

@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.kostrifon.personaldictionary
 
 
@@ -55,7 +53,7 @@ class DictionaryEntryFragment : Fragment() {
         GlobalScope.launch {
             pronunciations.let {
                 if (!isExistPronunciationsInExternalFilesDir(context!!, it)) {
-                    if (isConnected()) {
+                    if (isConnected(context!!)) {
                         cachedFiles.addAll(downloadPronunciationToCacheDir(context!!, it))
                     } else {
                         GlobalScope.launch(Dispatchers.Main) {
@@ -160,8 +158,6 @@ class DictionaryEntryFragment : Fragment() {
     private fun getFilePathFromExternalFilesDir(context: Context, fileName: String) =
         context.getExternalFilesDir(null)!!.path + File.separator + fileName
 
-    private fun isConnected() =
-        (context!!.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnectedOrConnecting == true
 
     private fun isExistPronunciationsInExternalFilesDir(
         context: Context,
@@ -211,7 +207,7 @@ class DictionaryEntryFragment : Fragment() {
                 }
                 true
             }
-            isConnected() -> {
+            isConnected(context!!) -> {
                 downloadPronunciationsToExternalFilesDir(pronunciations)
                 true
             }

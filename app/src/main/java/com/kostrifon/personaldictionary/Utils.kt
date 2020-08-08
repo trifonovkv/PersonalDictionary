@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.media.MediaPlayer
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -111,3 +112,7 @@ fun hideSoftKeyboard(activity: Activity, view: View) {
 }
 
 fun String.getFileName() = this.substringAfterLast("/")
+
+@Suppress("DEPRECATION")
+fun isConnected(context: Context) =
+    (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo?.isConnectedOrConnecting == true
