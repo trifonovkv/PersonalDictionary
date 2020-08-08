@@ -8,4 +8,3 @@ UI for list of saved words
 ref: reduce used dependencies
 add: animation for buttons
 ref: move all message strings to resource file
-fix: clear cache when close DictionaryEntryFragment

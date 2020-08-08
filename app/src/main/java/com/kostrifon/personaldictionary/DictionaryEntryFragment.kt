@@ -40,20 +40,17 @@ class DictionaryEntryFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_dictionary_entry, container, false)
         val pronunciations = getUniquePronunciations(dictionaryWord)
 
-        fun downloadPronunciationToCacheDir(context: Context, pronunciations: List<Pronunciation>) =
-            pronunciations.map {
-                downloadCompat(
-                    context,
-                    it.audioFile,
-                    getFilePathFromCacheDir(context, it.audioFile.getFileName())
-                )
+        fun downloadPronunciationToCacheDir(context: Context, pronunciations: List<Pronunciation>) {
+            pronunciations.forEach {
+                cachedFiles += downloadFileToCacheDir(context, it.audioFile)
             }
+        }
 
         GlobalScope.launch {
             pronunciations.let {
                 if (!isExistPronunciationsInExternalFilesDir(context!!, it)) {
                     if (isConnected(context!!)) {
-                        cachedFiles.addAll(downloadPronunciationToCacheDir(context!!, it))
+                        downloadPronunciationToCacheDir(context!!, it)
                     } else {
                         GlobalScope.launch(Dispatchers.Main) {
                             Toast.makeText(context, "Offline", Toast.LENGTH_LONG).show()
@@ -219,8 +216,11 @@ class DictionaryEntryFragment : Fragment() {
         savePronunciationAudioFiles(dictionaryWord) && (putDictionaryWordToDb(db, dictionaryWord) >= 0)
 
     @KtorExperimentalAPI
-    private fun downloadFileToCacheDir(context: Context, link: String) =
-        downloadCompat(context, link, getFilePathFromCacheDir(context, link.getFileName())).path
+    private fun downloadFileToCacheDir(context: Context, link: String): File {
+        val file = downloadCompat(context, link, getFilePathFromCacheDir(context, link.getFileName()))
+        cachedFiles += file
+        return file
+    }
 
     private fun getFilePathFormCacheOrExternalDirs(
         context: Context,
@@ -247,7 +247,7 @@ class DictionaryEntryFragment : Fragment() {
                 kotlin.runCatching {
                     downloadFileToCacheDir(context, pronunciation.audioFile)
                 }.onSuccess {
-                    playSound(context, it)
+                    playSound(context, it.path)
                 }.onFailure {
                     Toast.makeText(context, "Error get pronunciations", Toast.LENGTH_LONG).show()
                 }
