@@ -221,7 +221,7 @@ class DictionaryEntryFragment : Fragment() {
 
     @KtorExperimentalAPI
     private fun saveDictionaryWord(db: SQLiteDatabase, dictionaryWord: DictionaryWord) =
-        (putDictionaryWordToDb(db, dictionaryWord) >= 0) && savePronunciationAudioFiles(dictionaryWord)
+        savePronunciationAudioFiles(dictionaryWord) && (putDictionaryWordToDb(db, dictionaryWord) >= 0)
 
     @KtorExperimentalAPI
     private fun downloadFileToCacheDir(context: Context, link: String) =

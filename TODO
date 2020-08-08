@@ -11,5 +11,3 @@ ref: move all message strings to resource file
 fix: Caused by: java.io.NotSerializableException: com.kostrifon.personaldictionary.DictionaryEntry
 fix: get error when offline and sdcard unmounted
 add: check online in EnterWordFragment
-ref: level up all contexts
-fix: when error save it save anyway
