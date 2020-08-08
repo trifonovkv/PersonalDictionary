@@ -20,10 +20,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.http.isSuccess
 import io.ktor.util.KtorExperimentalAPI
 import io.ktor.util.cio.writeChannel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.io.copyAndClose
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.CipherSuite.*
 import okhttp3.ConnectionSpec
@@ -41,15 +38,17 @@ data class HttpClientException(val response: HttpResponse) : IOException("HTTP E
 
 @KtorExperimentalAPI
 suspend fun HttpClient.getAsFile(url: String, path: String): File {
-    val file = File(path)
-    GlobalScope.launch(Dispatchers.IO) { file.createNewFile() }
+
     val response = request<HttpResponse> {
         url(URL(url))
         method = HttpMethod.Get
     }
+
     if (!response.status.isSuccess()) {
         throw HttpClientException(response)
     }
+
+    val file = File(path)
     response.content.copyAndClose(file.writeChannel())
     return file
 }

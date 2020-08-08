@@ -3,7 +3,6 @@ package com.kostrifon.personaldictionary
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
