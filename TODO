@@ -12,5 +12,4 @@ fix: Caused by: java.io.NotSerializableException: com.kostrifon.personaldictiona
 fix: get error when offline and sdcard unmounted
 add: check online in EnterWordFragment
 ref: level up all contexts
-ref: play pronunciations in DictionaryEntryFragment
 fix: when error save it save anyway
