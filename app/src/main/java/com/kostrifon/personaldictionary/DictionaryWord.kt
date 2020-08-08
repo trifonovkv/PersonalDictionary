@@ -5,20 +5,20 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-data class Pronunciation(val phoneticSpelling: String, val audioFile: String)
+data class Pronunciation(val phoneticSpelling: String, val audioFile: String) : java.io.Serializable
 
 data class DictionaryEntry(
     val translates: List<String>,
     val pronunciations: List<Pronunciation>,
     val etymologies: List<String>
-)
+) : java.io.Serializable
 
 data class DictionaryWord(
     val word: String,
     val noun: DictionaryEntry,
     val verb: DictionaryEntry,
     val adjective: DictionaryEntry
-): java.io.Serializable
+) : java.io.Serializable
 
 @ExperimentalStdlibApi
 fun getDictionaryWord(
