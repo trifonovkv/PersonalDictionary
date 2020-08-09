@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.fragment_dictionary_entry.*
@@ -79,6 +80,7 @@ class DictionaryEntryFragment : Fragment() {
 
         view.saveImage.setOnClickListener {
             if (saveDictionaryWord(db, dictionaryWord)) {
+                it.visibility = INVISIBLE
                 Toast.makeText(context, R.string.saved, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(context, R.string.error_save, Toast.LENGTH_LONG).show()
