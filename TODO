@@ -4,4 +4,4 @@ UI for list of saved words
 - add dividers
 - add back button
 - clickable whole row
-fix: the search icon enabled when the entry is empty
+add: the clear button into EnterWordFragment

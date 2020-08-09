@@ -40,6 +40,8 @@ class EnterWordFragment : Fragment() {
             }
         }
 
+        view.findIconImageView.isEnabled = false
+
         view.findIconImageView.setOnClickListener {
             val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
                 interpolator = LinearInterpolator()
