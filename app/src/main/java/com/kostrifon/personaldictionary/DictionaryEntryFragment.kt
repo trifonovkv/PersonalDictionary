@@ -53,7 +53,7 @@ class DictionaryEntryFragment : Fragment() {
                         downloadPronunciationToCacheDir(context!!, it)
                     } else {
                         GlobalScope.launch(Dispatchers.Main) {
-                            Toast.makeText(context, "Offline", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.offline, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -79,9 +79,9 @@ class DictionaryEntryFragment : Fragment() {
         view.saveImage.setOnClickListener {
             db = DictionaryWordDbHelper(context!!).writableDatabase
             if (saveDictionaryWord(db!!, dictionaryWord)) {
-                Toast.makeText(context, "Saved", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.saved, Toast.LENGTH_LONG).show()
             } else {
-                Toast.makeText(context, "Error save", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.error_save, Toast.LENGTH_LONG).show()
             }
         }
 
@@ -249,7 +249,7 @@ class DictionaryEntryFragment : Fragment() {
                 }.onSuccess {
                     playSound(context, it.path)
                 }.onFailure {
-                    Toast.makeText(context, "Error get pronunciations", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.error_get_pronunciations, Toast.LENGTH_LONG).show()
                 }
             }
         )

@@ -50,7 +50,7 @@ class EnterWordFragment : Fragment() {
             hideSoftKeyboard(activity!!, view)
 
             if (!isConnected(context!!)) {
-                Toast.makeText(context, "Offline", Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.offline, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
@@ -68,15 +68,17 @@ class EnterWordFragment : Fragment() {
                                 commit()
                             }
                         }, { message: String ->
-                            showErrorDialog("Error", message)
+                            showErrorDialog(getString(R.string.error), message)
                             objectAnimator.cancel()
                         })
                     } catch (e: IOException) {
-                        showErrorDialog("Error", e.localizedMessage ?: "Unknown")
+                        showErrorDialog(getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
                         objectAnimator.cancel()
-
                     } catch (e: Exception) {
-                        showErrorDialog("Connection error", e.localizedMessage ?: "Unknown")
+                        showErrorDialog(
+                            getString(R.string.connection_error),
+                            e.localizedMessage ?: getString(R.string.unknown)
+                        )
                         objectAnimator.cancel()
                     }
                 }

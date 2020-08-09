@@ -11,4 +11,11 @@
     <string name="spinner">spinner</string>
     <string name="find_icon">find_icon</string>
     <string name="only_one_word_is_allowed">Only one word is allowed</string>
+    <string name="offline">Offline</string>
+    <string name="saved">Saved</string>
+    <string name="error_save">Error save</string>
+    <string name="error_get_pronunciations">Error get pronunciations</string>
+    <string name="error">Error</string>
+    <string name="unknown">Unknown</string>
+    <string name="connection_error">"Connection error"</string>
 </resources>
