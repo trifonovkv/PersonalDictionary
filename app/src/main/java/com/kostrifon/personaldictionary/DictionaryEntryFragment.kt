@@ -109,11 +109,13 @@ class DictionaryEntryFragment : Fragment() {
 
     @KtorExperimentalAPI
     private fun setPronunciations(view: View, pronunciations: List<Pronunciation>) {
-        pronunciations.forEach { pronunciation ->
-            layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
-                it.pronunciationTextView.text = pronunciation.phoneticSpelling
-                it.pronunciationTextView.setOnClickListener { playPronunciation(context!!, pronunciation) }
-                view.pronunciationsLinearLayout.addView(it)
+        if (view.isShown) {
+            pronunciations.forEach { pronunciation ->
+                layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
+                    it.pronunciationTextView.text = pronunciation.phoneticSpelling
+                    it.pronunciationTextView.setOnClickListener { playPronunciation(context!!, pronunciation) }
+                    view.pronunciationsLinearLayout.addView(it)
+                }
             }
         }
     }

@@ -5,4 +5,3 @@ UI for EntryWord
 UI for list of saved words
 - add dividers
 - add back button
-fix: when return pronunciations the fragment may be closed
