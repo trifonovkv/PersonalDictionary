@@ -95,6 +95,24 @@ class DictionaryWordDbHelper(context: Context) : SQLiteOpenHelper(context, DATAB
     }
 }
 
+fun getKey(db: SQLiteDatabase, word: String): Long {
+    var key: Long = -1
+
+    db.query(
+        DictionaryContract.TABLE_NAME,
+        arrayOf(DictionaryContract.ID),
+        "${DictionaryContract.COLUMN_NAME_WORD} = ?",
+        arrayOf(word), null, null, null
+    ).apply {
+        while (moveToNext()) {
+            key = getLong(getColumnIndex(DictionaryContract.ID))
+        }
+        close()
+    }
+
+    return key
+}
+
 fun getDictionaryWordFromDb(db: SQLiteDatabase, word: String): DictionaryWord {
     fun getTranslates(db: SQLiteDatabase, lexical: String, key: Long): List<String> {
         val translates = mutableListOf<String>()
@@ -156,24 +174,6 @@ fun getDictionaryWordFromDb(db: SQLiteDatabase, word: String): DictionaryWord {
         }
 
         return etymologies
-    }
-
-    fun getKey(db: SQLiteDatabase, word: String): Long {
-        var key: Long = -1
-
-        db.query(
-            DictionaryContract.TABLE_NAME,
-            arrayOf(DictionaryContract.ID),
-            "${DictionaryContract.COLUMN_NAME_WORD} = ?",
-            arrayOf(word), null, null, null
-        ).apply {
-            while (moveToNext()) {
-                key = getLong(getColumnIndex(DictionaryContract.ID))
-            }
-            close()
-        }
-
-        return key
     }
 
     fun getDictionaryEntry(db: SQLiteDatabase, lexical: String, key: Long): DictionaryEntry {
@@ -268,3 +268,5 @@ fun getAllWordsFromDb(db: SQLiteDatabase): List<String> {
 }
 
 fun getAllDictionaryWordsFromDb(db: SQLiteDatabase) = getAllWordsFromDb(db).map { getDictionaryWordFromDb(db, it) }
+
+fun isEntryExistsInDb(db: SQLiteDatabase, word: String) = getKey(db, word) >= 0

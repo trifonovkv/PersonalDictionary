@@ -1,8 +1,8 @@
 dark mode
+add: animation for buttons
 UI for EntryWord
 - dictionary icon is disabled for empty list
 UI for list of saved words
 - add dividers
 - add back button
-- ref save button disabled if word is saved
-add: animation for buttons
+fix: when return pronunciations the fragment may be closed

@@ -1,12 +1,12 @@
 package com.kostrifon.personaldictionary
 
-
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -26,12 +26,13 @@ import java.io.File
 class DictionaryEntryFragment : Fragment() {
     private val dictionaryWordSerializeKey = "dictionaryWordSerializeKey"
     private lateinit var dictionaryWord: DictionaryWord
-    private var db: SQLiteDatabase? = null
+    private lateinit var db: SQLiteDatabase
     private val cachedFiles = mutableListOf<File>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { dictionaryWord = it.getSerializable(dictionaryWordSerializeKey) as DictionaryWord }
+        db = DictionaryWordDbHelper(context!!).writableDatabase
     }
 
     @KtorExperimentalAPI
@@ -77,20 +78,21 @@ class DictionaryEntryFragment : Fragment() {
         }
 
         view.saveImage.setOnClickListener {
-            db = DictionaryWordDbHelper(context!!).writableDatabase
-            if (saveDictionaryWord(db!!, dictionaryWord)) {
+            if (saveDictionaryWord(db, dictionaryWord)) {
                 Toast.makeText(context, R.string.saved, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(context, R.string.error_save, Toast.LENGTH_LONG).show()
             }
         }
 
+        view.saveImage.visibility = if (isEntryExistsInDb(db, dictionaryWord.word)) INVISIBLE else VISIBLE
+
         // Inflate the layout for this fragment
         return view
     }
 
     override fun onDestroy() {
-        db?.close()
+        db.close()
         super.onDestroy()
     }
 
