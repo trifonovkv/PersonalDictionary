@@ -110,6 +110,16 @@ class EnterWordFragment : Fragment() {
             }
         })
 
+        val db = DbHelper(context!!).readableDatabase
+        if (getAllWordsFromDb(db).isNotEmpty()) {
+            view.dictionaryImageView.isEnabled = true
+            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorAccent))
+        } else {
+            view.dictionaryImageView.isEnabled = false
+            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, android.R.color.darker_gray))
+        }
+        db.close()
+
         // Inflate the layout for this fragment
         return view
     }

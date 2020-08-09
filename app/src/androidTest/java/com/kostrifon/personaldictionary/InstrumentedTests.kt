@@ -93,7 +93,7 @@ class InstrumentedTests {
 
     @Before
     fun initDB() {
-        val dbHelper = DictionaryWordDbHelper(context)
+        val dbHelper = DbHelper(context)
         val db = dbHelper.writableDatabase
 
         // clear db
@@ -111,7 +111,7 @@ class InstrumentedTests {
 
     @Test
     fun testInsertDoublesWords() {
-        val dbHelper = DictionaryWordDbHelper(context)
+        val dbHelper = DbHelper(context)
         val db = dbHelper.writableDatabase
         assertEquals(0, putDictionaryWordToDb(db, waterWord))
         assertEquals(-1,putDictionaryWordToDb(db, waterWord))
@@ -120,7 +120,7 @@ class InstrumentedTests {
 
     @Test
     fun testPutGetDictionaryWordToSql() {
-        val dbHelper = DictionaryWordDbHelper(context)
+        val dbHelper = DbHelper(context)
         val db = dbHelper.writableDatabase
         putDictionaryWordToDb(db, waterWord)
         putDictionaryWordToDb(db, fireWord)
@@ -133,7 +133,7 @@ class InstrumentedTests {
 
     @Test
     fun testGetAllWordsFromSql() {
-        val dbHelper = DictionaryWordDbHelper(context)
+        val dbHelper = DbHelper(context)
         val db = dbHelper.readableDatabase
         val list = listOf(waterWord, fireWord, earthWord)
         list.forEach {

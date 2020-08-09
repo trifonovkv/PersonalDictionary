@@ -32,7 +32,7 @@ class DictionaryEntryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let { dictionaryWord = it.getSerializable(dictionaryWordSerializeKey) as DictionaryWord }
-        db = DictionaryWordDbHelper(context!!).writableDatabase
+        db = DbHelper(context!!).writableDatabase
     }
 
     @KtorExperimentalAPI

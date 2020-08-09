@@ -23,7 +23,7 @@ class ItemFragment : Fragment() {
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = LinearLayoutManager(context)
-                val db = DictionaryWordDbHelper(context).readableDatabase
+                val db = DbHelper(context).readableDatabase
                 adapter = WordItemRecyclerViewAdapter(getAllDictionaryWordsFromDb(db))
                 db.close()
             }

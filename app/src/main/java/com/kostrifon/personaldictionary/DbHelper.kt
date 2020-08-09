@@ -70,7 +70,7 @@ private const val SQL_DELETE_ETYMOLOGIES_TABLE =
     "DROP TABLE IF EXISTS ${DictionaryContract.Etymologies.TABLE_NAME}"
 
 
-class DictionaryWordDbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_CREATE_WORD_TABLE)
         db.execSQL(SQL_CREATE_PRONUNCIATIONS_TABLE)
