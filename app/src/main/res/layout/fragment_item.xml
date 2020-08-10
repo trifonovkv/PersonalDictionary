@@ -44,4 +44,10 @@
         android:singleLine="false"
         android:textColor="@android:color/secondary_text_light"
         android:textSize="18sp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="?android:attr/listDivider" />
 </LinearLayout>
