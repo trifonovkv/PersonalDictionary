@@ -4,6 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -29,7 +30,14 @@ class WordItemRecyclerViewAdapter(
             listOf(item.noun.translates, item.verb.translates, item.adjective.translates).mapNotNull {
                 it.firstOrNull()
             }.joinToString(separator = ", ")
-        holder.primaryText.setOnClickListener {
+//        holder.primaryText.setOnClickListener {
+//            activity.supportFragmentManager.beginTransaction().apply {
+//                replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(item))
+//                addToBackStack(null)
+//                commit()
+//            }
+//        }
+        holder.itemRow.setOnClickListener {
             activity.supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(item))
                 addToBackStack(null)
@@ -41,6 +49,7 @@ class WordItemRecyclerViewAdapter(
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val itemRow: LinearLayout = view.findViewById(R.id.item_row)
         val itemNumber: TextView = view.findViewById(R.id.item_number)
         val primaryText: TextView = view.findViewById(R.id.item_primary_text)
         val secondaryText: TextView = view.findViewById(R.id.item_secondary_text)

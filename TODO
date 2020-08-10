@@ -3,4 +3,4 @@ add: animation for buttons
 UI for list of saved words
 - add dividers
 - add back button
-- clickable whole row
+fix: when repeat search word the spinner slow rotate
