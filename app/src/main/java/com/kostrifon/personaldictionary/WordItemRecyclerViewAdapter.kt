@@ -30,13 +30,6 @@ class WordItemRecyclerViewAdapter(
             listOf(item.noun.translates, item.verb.translates, item.adjective.translates).mapNotNull {
                 it.firstOrNull()
             }.joinToString(separator = ", ")
-//        holder.primaryText.setOnClickListener {
-//            activity.supportFragmentManager.beginTransaction().apply {
-//                replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(item))
-//                addToBackStack(null)
-//                commit()
-//            }
-//        }
         holder.itemRow.setOnClickListener {
             activity.supportFragmentManager.beginTransaction().apply {
                 replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(item))

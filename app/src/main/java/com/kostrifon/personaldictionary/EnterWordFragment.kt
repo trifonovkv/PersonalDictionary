@@ -48,13 +48,12 @@ class EnterWordFragment : Fragment() {
 
         view.findIconImageView.isEnabled = false
 
+        val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
+            interpolator = LinearInterpolator()
+            duration = 1500
+            repeatCount = ValueAnimator.INFINITE
+        }
         view.findIconImageView.setOnClickListener {
-            val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
-                interpolator = LinearInterpolator()
-                duration = 1500
-                repeatCount = ValueAnimator.INFINITE
-            }
-
             hideSoftKeyboard(activity!!, view)
 
             if (!isConnected(context!!)) {
@@ -70,6 +69,7 @@ class EnterWordFragment : Fragment() {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
                         getTranslatedWord(translatedWord, { dictionaryWord: DictionaryWord ->
+                            objectAnimator.cancel()
                             activity!!.supportFragmentManager.beginTransaction().apply {
                                 replace(R.id.fragment_container, DictionaryEntryFragment.newInstance(dictionaryWord))
                                 addToBackStack(null)
@@ -83,12 +83,10 @@ class EnterWordFragment : Fragment() {
                         showErrorDialog(getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
                         objectAnimator.cancel()
                     } catch (e: Exception) {
-                        showErrorDialog(
-                            getString(R.string.connection_error),
-                            e.localizedMessage ?: getString(R.string.unknown)
-                        )
+                        showErrorDialog(getString(R.string.connection_error), e.localizedMessage ?: getString(R.string.unknown))
                         objectAnimator.cancel()
                     }
+
                 }
             }
         }
