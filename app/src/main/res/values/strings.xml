@@ -18,4 +18,5 @@
     <string name="error">Error</string>
     <string name="unknown">Unknown</string>
     <string name="connection_error">"Connection error"</string>
+    <string name="clear_button">clear_button</string>
 </resources>

@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.EditText
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import io.ktor.util.KtorExperimentalAPI
+import kotlinx.android.synthetic.main.fragment_enter_word.*
 import kotlinx.android.synthetic.main.fragment_enter_word.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -40,6 +42,10 @@ class EnterWordFragment : Fragment() {
             }
         }
 
+        view.clearTextButton.setOnClickListener {
+            view.translatedWordEditText.setText("")
+        }
+
         view.findIconImageView.isEnabled = false
 
         view.findIconImageView.setOnClickListener {
@@ -56,7 +62,7 @@ class EnterWordFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            view.spinnerImageView.visibility = View.VISIBLE
+            view.spinnerImageView.visibility = VISIBLE
             objectAnimator.start()
 
             val translatedWord = view.translatedWordEditText.text.toString()
@@ -103,11 +109,16 @@ class EnterWordFragment : Fragment() {
 
         view.translatedWordEditText.addTextChangedListener(object : TextValidator(view.translatedWordEditText) {
             override fun validate(editText: EditText, text: String) {
-                if (text.trim().split("\\s+".toRegex()).size > 1 || editText.text.isBlank()) {
-                    editText.error = getString(R.string.only_one_word_is_allowed)
+                editText.error = null
+                if (editText.text.isBlank()) {
                     isFindIconEnabled(false)
+                    clearTextButton.visibility = GONE
                 } else {
+                    if (text.trim().split("\\s+".toRegex()).size > 1) {
+                        editText.error = getString(R.string.only_one_word_is_allowed)
+                    }
                     isFindIconEnabled(true)
+                    clearTextButton.visibility = VISIBLE
                 }
             }
         })
@@ -138,7 +149,7 @@ class EnterWordFragment : Fragment() {
                     .setTitle(title)
                     .setMessage(message)
                     .setPositiveButton(android.R.string.cancel) { _, _ ->
-                        view?.spinnerImageView?.visibility = View.GONE
+                        view?.spinnerImageView?.visibility = GONE
                         activity?.supportFragmentManager?.popBackStack()
                     }
                     .setIcon(android.R.drawable.ic_dialog_alert)
