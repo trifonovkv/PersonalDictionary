@@ -8,7 +8,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.EditText
@@ -32,6 +33,15 @@ class EnterWordFragment : Fragment() {
     @KtorExperimentalAPI
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
+
+        // delete old fragment when recreate this fragment
+        if (savedInstanceState != null) {
+            activity!!.supportFragmentManager.beginTransaction().apply {
+                replace(R.id.fragment_container, EnterWordFragment())
+                addToBackStack(null)
+                commit()
+            }
+        }
 
         view.invert_colors_button.setImageResource(
             when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
