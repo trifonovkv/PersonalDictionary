@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:textColor="@android:color/secondary_text_light"
+            android:textColor="@color/colorSecondaryText"
             android:textSize="36sp" />
 
         <TextView
@@ -29,7 +29,7 @@
             android:includeFontPadding="false"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:textColor="@android:color/primary_text_light"
+            android:textColor="@color/colorText"
             android:textSize="36sp"
             android:textStyle="bold"
             app:fontFamily="@font/roboto_slab" />
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         android:singleLine="false"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="18sp" />
 
     <View

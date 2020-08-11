@@ -1,1 +1,2 @@
-dark mode
+ref: extracted all styles to xml
+fix: overlay old data on new in the EnterWordFragment
