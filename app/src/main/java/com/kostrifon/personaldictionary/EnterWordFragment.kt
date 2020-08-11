@@ -2,6 +2,7 @@ package com.kostrifon.personaldictionary
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.res.Configuration
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import io.ktor.util.KtorExperimentalAPI
@@ -30,6 +32,23 @@ class EnterWordFragment : Fragment() {
     @KtorExperimentalAPI
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_enter_word, container, false)
+
+        view.invert_colors_button.setImageResource(
+            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                Configuration.UI_MODE_NIGHT_NO -> R.drawable.ic_invert_colors_off_24px
+                else -> R.drawable.ic_invert_colors_24px
+            }
+        )
+
+        view.invert_colors_button.setOnClickListener {
+            AppCompatDelegate.setDefaultNightMode(
+                when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+                    Configuration.UI_MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_YES
+                    Configuration.UI_MODE_NIGHT_YES -> AppCompatDelegate.MODE_NIGHT_NO
+                    else -> AppCompatDelegate.MODE_NIGHT_NO
+                }
+            )
+        }
 
         view.dictionaryImageView.setOnClickListener {
             hideSoftKeyboard(activity!!, view)
@@ -83,7 +102,10 @@ class EnterWordFragment : Fragment() {
                         showErrorDialog(getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
                         objectAnimator.cancel()
                     } catch (e: Exception) {
-                        showErrorDialog(getString(R.string.connection_error), e.localizedMessage ?: getString(R.string.unknown))
+                        showErrorDialog(
+                            getString(R.string.connection_error),
+                            e.localizedMessage ?: getString(R.string.unknown)
+                        )
                         objectAnimator.cancel()
                     }
 

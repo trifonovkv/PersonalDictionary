@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".DictionaryEntryFragment">
 
     <LinearLayout
@@ -120,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp"
-            android:textColor="@android:color/background_dark"
+            android:textColor="@color/colorText"
             android:textSize="14sp"
             app:fontFamily="@font/roboto_slab" />
 
