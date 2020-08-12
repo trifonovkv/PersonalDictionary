@@ -20,15 +20,9 @@
 
     <ImageView
         android:id="@+id/back_button"
+        style="@style/RightBottomCornerButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="16dp"
         android:contentDescription="@string/back_icon"
-        android:tint="@color/colorAccent"
-        android:visibility="visible"
         app:srcCompat="@drawable/ic_go_previous_symbolic" />
 </FrameLayout>

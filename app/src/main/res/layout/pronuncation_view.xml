@@ -10,9 +10,6 @@
         android:id="@+id/pronunciationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorAccent"
-        android:textSize="24sp"
-        android:textStyle="italic"
-        android:typeface="normal" />
+        style="@style/PronunciationText" />
 
 </LinearLayout>

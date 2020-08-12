@@ -12,11 +12,9 @@
         android:id="@+id/spinnerImageView"
         android:layout_width="96dp"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
         android:contentDescription="@string/spinner"
-        android:tint="@color/colorDisable"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic" />
+        app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic"
+        style="@style/Spinner" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,33 +24,20 @@
 
         <EditText
             android:id="@+id/translatedWordEditText"
-            style="@style/TranslatedWord"
+            style="@style/EnterWord"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:hint="@string/enter_the_word"
-            android:importantForAutofill="no"
-            android:inputType="textAutoCorrect"
-            android:paddingTop="8dp"
-            android:singleLine="true"
-            android:textColorHint="@color/colorDisable"
-            android:textCursorDrawable="@color/colorAccent"
-            app:backgroundTint="@color/colorAccent"
-            app:fontFamily="@font/roboto_slab" />
+            android:importantForAutofill="no" />
 
         <ImageView
             android:id="@+id/clearTextButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:contentDescription="@string/clear_button"
-            android:tint="@color/colorAccent"
-            android:visibility="gone"
-            app:srcCompat="@drawable/ic_clear_24px" />
+            app:srcCompat="@drawable/ic_clear_24px"
+            style="@style/ClearTextButton" />
 
     </LinearLayout>
 
@@ -67,22 +52,20 @@
             android:id="@+id/dictionaryImageView"
             android:layout_width="0dp"
             android:layout_height="96dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:contentDescription="@string/dictionary_icon"
-            android:tint="@color/colorAccent"
             app:srcCompat="@drawable/ic_view_dual_symbolic"
-            tools:ignore="NestedWeights" />
+            tools:ignore="NestedWeights"
+            style="@style/StartFragmentButton" />
 
         <ImageView
             android:id="@+id/findIconImageView"
             android:layout_width="0dp"
             android:layout_height="96dp"
-            android:layout_gravity="center"
             android:layout_weight="1"
             android:contentDescription="@string/find_icon"
-            android:tint="@color/colorDisable"
-            app:srcCompat="@drawable/ic_edit_find_symbolic_light" />
+            app:srcCompat="@drawable/ic_edit_find_symbolic_light"
+            style="@style/StartFragmentButton" />
 
     </LinearLayout>
 
@@ -90,9 +73,7 @@
         android:id="@+id/invert_colors_button"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_gravity="end"
-        android:layout_margin="16dp"
         android:contentDescription="@string/back_icon"
-        android:tint="@color/colorAccent" />
+        style="@style/RightBottomCornerButton" />
 
 </LinearLayout>

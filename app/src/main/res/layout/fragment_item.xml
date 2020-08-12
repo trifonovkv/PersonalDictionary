@@ -18,32 +18,21 @@
             android:id="@+id/item_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:textColor="@color/colorSecondaryText"
-            android:textSize="36sp" />
+            style="@style/ItemNumber" />
 
         <TextView
             android:id="@+id/item_primary_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:textColor="@color/colorText"
-            android:textSize="36sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/roboto_slab" />
+            app:fontFamily="@font/roboto_slab"
+            style="@style/ItemPrimaryText" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/item_secondary_text"
-        style="@style/TranslatedWord"
+        style="@style/ItemSecondaryText"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:singleLine="false"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="18sp" />
+        android:layout_height="wrap_content" />
 
     <View
         android:id="@+id/divider"
