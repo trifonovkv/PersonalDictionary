@@ -13,6 +13,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
@@ -141,13 +142,13 @@ class EnterWordFragment : Fragment() {
             override fun validate(editText: EditText, text: String) {
                 editText.error = null
                 if (editText.text.isBlank()) {
-                    isFindIconEnabled(false)
+                    isFindIconEnabled(view.findIconImageView, false)
                     clearTextButton.visibility = GONE
                 } else {
                     if (text.trim().split("\\s+".toRegex()).size > 1) {
                         editText.error = getString(R.string.only_one_word_is_allowed)
                     }
-                    isFindIconEnabled(true)
+                    isFindIconEnabled(view.findIconImageView, true)
                     clearTextButton.visibility = VISIBLE
                 }
             }
@@ -159,9 +160,11 @@ class EnterWordFragment : Fragment() {
             view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorAccent))
         } else {
             view.dictionaryImageView.isEnabled = false
-            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, android.R.color.darker_gray))
+            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorDisable))
         }
         db.close()
+
+        isFindIconEnabled(view.findIconImageView, false)
 
         // Inflate the layout for this fragment
         return view
@@ -188,9 +191,9 @@ class EnterWordFragment : Fragment() {
         }
     }
 
-    fun isFindIconEnabled(enabled: Boolean) {
-        view?.findIconImageView?.isEnabled = enabled
-        view?.findIconImageView?.setColorFilter(
+    fun isFindIconEnabled(imageView: ImageView, enabled: Boolean) {
+        imageView.isEnabled = enabled
+        imageView.setColorFilter(
             ContextCompat.getColor(
                 context!!, if (enabled) {
                     R.color.colorAccent

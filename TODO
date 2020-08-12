@@ -1,3 +1,3 @@
 upd: README.md
 fix: overlap old fragment on new in the EnterWordFragment after error dialog
-fix: disabled find word icon color
+add: select colors
