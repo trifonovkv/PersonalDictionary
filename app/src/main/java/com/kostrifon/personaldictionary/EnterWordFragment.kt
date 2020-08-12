@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import io.ktor.util.KtorExperimentalAPI
 import kotlinx.android.synthetic.main.fragment_enter_word.*
 import kotlinx.android.synthetic.main.fragment_enter_word.view.*
@@ -38,7 +39,7 @@ class EnterWordFragment : Fragment() {
         // delete old fragment when recreate this fragment
         if (savedInstanceState != null) {
             activity!!.supportFragmentManager.beginTransaction().apply {
-                replace(R.id.fragment_container, EnterWordFragment())
+                replace(R.id.fragment_container, newInstance())
                 addToBackStack(null)
                 commit()
             }
@@ -106,14 +107,15 @@ class EnterWordFragment : Fragment() {
                                 commit()
                             }
                         }, { message: String ->
-                            showErrorDialog(getString(R.string.error), message)
+                            showErrorDialog(activity!!, getString(R.string.error), message)
                             objectAnimator.cancel()
                         })
                     } catch (e: IOException) {
-                        showErrorDialog(getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
+                        showErrorDialog(activity!!, getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
                         objectAnimator.cancel()
                     } catch (e: Exception) {
                         showErrorDialog(
+                            activity!!,
                             getString(R.string.connection_error),
                             e.localizedMessage ?: getString(R.string.unknown)
                         )
@@ -175,19 +177,21 @@ class EnterWordFragment : Fragment() {
         fun newInstance() = EnterWordFragment()
     }
 
-    private fun showErrorDialog(title: String, message: String) {
-        activity?.let {
-            GlobalScope.launch(Dispatchers.Main) {
-                AlertDialog.Builder(it)
-                    .setTitle(title)
-                    .setMessage(message)
-                    .setPositiveButton(android.R.string.cancel) { _, _ ->
-                        view?.spinnerImageView?.visibility = GONE
-                        activity?.supportFragmentManager?.popBackStack()
+    private fun showErrorDialog(activity: FragmentActivity, title: String, message: String) {
+        GlobalScope.launch(Dispatchers.Main) {
+            AlertDialog.Builder(activity)
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(android.R.string.cancel) { _, _ ->
+                    activity.spinnerImageView?.visibility = GONE
+                    activity.supportFragmentManager.beginTransaction().apply {
+                        replace(R.id.fragment_container, newInstance())
+                        addToBackStack(null)
+                        commit()
                     }
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show()
-            }
+                }
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
         }
     }
 
