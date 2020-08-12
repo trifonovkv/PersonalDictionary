@@ -13,11 +13,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import io.ktor.util.KtorExperimentalAPI
@@ -144,29 +142,23 @@ class EnterWordFragment : Fragment() {
             override fun validate(editText: EditText, text: String) {
                 editText.error = null
                 if (editText.text.isBlank()) {
-                    isFindIconEnabled(view.findIconImageView, false)
+                    view.findIconImageView.isEnabled = false
                     clearTextButton.visibility = GONE
                 } else {
                     if (text.trim().split("\\s+".toRegex()).size > 1) {
                         editText.error = getString(R.string.only_one_word_is_allowed)
                     }
-                    isFindIconEnabled(view.findIconImageView, true)
+                    view.findIconImageView.isEnabled = true
                     clearTextButton.visibility = VISIBLE
                 }
             }
         })
 
         val db = DbHelper(context!!).readableDatabase
-        if (getAllWordsFromDb(db).isNotEmpty()) {
-            view.dictionaryImageView.isEnabled = true
-            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorAccent))
-        } else {
-            view.dictionaryImageView.isEnabled = false
-            view.dictionaryImageView.setColorFilter(ContextCompat.getColor(context!!, R.color.colorDisable))
-        }
+        view.dictionaryImageView.isEnabled = getAllWordsFromDb(db).isNotEmpty()
         db.close()
 
-        isFindIconEnabled(view.findIconImageView, false)
+        view.findIconImageView.isEnabled = false
 
         // Inflate the layout for this fragment
         return view
@@ -193,19 +185,6 @@ class EnterWordFragment : Fragment() {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show()
         }
-    }
-
-    fun isFindIconEnabled(imageView: ImageView, enabled: Boolean) {
-        imageView.isEnabled = enabled
-        imageView.setColorFilter(
-            ContextCompat.getColor(
-                context!!, if (enabled) {
-                    R.color.colorAccent
-                } else {
-                    R.color.colorDisable
-                }
-            )
-        )
     }
 }
 

@@ -5,7 +5,7 @@
     android:viewportHeight="16">
   <path
       android:pathData="m4.5625,8 l5.7188,5.7188C10.4771,13.9146 10.7444,14 11,14l1,0 0,-1c0,-0.2556 -0.0854,-0.5229 -0.2813,-0.7188L7.4375,8l4.2813,-4.2813c0.1959,-0.1959 0.2813,-0.4631 0.2813,-0.7188l0,-1 -1,0c-0.2556,0 -0.5229,0.0854 -0.7188,0.2813z"
-      android:fillColor="#bebebe"
+      android:fillColor="@color/button"
       android:strokeColor="#00000000"
       android:fillAlpha="1"/>
 </vector>

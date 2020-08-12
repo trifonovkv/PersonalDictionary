@@ -39,7 +39,7 @@
 
     <style name="EnterWord" parent="TitleText">
         <item name="android:inputType">textAutoCorrect</item>
-        <item name="android:textColorHint">@color/colorDisable</item>
+        <item name="android:textColorHint">@color/colorDisabled</item>
         <item name="android:textCursorDrawable">@color/colorAccent</item>
         <item name="backgroundTint">@color/colorAccent</item>
     </style>
@@ -66,35 +66,32 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Button">
-        <item name="android:tint">@color/colorAccent</item>
-    </style>
-
-    <style name="ClearTextButton" parent="Button">
+    <style name="ClearTextButton">
         <item name="android:layout_gravity">end|center_vertical</item>
         <item name="android:layout_marginEnd">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="StartFragmentButton" parent="Button">
+    <style name="StartFragmentButton">
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="RightBottomCornerButton" parent="Button">
+    <style name="RightBottomCornerButton">
         <item name="android:layout_gravity">bottom|end</item>
         <item name="android:layout_margin">16dp</item>
     </style>
 
-    <style name="PronunciationText" parent="Button">
+    <style name="PronunciationText">
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">italic</item>
         <item name="android:typeface">normal</item>
+        <item name="android:textColor">@color/colorAccent</item>
     </style>
 
     <style name="Spinner">
         <item name="android:layout_gravity">center</item>
-        <item name="android:tint">@color/colorDisable</item>
+        <item name="android:tint">@color/colorDisabled</item>
         <item name="android:visibility">gone</item>
     </style>
 
