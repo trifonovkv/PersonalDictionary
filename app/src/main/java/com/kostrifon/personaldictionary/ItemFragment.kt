@@ -28,7 +28,7 @@ class ItemFragment : Fragment() {
             }
         }
 
-        view.back_button.setOnClickListener {
+        view.image_back.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 

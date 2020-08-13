@@ -1,22 +1,23 @@
 <resources>
     <string name="app_name">Personal Dictionary</string>
-    <string name="noun_symbol">■</string>
-    <string name="verb_symbol">▲</string>
-    <string name="adjective_symbol">●</string>
-    <string name="back_icon">back_icon</string>
-    <string name="save_icon">save_icon</string>
-    <string name="dictionary_icon">dictionary_icon</string>
-    <string name="pronunciation_icon">pronunciation_icon</string>
-    <string name="enter_the_word">Enter the word</string>
-    <string name="spinner">spinner</string>
-    <string name="find_icon">find_icon</string>
-    <string name="only_one_word_is_allowed">Only one word is allowed</string>
-    <string name="offline">Offline</string>
-    <string name="saved">Saved</string>
+    <string name="symbol_noun">■</string>
+    <string name="symbol_verb">▲</string>
+    <string name="symbol_adjective">●</string>
+    <string name="msg_enter_the_word">Enter the word</string>
+    <string name="msg_offline">Offline</string>
+    <string name="msg_saved">Saved</string>
     <string name="error_save">Error save</string>
     <string name="error_get_pronunciations">Error get pronunciations</string>
     <string name="error">Error</string>
+    <string name="error_only_one_word_is_allowed">Only one word is allowed</string>
+    <string name="error_connection">"Connection error"</string>
+    <string name="describe_clear">clear</string>
+    <string name="describe_back">back</string>
+    <string name="describe_save">save</string>
+    <string name="describe_dictionary">dictionary</string>
+    <string name="describe_pronunciation">pronunciation</string>
+    <string name="describe_search">search</string>
+    <string name="describe_spinner">spinner</string>
     <string name="unknown">Unknown</string>
-    <string name="connection_error">"Connection error"</string>
-    <string name="clear_button">clear_button</string>
+
 </resources>

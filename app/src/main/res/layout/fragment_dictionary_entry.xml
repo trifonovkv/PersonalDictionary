@@ -14,7 +14,7 @@
         android:padding="8dp">
 
         <TextView
-            android:id="@+id/translatedWordTextView"
+            android:id="@+id/text_translated_word"
             style="@style/Word"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -27,7 +27,7 @@
             android:padding="8dp">
 
             <LinearLayout
-                android:id="@+id/pronunciationsLinearLayout"
+                android:id="@+id/layout_pronunciations"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal" />
@@ -41,7 +41,7 @@
             android:padding="8dp">
 
             <LinearLayout
-                android:id="@+id/nounLinearLayout"
+                android:id="@+id/layout_noun"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -52,17 +52,17 @@
                     style="@style/LexicalSymbol"
                     android:layout_width="32dp"
                     android:layout_height="match_parent"
-                    android:text="@string/noun_symbol" />
+                    android:text="@string/symbol_noun" />
 
                 <TextView
-                    android:id="@+id/nounTextView"
+                    android:id="@+id/text_noun"
                     style="@style/TranslatedText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/verbLinearLayout"
+                android:id="@+id/layout_verb"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -74,17 +74,17 @@
                     style="@style/LexicalSymbol"
                     android:layout_width="32dp"
                     android:layout_height="match_parent"
-                    android:text="@string/verb_symbol" />
+                    android:text="@string/symbol_verb" />
 
                 <TextView
-                    android:id="@+id/verbTextView"
+                    android:id="@+id/text_verb"
                     style="@style/TranslatedText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/adjectiveLinearLayout"
+                android:id="@+id/layout_adjective"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -96,10 +96,10 @@
                     style="@style/LexicalSymbol"
                     android:layout_width="32dp"
                     android:layout_height="match_parent"
-                    android:text="@string/adjective_symbol" />
+                    android:text="@string/symbol_adjective" />
 
                 <TextView
-                    android:id="@+id/adjectiveTextView"
+                    android:id="@+id/text_adjective"
                     style="@style/TranslatedText"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -107,7 +107,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/etymologyTextView"
+            android:id="@+id/text_etymology"
             style="@style/EtymologyText"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -121,19 +121,19 @@
             android:padding="8dp">
 
             <ImageView
-                android:id="@+id/saveImage"
+                android:id="@+id/image_save"
                 style="@style/RightBottomCornerButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@string/save_icon"
+                android:contentDescription="@string/describe_save"
                 app:srcCompat="@drawable/ic_document_save_symbolic" />
 
             <ImageView
-                android:id="@+id/backImageView"
+                android:id="@+id/image_back"
                 style="@style/RightBottomCornerButton"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:contentDescription="@string/back_icon"
+                android:contentDescription="@string/describe_back"
                 app:srcCompat="@drawable/ic_go_previous_symbolic" />
         </LinearLayout>
 

@@ -54,7 +54,7 @@ class DictionaryEntryFragment : Fragment() {
                         downloadPronunciationToCacheDir(context!!, it)
                     } else {
                         GlobalScope.launch(Dispatchers.Main) {
-                            Toast.makeText(context, R.string.offline, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -66,7 +66,7 @@ class DictionaryEntryFragment : Fragment() {
         setTranslates(view, dictionaryWord)
         setEtymologies(view, dictionaryWord)
 
-        view.backImageView.setOnClickListener {
+        view.image_back.setOnClickListener {
             GlobalScope.launch {
                 cachedFiles.forEach {
                     if (it.exists()) {
@@ -77,16 +77,16 @@ class DictionaryEntryFragment : Fragment() {
             activity?.supportFragmentManager?.popBackStack()
         }
 
-        view.saveImage.setOnClickListener {
+        view.image_save.setOnClickListener {
             if (saveDictionaryWord(db, dictionaryWord)) {
                 it.visibility = INVISIBLE
-                Toast.makeText(context, R.string.saved, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.msg_saved, Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(context, R.string.error_save, Toast.LENGTH_LONG).show()
             }
         }
 
-        view.saveImage.visibility = if (isEntryExistsInDb(db, dictionaryWord.word)) INVISIBLE else VISIBLE
+        view.image_save.visibility = if (isEntryExistsInDb(db, dictionaryWord.word)) INVISIBLE else VISIBLE
 
         // Inflate the layout for this fragment
         return view
@@ -105,17 +105,17 @@ class DictionaryEntryFragment : Fragment() {
     }
 
     private fun setTranslatedWord(view: View, dictionaryWord: DictionaryWord) {
-        view.translatedWordTextView.text = dictionaryWord.word
+        view.text_translated_word.text = dictionaryWord.word
     }
 
     @KtorExperimentalAPI
     private fun setPronunciations(view: View, pronunciations: List<Pronunciation>) {
         if (view.isShown) {
             pronunciations.forEach { pronunciation ->
-                layoutInflater.inflate(R.layout.pronuncation_view, pronunciationsLinearLayout, false).let {
-                    it.pronunciationTextView.text = pronunciation.phoneticSpelling
-                    it.pronunciationTextView.setOnClickListener { playPronunciation(context!!, pronunciation) }
-                    view.pronunciationsLinearLayout.addView(it)
+                layoutInflater.inflate(R.layout.pronuncation_view, layout_pronunciations, false).let {
+                    it.text_pronunciation.text = pronunciation.phoneticSpelling
+                    it.text_pronunciation.setOnClickListener { playPronunciation(context!!, pronunciation) }
+                    view.layout_pronunciations.addView(it)
                 }
             }
         }
@@ -123,9 +123,9 @@ class DictionaryEntryFragment : Fragment() {
 
     private fun setTranslates(view: View, dictionaryWord: DictionaryWord) {
         listOf<Triple<List<String>, LinearLayout, TextView>>(
-            Triple(dictionaryWord.noun.translates, view.nounLinearLayout, view.nounTextView),
-            Triple(dictionaryWord.verb.translates, view.verbLinearLayout, view.verbTextView),
-            Triple(dictionaryWord.adjective.translates, view.adjectiveLinearLayout, view.adjectiveTextView)
+            Triple(dictionaryWord.noun.translates, view.layout_noun, view.text_noun),
+            Triple(dictionaryWord.verb.translates, view.layout_verb, view.text_verb),
+            Triple(dictionaryWord.adjective.translates, view.layout_adjective, view.text_adjective)
         ).forEach {
             if (it.first.isNotEmpty()) {
                 it.second.visibility = VISIBLE
@@ -140,7 +140,7 @@ class DictionaryEntryFragment : Fragment() {
         etymologies.addAll(dictionaryWord.verb.etymologies)
         etymologies.addAll(dictionaryWord.adjective.etymologies)
 
-        view.etymologyTextView.text = etymologies.joinToString(prefix = "\t", separator = "\n\t")
+        view.text_etymology.text = etymologies.joinToString(prefix = "\t", separator = "\n\t")
     }
 
     private fun isExistFileInExternalFilesDir(context: Context, fileName: String) =

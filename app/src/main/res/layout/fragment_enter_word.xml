@@ -9,11 +9,11 @@
     tools:context=".EnterWordFragment">
 
     <ImageView
-        android:id="@+id/spinnerImageView"
+        android:id="@+id/image_spinner"
         style="@style/Spinner"
         android:layout_width="96dp"
         android:layout_height="match_parent"
-        android:contentDescription="@string/spinner"
+        android:contentDescription="@string/describe_spinner"
         app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic" />
 
     <LinearLayout
@@ -23,21 +23,21 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/translatedWordEditText"
+            android:id="@+id/edit_translated_word"
             style="@style/EnterWord"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/enter_the_word"
+            android:hint="@string/msg_enter_the_word"
             android:importantForAutofill="no" />
 
         <ImageView
-            android:id="@+id/clearTextButton"
+            android:id="@+id/image_clear_text"
             style="@style/ClearTextButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:contentDescription="@string/clear_button"
-            app:srcCompat="@drawable/ic_clear_24px" />
+            android:contentDescription="@string/describe_clear"
+            app:srcCompat="@drawable/ic_clear" />
 
     </LinearLayout>
 
@@ -49,31 +49,31 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/dictionaryImageView"
+            android:id="@+id/image_dictionary"
             style="@style/StartFragmentButton"
             android:layout_width="0dp"
             android:layout_height="96dp"
             android:layout_weight="1"
-            android:contentDescription="@string/dictionary_icon"
+            android:contentDescription="@string/describe_dictionary"
             app:srcCompat="@drawable/ic_view_dual_symbolic"
             tools:ignore="NestedWeights" />
 
         <ImageView
-            android:id="@+id/findIconImageView"
+            android:id="@+id/image_search"
             style="@style/StartFragmentButton"
             android:layout_width="0dp"
             android:layout_height="96dp"
             android:layout_weight="1"
-            android:contentDescription="@string/find_icon"
+            android:contentDescription="@string/describe_search"
             app:srcCompat="@drawable/ic_edit_find_symbolic_light" />
 
     </LinearLayout>
 
     <CheckBox
-        android:id="@+id/invert_colors_button"
+        android:id="@+id/check_invert_colors"
         style="@style/RightBottomCornerButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        app:buttonCompat="@drawable/ic_invert_colors" />
+        app:buttonCompat="@drawable/selector_invert_colors" />
 
 </LinearLayout>

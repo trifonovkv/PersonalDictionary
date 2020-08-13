@@ -15,13 +15,13 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/item_number"
+            android:id="@+id/text_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/ItemNumber" />
 
         <TextView
-            android:id="@+id/item_primary_text"
+            android:id="@+id/text_primary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:fontFamily="@font/roboto_slab"
@@ -29,7 +29,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/item_secondary_text"
+        android:id="@+id/text_secondary"
         style="@style/ItemSecondaryText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

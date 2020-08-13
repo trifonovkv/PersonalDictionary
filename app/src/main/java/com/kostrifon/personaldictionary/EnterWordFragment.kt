@@ -43,10 +43,10 @@ class EnterWordFragment : Fragment() {
             }
         }
 
-        view.invert_colors_button.isChecked =
+        view.check_invert_colors.isChecked =
             resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
-        view.invert_colors_button.setOnClickListener {
+        view.check_invert_colors.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(
                 when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                     Configuration.UI_MODE_NIGHT_NO -> AppCompatDelegate.MODE_NIGHT_YES
@@ -56,7 +56,7 @@ class EnterWordFragment : Fragment() {
             )
         }
 
-        view.dictionaryImageView.setOnClickListener {
+        view.image_dictionary.setOnClickListener {
             hideSoftKeyboard(activity!!, view)
             activity?.let {
                 it.supportFragmentManager.beginTransaction().apply {
@@ -67,29 +67,29 @@ class EnterWordFragment : Fragment() {
             }
         }
 
-        view.clearTextButton.setOnClickListener {
-            view.translatedWordEditText.setText("")
+        view.image_clear_text.setOnClickListener {
+            view.edit_translated_word.setText("")
         }
 
-        view.findIconImageView.isEnabled = false
+        view.image_search.isEnabled = false
 
-        val objectAnimator = ObjectAnimator.ofFloat(view.spinnerImageView, "rotation", 360f).apply {
+        val objectAnimator = ObjectAnimator.ofFloat(view.image_spinner, "rotation", 360f).apply {
             interpolator = LinearInterpolator()
             duration = 1500
             repeatCount = ValueAnimator.INFINITE
         }
-        view.findIconImageView.setOnClickListener {
+        view.image_search.setOnClickListener {
             hideSoftKeyboard(activity!!, view)
 
             if (!isConnected(context!!)) {
-                Toast.makeText(context, R.string.offline, Toast.LENGTH_LONG).show()
+                Toast.makeText(context, R.string.msg_offline, Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            view.spinnerImageView.visibility = VISIBLE
+            view.image_spinner.visibility = VISIBLE
             objectAnimator.start()
 
-            val translatedWord = view.translatedWordEditText.text.toString()
+            val translatedWord = view.edit_translated_word.text.toString()
             if (translatedWord.isNotBlank()) {
                 GlobalScope.launch(Dispatchers.IO) {
                     try {
@@ -114,7 +114,7 @@ class EnterWordFragment : Fragment() {
                     } catch (e: Exception) {
                         showErrorDialog(
                             activity!!,
-                            getString(R.string.connection_error),
+                            getString(R.string.error_connection),
                             e.localizedMessage ?: getString(R.string.unknown)
                         )
                         objectAnimator.cancel()
@@ -138,27 +138,27 @@ class EnterWordFragment : Fragment() {
             }
         }
 
-        view.translatedWordEditText.addTextChangedListener(object : TextValidator(view.translatedWordEditText) {
+        view.edit_translated_word.addTextChangedListener(object : TextValidator(view.edit_translated_word) {
             override fun validate(editText: EditText, text: String) {
                 editText.error = null
                 if (editText.text.isBlank()) {
-                    view.findIconImageView.isEnabled = false
-                    clearTextButton.visibility = GONE
+                    view.image_search.isEnabled = false
+                    image_clear_text.visibility = GONE
                 } else {
                     if (text.trim().split("\\s+".toRegex()).size > 1) {
-                        editText.error = getString(R.string.only_one_word_is_allowed)
+                        editText.error = getString(R.string.error_only_one_word_is_allowed)
                     }
-                    view.findIconImageView.isEnabled = true
-                    clearTextButton.visibility = VISIBLE
+                    view.image_search.isEnabled = true
+                    image_clear_text.visibility = VISIBLE
                 }
             }
         })
 
         val db = DbHelper(context!!).readableDatabase
-        view.dictionaryImageView.isEnabled = getAllWordsFromDb(db).isNotEmpty()
+        view.image_dictionary.isEnabled = getAllWordsFromDb(db).isNotEmpty()
         db.close()
 
-        view.findIconImageView.isEnabled = false
+        view.image_search.isEnabled = false
 
         // Inflate the layout for this fragment
         return view
@@ -175,7 +175,7 @@ class EnterWordFragment : Fragment() {
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.cancel) { _, _ ->
-                    activity.spinnerImageView?.visibility = GONE
+                    activity.image_spinner?.visibility = GONE
                     activity.supportFragmentManager.beginTransaction().apply {
                         replace(R.id.fragment_container, newInstance())
                         addToBackStack(null)

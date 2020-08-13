@@ -43,9 +43,9 @@ class WordItemRecyclerViewAdapter(
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemRow: LinearLayout = view.findViewById(R.id.item_row)
-        val itemNumber: TextView = view.findViewById(R.id.item_number)
-        val primaryText: TextView = view.findViewById(R.id.item_primary_text)
-        val secondaryText: TextView = view.findViewById(R.id.item_secondary_text)
+        val itemNumber: TextView = view.findViewById(R.id.text_number)
+        val primaryText: TextView = view.findViewById(R.id.text_primary)
+        val secondaryText: TextView = view.findViewById(R.id.text_secondary)
 
         override fun toString(): String {
             return super.toString() + " '" + secondaryText.text + "'"
