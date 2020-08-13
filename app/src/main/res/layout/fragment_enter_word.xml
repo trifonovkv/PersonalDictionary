@@ -10,11 +10,11 @@
 
     <ImageView
         android:id="@+id/spinnerImageView"
+        style="@style/Spinner"
         android:layout_width="96dp"
         android:layout_height="match_parent"
         android:contentDescription="@string/spinner"
-        app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic"
-        style="@style/Spinner" />
+        app:srcCompat="@drawable/ic_emblem_synchronizing_symbolic" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,11 +33,11 @@
 
         <ImageView
             android:id="@+id/clearTextButton"
+            style="@style/ClearTextButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:contentDescription="@string/clear_button"
-            app:srcCompat="@drawable/ic_clear_24px"
-            style="@style/ClearTextButton" />
+            app:srcCompat="@drawable/ic_clear_24px" />
 
     </LinearLayout>
 
@@ -50,30 +50,30 @@
 
         <ImageView
             android:id="@+id/dictionaryImageView"
+            style="@style/StartFragmentButton"
             android:layout_width="0dp"
             android:layout_height="96dp"
             android:layout_weight="1"
             android:contentDescription="@string/dictionary_icon"
             app:srcCompat="@drawable/ic_view_dual_symbolic"
-            tools:ignore="NestedWeights"
-            style="@style/StartFragmentButton" />
+            tools:ignore="NestedWeights" />
 
         <ImageView
             android:id="@+id/findIconImageView"
+            style="@style/StartFragmentButton"
             android:layout_width="0dp"
             android:layout_height="96dp"
             android:layout_weight="1"
             android:contentDescription="@string/find_icon"
-            app:srcCompat="@drawable/ic_edit_find_symbolic_light"
-            style="@style/StartFragmentButton" />
+            app:srcCompat="@drawable/ic_edit_find_symbolic_light" />
 
     </LinearLayout>
 
-    <ImageView
+    <CheckBox
         android:id="@+id/invert_colors_button"
+        style="@style/RightBottomCornerButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:contentDescription="@string/back_icon"
-        style="@style/RightBottomCornerButton" />
+        app:buttonCompat="@drawable/ic_invert_colors" />
 
 </LinearLayout>

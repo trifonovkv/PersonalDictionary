@@ -43,12 +43,8 @@ class EnterWordFragment : Fragment() {
             }
         }
 
-        view.invert_colors_button.setImageResource(
-            when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-                Configuration.UI_MODE_NIGHT_NO -> R.drawable.ic_invert_colors_off_24px
-                else -> R.drawable.ic_invert_colors_24px
-            }
-        )
+        view.invert_colors_button.isChecked =
+            resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
         view.invert_colors_button.setOnClickListener {
             AppCompatDelegate.setDefaultNightMode(
@@ -109,7 +105,11 @@ class EnterWordFragment : Fragment() {
                             objectAnimator.cancel()
                         })
                     } catch (e: IOException) {
-                        showErrorDialog(activity!!, getString(R.string.error), e.localizedMessage ?: getString(R.string.unknown))
+                        showErrorDialog(
+                            activity!!,
+                            getString(R.string.error),
+                            e.localizedMessage ?: getString(R.string.unknown)
+                        )
                         objectAnimator.cancel()
                     } catch (e: Exception) {
                         showErrorDialog(
