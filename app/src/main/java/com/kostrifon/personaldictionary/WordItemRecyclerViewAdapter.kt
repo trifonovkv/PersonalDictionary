@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 class WordItemRecyclerViewAdapter(
     private val values: List<DictionaryWord>
 ) : RecyclerView.Adapter<WordItemRecyclerViewAdapter.ViewHolder>() {
-    lateinit var activity: AppCompatActivity
+    private lateinit var activity: AppCompatActivity
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)

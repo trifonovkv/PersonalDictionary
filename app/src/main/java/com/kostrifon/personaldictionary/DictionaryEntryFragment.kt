@@ -66,7 +66,7 @@ class DictionaryEntryFragment : Fragment() {
         setTranslates(view, dictionaryWord)
         setEtymologies(view, dictionaryWord)
 
-        view.image_back.setOnClickListener {
+        view.button_back.setOnClickListener {
             GlobalScope.launch {
                 cachedFiles.forEach {
                     if (it.exists()) {
@@ -77,7 +77,7 @@ class DictionaryEntryFragment : Fragment() {
             activity?.supportFragmentManager?.popBackStack()
         }
 
-        view.image_save.setOnClickListener {
+        view.button_save.setOnClickListener {
             if (saveDictionaryWord(db, dictionaryWord)) {
                 it.visibility = INVISIBLE
                 Toast.makeText(context, R.string.msg_saved, Toast.LENGTH_LONG).show()
@@ -86,7 +86,7 @@ class DictionaryEntryFragment : Fragment() {
             }
         }
 
-        view.image_save.visibility = if (isEntryExistsInDb(db, dictionaryWord.word)) INVISIBLE else VISIBLE
+        view.button_save.visibility = if (isEntryExistsInDb(db, dictionaryWord.word)) INVISIBLE else VISIBLE
 
         // Inflate the layout for this fragment
         return view

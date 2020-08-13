@@ -56,7 +56,7 @@ class EnterWordFragment : Fragment() {
             )
         }
 
-        view.image_dictionary.setOnClickListener {
+        view.button_dictionary.setOnClickListener {
             hideSoftKeyboard(activity!!, view)
             activity?.let {
                 it.supportFragmentManager.beginTransaction().apply {
@@ -67,18 +67,18 @@ class EnterWordFragment : Fragment() {
             }
         }
 
-        view.image_clear_text.setOnClickListener {
+        view.button_clear_text.setOnClickListener {
             view.edit_translated_word.setText("")
         }
 
-        view.image_search.isEnabled = false
+        view.button_search.isEnabled = false
 
         val objectAnimator = ObjectAnimator.ofFloat(view.image_spinner, "rotation", 360f).apply {
             interpolator = LinearInterpolator()
             duration = 1500
             repeatCount = ValueAnimator.INFINITE
         }
-        view.image_search.setOnClickListener {
+        view.button_search.setOnClickListener {
             hideSoftKeyboard(activity!!, view)
 
             if (!isConnected(context!!)) {
@@ -142,23 +142,23 @@ class EnterWordFragment : Fragment() {
             override fun validate(editText: EditText, text: String) {
                 editText.error = null
                 if (editText.text.isBlank()) {
-                    view.image_search.isEnabled = false
-                    image_clear_text.visibility = GONE
+                    view.button_search.isEnabled = false
+                    button_clear_text.visibility = GONE
                 } else {
                     if (text.trim().split("\\s+".toRegex()).size > 1) {
                         editText.error = getString(R.string.error_only_one_word_is_allowed)
                     }
-                    view.image_search.isEnabled = true
-                    image_clear_text.visibility = VISIBLE
+                    view.button_search.isEnabled = true
+                    button_clear_text.visibility = VISIBLE
                 }
             }
         })
 
         val db = DbHelper(context!!).readableDatabase
-        view.image_dictionary.isEnabled = getAllWordsFromDb(db).isNotEmpty()
+        view.button_dictionary.isEnabled = getAllWordsFromDb(db).isNotEmpty()
         db.close()
 
-        view.image_search.isEnabled = false
+        view.button_search.isEnabled = false
 
         // Inflate the layout for this fragment
         return view
