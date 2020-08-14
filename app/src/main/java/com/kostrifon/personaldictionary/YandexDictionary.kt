@@ -78,12 +78,16 @@ fun getYandexDictionaryWord(yandexDictionaryModel: YandexDictionaryModel): Yande
 }
 
 
-fun createClient() = HttpClient { install(DefaultRequest) { headers.append("Accept", "application/json") } }
+fun createYandexClient() = HttpClient { install(DefaultRequest) { headers.append("Accept", "application/json") } }
 
 // not need error and success because it always return json
 suspend fun makeRequest(client: HttpClient, requestedWord: String): String {
-    val url = ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=${BuildConfig.YANDEX_API_KEY}" +
-            "&lang=en-ru&text=${requestedWord.toLowerCase(Locale.getDefault())}")
+    val url =
+        ("https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=" +
+                "dict.1.1.20200110T171859Z.79597e9ba8e78547.689bf8d2ca0c5ab3e3f70ca08247c29e98d9d1b8&lang=en-ru" +
+                "&text=${requestedWord.toLowerCase(
+                    Locale.getDefault()
+                )}")
     return client.call(url).response.readText()
 }
 

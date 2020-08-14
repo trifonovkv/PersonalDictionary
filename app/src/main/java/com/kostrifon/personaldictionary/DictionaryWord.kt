@@ -85,7 +85,7 @@ fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, err
         word: String, success: (word: OxfordDictionaryWord) -> Unit, error: (json: String) -> Unit
     ) {
         makeRequest(
-            createClient(BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY),
+            createOxfordClient(),
             word,
             { json: String -> success(getOxfordDictionaryWord(parseOxfordDictionaryModel(json))) },
             error
@@ -97,7 +97,7 @@ fun getTranslatedWord(word: String, success: (word: DictionaryWord) -> Unit, err
         success: (word: YandexDictionaryWord) -> Unit,
         error: (json: String) -> Unit
     ) {
-        val json = makeRequest(createClient(), word)
+        val json = makeRequest(createYandexClient(), word)
         val yandexDictionaryModel = parseYandexDictionaryModel(json)
         if (yandexDictionaryModel.def.isEmpty()) {
             error(json)

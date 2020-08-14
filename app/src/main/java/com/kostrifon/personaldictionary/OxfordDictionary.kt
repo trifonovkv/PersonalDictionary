@@ -255,11 +255,11 @@ fun getOxfordDictionaryWord(oxfordDictionaryModel: OxfordDictionaryModel): Oxfor
 }
 
 
-fun createClient(app_id: String, app_key: String) = HttpClient {
+fun createOxfordClient() = HttpClient {
     install(DefaultRequest) {
         headers.append("Accept", "application/json")
-        headers.append("app_id", app_id)
-        headers.append("app_key", app_key)
+        headers.append("app_id", "74ed8eae")
+        headers.append("app_key", "b595be81c988512b348091565c41a4a5")
     }
 }
 

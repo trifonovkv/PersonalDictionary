@@ -8,6 +8,15 @@ apply plugin: 'kotlinx-serialization'
 
 
 android {
+    signingConfigs {
+        release {
+            storeFile file(STORE_FILE)
+            storePassword STORE_PASSWORD
+            keyAlias KEY_ALIAS
+            keyPassword KEY_PASSWORD
+
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
@@ -22,13 +31,11 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
-            buildConfigField "String", "YANDEX_API_KEY", "\"${project.YANDEX_API_KEY}\""
-            buildConfigField "String", "OXFORD_APP_ID", "\"${project.OXFORD_APP_ID}\""
-            buildConfigField "String", "OXFORD_APP_KEY", "\"${project.OXFORD_APP_KEY}\""
         }
     }
     packagingOptions {

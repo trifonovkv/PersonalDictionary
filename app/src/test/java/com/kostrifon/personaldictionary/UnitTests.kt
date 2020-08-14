@@ -203,18 +203,14 @@ class UnitTests {
         val error = { json: String -> assert(false) { println(json) } }
 
         runBlocking {
-            makeRequest(
-                createClient(
-                    BuildConfig.OXFORD_APP_ID, BuildConfig.OXFORD_APP_KEY
-                ), "neglect", success, error
-            )
+            makeRequest(createOxfordClient(), "neglect", success, error)
         }
     }
 
     @Test
     fun testYandexDictionary() {
         suspend fun testWord(word: String) {
-            val json = makeRequest(createClient(), word)
+            val json = makeRequest(createYandexClient(), word)
             val yandexDictionaryModel = parseYandexDictionaryModel(json)
             assert(!isEmpty(yandexDictionaryModel)) {
                 println("yandexDictionaryModel is empty")
