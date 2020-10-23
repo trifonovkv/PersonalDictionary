@@ -1,1 +1,3 @@
 upd: ktor-client
+add: a connect dialog for offline mode
+add: show a keyboard when clear a search word
